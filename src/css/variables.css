@@ -1,0 +1,30 @@
+/* Mars color palette - real Mars colors */
+:root {
+  /* Mars palette */
+  --color-space: #0B0D17;
+  --color-rust: #C1440E;
+  --color-terracotta: #E2725B;
+  --color-sandy: #B49B63;
+  --color-dust: #725130;
+  --color-dark: #3D2B1F;
+  --color-atmosphere: #F48A36;
+  --color-crater: #4A2C17;
+  --color-star: #E8E0D8;
+  --color-star-dim: #A89F97;
+
+  /* Typography */
+  --font-heading: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Spacing */
+  --section-height: 100vh;
+  --content-max-width: 1200px;
+  --content-padding: 2rem;
+
+  /* Z-index layers */
+  --z-canvas: 0;
+  --z-content: 10;
+  --z-nav: 100;
+  --z-overlay: 200;
+}
