@@ -84,7 +84,7 @@ export function createContactSection() {
   const footer = document.getElementById('footer');
   footer.innerHTML = `
     <div class="footer-inner">
-      <p>© ${new Date().getFullYear()} Marcelo Medina. Built with 🪐 on Mars.</p>
+      <p>© ${new Date().getFullYear()} Mars Medina. Built with 🪐 on Mars.</p>
       <p class="footer-tech">Three.js • Vite • Vanilla JS</p>
     </div>
   `;
