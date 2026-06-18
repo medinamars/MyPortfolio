@@ -6,7 +6,7 @@ export function createHomeSection() {
         <div class="home-content fade-in">
           <p class="home-tag">🚀 Welcome to my universe</p>
           <h1 class="section-title">Mars Medina</h1>
-          <p class="section-subtitle">Full-Stack Developer • 17+ Years Experience</p>
+          <p class="section-subtitle">Full-Stack Developer for more than 17 years</p>
           <p class="home-bio">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit.
             Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
