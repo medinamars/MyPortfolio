@@ -123,8 +123,6 @@ class PassingObject {
   create(config) {
     if (this.type === 'planet') {
       this.createPlanet(config.planetType);
-    } else if (this.type === 'sun') {
-      this.createSun();
     } else {
       this.createAsteroid();
     }
@@ -188,44 +186,6 @@ class PassingObject {
       ring.rotation.x = Math.PI * 0.4;
       this.mesh.add(ring);
     }
-
-    this.radius = radius;
-  }
-
-  createSun() {
-    const radius = randomRange(0.8, 1.2);
-    const geometry = new THREE.SphereGeometry(radius, 32, 32);
-    const material = new THREE.MeshStandardMaterial({
-      color: 0xFFD700,
-      emissive: 0xFFA500,
-      emissiveIntensity: 2.0,
-      roughness: 0.3,
-      metalness: 0.0,
-    });
-
-    this.mesh = new THREE.Group();
-    const sphere = new THREE.Mesh(geometry, material);
-    this.mesh.add(sphere);
-
-    // Glow halo
-    const haloGeo = new THREE.SphereGeometry(radius * 1.5, 32, 32);
-    const haloMat = new THREE.MeshBasicMaterial({
-      color: 0xFFA500,
-      transparent: true,
-      opacity: 0.15,
-      side: THREE.BackSide,
-    });
-    this.mesh.add(new THREE.Mesh(haloGeo, haloMat));
-
-    // Outer glow
-    const outerGlowGeo = new THREE.SphereGeometry(radius * 2.0, 32, 32);
-    const outerGlowMat = new THREE.MeshBasicMaterial({
-      color: 0xFF8C00,
-      transparent: true,
-      opacity: 0.05,
-      side: THREE.BackSide,
-    });
-    this.mesh.add(new THREE.Mesh(outerGlowGeo, outerGlowMat));
 
     this.radius = radius;
   }
@@ -309,9 +269,6 @@ export class PassingCelestials {
   spawn() {
     if (this.objects.length >= this.maxObjects) return;
 
-    // Check what's currently on screen
-    const hasSun = this.objects.some(o => o.type === 'sun');
-    
     // For planets, track which specific types are visible
     const visiblePlanetTypes = new Set();
     for (const obj of this.objects) {
@@ -320,15 +277,11 @@ export class PassingCelestials {
       }
     }
 
-    // Decide what to spawn — weighted: more asteroids, fewer suns
+    // Decide what to spawn — weighted: more asteroids than planets
     const roll = Math.random();
     let type, config;
 
-    if (roll < 0.15 && !hasSun) {
-      // Sun — rare, only one at a time
-      type = 'sun';
-      config = this.generateSunConfig();
-    } else if (roll < 0.6) {
+    if (roll < 0.5) {
       // Planet — only spawn types not already visible
       const availableTypes = Object.keys(PLANET_TYPES).filter(t => !visiblePlanetTypes.has(t));
       if (availableTypes.length === 0) return; // all planet types on screen, skip
@@ -350,22 +303,6 @@ export class PassingCelestials {
     obj._boundY = this.viewportHalfH;
     this.group.add(obj.mesh);
     this.objects.push(obj);
-  }
-
-  generateSunConfig() {
-    // Sun enters from upper-right corner, just off-screen, trajectory aimed through center
-    const margin = 1.5;
-    const startX = this.viewportHalfW * margin;
-    const startY = this.viewportHalfH * randomRange(0.8, 1.2);
-    const speed = randomRange(0.15, 0.3);
-    const dir = this.aimTowardCenter(startX, startY);
-    return {
-      startX,
-      startY,
-      startZ: -randomRange(2, 6),
-      velX: dir.x * speed,
-      velY: dir.y * speed,
-    };
   }
 
   generatePlanetConfig(planetType) {
