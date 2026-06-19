@@ -369,10 +369,10 @@ export class PassingCelestials {
   }
 
   generatePlanetConfig(planetType) {
-    // Planets enter from right side, just off-screen, trajectory aimed through center
+    // Planets enter from upper-right corner, same angle/direction as sun, trajectory aimed through center
     const margin = 1.5;
     const startX = this.viewportHalfW * margin;
-    const startY = this.viewportHalfH * randomRange(-0.8, 0.8);
+    const startY = this.viewportHalfH * randomRange(0.8, 1.2);
     const speed = randomRange(0.1, 0.25);
     const dir = this.aimTowardCenter(startX, startY);
     return {
