@@ -332,9 +332,9 @@ export class PassingCelestials {
   }
 
   generateSunConfig() {
-    // Sun enters from upper-right edge, trajectory aimed through center
-    const startX = randomRange(8, 12);
-    const startY = randomRange(4, 8);
+    // Sun enters from upper-right corner, well off-screen, trajectory aimed through center
+    const startX = randomRange(14, 18);
+    const startY = randomRange(8, 12);
     const speed = randomRange(0.15, 0.3);
     const dir = this.aimTowardCenter(startX, startY);
     return {
@@ -347,9 +347,9 @@ export class PassingCelestials {
   }
 
   generatePlanetConfig(planetType) {
-    // Planets enter from right side, trajectory aimed through center
-    const startX = randomRange(8, 12);
-    const startY = randomRange(-5, 5);
+    // Planets enter from right side, well off-screen, trajectory aimed through center
+    const startX = randomRange(14, 18);
+    const startY = randomRange(-10, 10);
     const speed = randomRange(0.1, 0.25);
     const dir = this.aimTowardCenter(startX, startY);
     return {
@@ -363,10 +363,10 @@ export class PassingCelestials {
   }
 
   generateAsteroidConfig() {
-    // Asteroids: random entry point and trajectory
+    // Asteroids: random entry point well off-screen and trajectory
     const side = Math.floor(Math.random() * 4); // 0=top, 1=right, 2=bottom, 3=left
     let startX, startY;
-    const entryDist = 12;
+    const entryDist = 14;
 
     switch (side) {
       case 0: // top
