@@ -316,35 +316,38 @@ export class PassingCelestials {
   }
 
   generateSunConfig() {
-    // Sun enters from upper-right, moves to lower-left at ~60 degrees
-    const startY = randomRange(3, 6);
+    // Sun enters from upper-right edge, trajectory aimed through center
+    const startX = randomRange(8, 12);
+    const startY = randomRange(4, 8);
     const speed = randomRange(0.15, 0.3);
-    // 60 degree angle: velocity ratio y/x = tan(60) ≈ 1.732
+    const dir = this.aimTowardCenter(startX, startY);
     return {
-      startX: 12,
-      startY: startY,
+      startX,
+      startY,
       startZ: -randomRange(2, 6),
-      velX: -speed,
-      velY: -speed * Math.tan(Math.PI / 3), // tan(60 degrees)
+      velX: dir.x * speed,
+      velY: dir.y * speed,
     };
   }
 
   generatePlanetConfig(planetType) {
-    // Planets enter from right side, move left at ~60 degree downward angle
-    const startY = randomRange(1, 5);
+    // Planets enter from right side, trajectory aimed through center
+    const startX = randomRange(8, 12);
+    const startY = randomRange(-5, 5);
     const speed = randomRange(0.1, 0.25);
+    const dir = this.aimTowardCenter(startX, startY);
     return {
-      startX: 12,
-      startY: startY,
+      startX,
+      startY,
       startZ: -randomRange(2, 6),
-      velX: -speed,
-      velY: -speed * Math.tan(Math.PI / 3), // tan(60 degrees)
-      planetType: planetType,
+      velX: dir.x * speed,
+      velY: dir.y * speed,
+      planetType,
     };
   }
 
   generateAsteroidConfig() {
-    // Asteroids: random entry point and trajectory
+    // Asteroids: random entry point on edge, trajectory aimed through center
     const side = Math.floor(Math.random() * 4); // 0=top, 1=right, 2=bottom, 3=left
     let startX, startY;
     const entryDist = 12;
@@ -368,19 +371,23 @@ export class PassingCelestials {
         break;
     }
 
-    // Random angle toward center-ish area
-    const targetX = randomRange(-3, 3);
-    const targetY = randomRange(-3, 3);
-    const dir = new THREE.Vector2(targetX - startX, targetY - startY).normalize();
+    const dir = this.aimTowardCenter(startX, startY);
     const speed = randomRange(0.3, 0.8); // Asteroids are faster
 
     return {
-      startX: startX,
-      startY: startY,
+      startX,
+      startY,
       startZ: -randomRange(1, 4),
       velX: dir.x * speed,
       velY: dir.y * speed,
     };
+  }
+
+  // Calculate direction from spawn point toward a random target near center (0,0)
+  aimTowardCenter(startX, startY) {
+    const targetX = randomRange(-1, 1);
+    const targetY = randomRange(-1, 1);
+    return new THREE.Vector2(targetX - startX, targetY - startY).normalize();
   }
 
   update(deltaTime) {
