@@ -3,27 +3,27 @@ export function createContactSection() {
   section.innerHTML = `
     <div class="container" style="text-align:center">
       <h2 class="section-title">Get In Touch</h2>
-      <p class="section-subtitle">Lorem ipsum dolor sit amet — let's connect</p>
+      <p class="section-subtitle">Let's connect and build something great together</p>
       <div class="contact-links">
         <a href="https://github.com/medinamars" class="contact-card" target="_blank" rel="noopener">
           <span class="contact-icon">🐙</span>
           <span class="contact-label">GitHub</span>
           <span class="contact-value">@medinamars</span>
         </a>
-        <a href="https://linkedin.com" class="contact-card" target="_blank" rel="noopener">
+        <a href="https://linkedin.com/in/marcelomedina" class="contact-card" target="_blank" rel="noopener">
           <span class="contact-icon">💼</span>
           <span class="contact-label">LinkedIn</span>
           <span class="contact-value">Connect</span>
         </a>
-        <a href="mailto:marcelo@example.com" class="contact-card">
+        <a href="mailto:medinamars@gmail.com" class="contact-card">
           <span class="contact-icon">📧</span>
           <span class="contact-label">Email</span>
-          <span class="contact-value">marcelo@example.com</span>
+          <span class="contact-value">medinamars@gmail.com</span>
         </a>
-        <a href="#" class="contact-card">
-          <span class="contact-icon">🌐</span>
-          <span class="contact-label">Website</span>
-          <span class="contact-value">marcelomedina.dev</span>
+        <a href="tel:+16474730918" class="contact-card">
+          <span class="contact-icon">📱</span>
+          <span class="contact-label">Phone</span>
+          <span class="contact-value">647 473 0918</span>
         </a>
       </div>
     </div>

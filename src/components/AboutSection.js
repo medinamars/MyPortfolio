@@ -1,11 +1,11 @@
 const dummyPhotoUrl = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><rect fill="%233D2B1F" width="300" height="300"/><circle cx="150" cy="120" r="50" fill="%23725130"/><rect x="80" y="190" width="140" height="80" rx="10" fill="%23725130"/></svg>';
 
 const techStack = [
-  { category: 'Languages', skills: ['C#', 'JavaScript', 'TypeScript', 'Python', 'SQL'] },
-  { category: 'Backend', skills: ['.NET', 'ASP.NET Core', 'REST APIs', 'Microservices'] },
-  { category: 'Cloud', skills: ['Azure', 'AWS', 'Docker', 'Kubernetes', 'CI/CD'] },
-  { category: 'Frontend', skills: ['React', 'Vue.js', 'HTML5', 'CSS3', 'Three.js'] },
-  { category: 'Databases', skills: ['SQL Server', 'PostgreSQL', 'MongoDB', 'Redis'] },
+  { category: 'Languages & Frameworks', skills: ['.NET 8', 'C#', 'ASP.NET Core', 'Blazor', 'Flutter/Dart', 'PHP', 'JavaScript', 'TypeScript'] },
+  { category: 'Databases', skills: ['SQL Server', 'PostgreSQL', 'MySQL', 'Oracle', 'T-SQL', 'Entity Framework', 'Dapper'] },
+  { category: 'Cloud & DevOps', skills: ['Azure', 'Azure Functions', 'Azure DevOps', 'IIS', 'Apache', 'Git', 'Hangfire'] },
+  { category: 'Web & Mobile', skills: ['HTML5', 'CSS3', 'Bootstrap', 'SPA', 'RESTful APIs', 'Firebase', 'iOS', 'Android'] },
+  { category: 'Architecture & QA', skills: ['SOLID', 'OOP', 'TDD', 'SaaS', 'xUnit', 'NUnit', 'Agile', 'Scrum'] },
 ];
 
 export function createAboutSection() {
@@ -20,13 +20,15 @@ export function createAboutSection() {
         <div class="about-content">
           <h2 class="section-title">About Me</h2>
           <p class="about-bio">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent euismod
-            nunc non nisi efficitur, a tincidunt arcu sollicitudin. Sed do eiusmod tempor
-            incididunt ut labore et dolore magna aliqua.
+            Full-stack developer with 17 years of experience building mission-critical
+            online and mobile systems. My analytical thinking and solutions have led to
+            significant time and financial savings for the companies I've worked with.
           </p>
           <p class="about-bio">
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.
+            Proven track record handling projects solo, as a team lead, or as a collaborative
+            team member. The systems I've created continue to be used today — from complex
+            enterprise platforms processing hundreds of millions in annual transactions
+            to cloud-native solutions designed for scalability and performance.
           </p>
           <div class="tech-stack">
             ${techStack.map(cat => `

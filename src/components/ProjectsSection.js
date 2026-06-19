@@ -1,48 +1,48 @@
 const projects = [
   {
-    title: 'Lorem Ipsum API',
-    description: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore. Ut enim ad minim veniam.',
-    tech: ['C#', '.NET', 'Azure', 'SQL'],
+    title: 'Enterprise Cloud Platform',
+    description: 'Full-stack cloud solution at Russell A. Farrow — enhanced security, stability, and testability with optimized system performance and improved code coverage.',
+    tech: ['.NET 8', 'Azure', 'C#', 'SQL Server'],
     category: 'backend',
     image: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200"><rect fill="%233D2B1F" width="400" height="200"/><text x="200" y="100" text-anchor="middle" fill="%23725130" font-size="20">Project 1</text></svg>',
     link: '#',
   },
   {
-    title: 'Consectetur Dashboard',
-    description: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.',
-    tech: ['React', 'TypeScript', 'REST API'],
-    category: 'frontend',
+    title: 'True Yoga Digital Operations',
+    description: 'Complex system projects that digitalized operations handling hundreds of millions in annual transactions across multiple markets.',
+    tech: ['ASP.NET', 'SQL Server', 'JavaScript', 'System Design'],
+    category: 'backend',
     image: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200"><rect fill="%233D2B1F" width="400" height="200"/><text x="200" y="100" text-anchor="middle" fill="%23725130" font-size="20">Project 2</text></svg>',
     link: '#',
   },
   {
-    title: 'Adipiscing Microservices',
-    description: 'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur.',
-    tech: ['Docker', 'Kubernetes', 'Azure'],
-    category: 'devops',
+    title: 'Client System Solutions',
+    description: 'Led pre-sale through deployment of complex client projects at Forecepts, managing teams across Singapore and China.',
+    tech: ['.NET', 'PHP', 'MySQL', 'Team Leadership'],
+    category: 'backend',
     image: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200"><rect fill="%233D2B1F" width="400" height="200"/><text x="200" y="100" text-anchor="middle" fill="%23725130" font-size="20">Project 3</text></svg>',
     link: '#',
   },
   {
-    title: 'Eiusmod Data Pipeline',
-    description: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.',
-    tech: ['Python', 'PostgreSQL', 'Redis'],
-    category: 'backend',
+    title: 'Mobile Applications',
+    description: 'Cross-platform mobile development for iOS and Android using Flutter, Firebase, and cloud integration.',
+    tech: ['Flutter', 'Firebase', 'Dart', 'REST APIs'],
+    category: 'frontend',
     image: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200"><rect fill="%233D2B1F" width="400" height="200"/><text x="200" y="100" text-anchor="middle" fill="%23725130" font-size="20">Project 4</text></svg>',
     link: '#',
   },
   {
-    title: 'Tempor Web App',
-    description: 'Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.',
-    tech: ['Vue.js', 'Node.js', 'MongoDB'],
+    title: 'Web Applications',
+    description: 'Responsive single-page applications with modern web technologies, SPA architecture, and cross-browser compatibility.',
+    tech: ['HTML5', 'CSS3', 'JavaScript', 'Bootstrap', 'SPA'],
     category: 'frontend',
     image: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200"><rect fill="%233D2B1F" width="400" height="200"/><text x="200" y="100" text-anchor="middle" fill="%23725130" font-size="20">Project 5</text></svg>',
     link: '#',
   },
   {
-    title: 'Voluptatem Cloud Platform',
-    description: 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum.',
-    tech: ['Azure', 'Terraform', 'CI/CD'],
+    title: 'Database & API Architecture',
+    description: 'RESTful APIs, database design and optimization, stored procedures, and ORM implementations for enterprise systems.',
+    tech: ['Entity Framework', 'Dapper', 'T-SQL', 'REST APIs'],
     category: 'devops',
     image: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200"><rect fill="%233D2B1F" width="400" height="200"/><text x="200" y="100" text-anchor="middle" fill="%23725130" font-size="20">Project 6</text></svg>',
     link: '#',
@@ -61,7 +61,7 @@ export function createProjectsSection() {
   section.innerHTML = `
     <div class="container">
       <h2 class="section-title" style="text-align:center">Projects</h2>
-      <p class="section-subtitle" style="text-align:center">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+      <p class="section-subtitle" style="text-align:center">Key projects spanning 17 years of enterprise development</p>
       <div class="project-filters">
         ${filters.map(f => `<button class="filter-btn ${f.id === 'all' ? 'active' : ''}" data-filter="${f.id}">${f.label}</button>`).join('')}
       </div>

@@ -9,28 +9,32 @@ export function createResumeSection() {
           <div class="resume-section">
             <h3 class="resume-heading">Education</h3>
             <div class="resume-item">
-              <strong>Bachelor of Computer Science</strong>
-              <p>Lorem Ipsum University — 2009</p>
+              <strong>Bachelor of Science in Computer Engineering</strong>
+              <p>Bulacan State University, Philippines — 2002–2007</p>
+            </div>
+            <div class="resume-item">
+              <strong>Bachelor in Industrial Technology (Computer)</strong>
+              <p>Bulacan State University, Philippines — 1999–2002</p>
             </div>
           </div>
           <div class="resume-section">
-            <h3 class="resume-heading">Certifications</h3>
+            <h3 class="resume-heading">Certifications & Tools</h3>
             <div class="resume-item">
-              <strong>Azure Solutions Architect Expert</strong>
-              <p>Microsoft — 2023</p>
+              <strong>AI & ML</strong>
+              <p>Claude, LM Studio, Llama, Opus, Qwen, Gemma, Microsoft ML</p>
             </div>
             <div class="resume-item">
-              <strong>AWS Solutions Architect Associate</strong>
-              <p>Amazon Web Services — 2021</p>
+              <strong>Dev Tools</strong>
+              <p>Visual Studio, VS Code, Android Studio, Xcode, Postman, JIRA, GitHub</p>
             </div>
           </div>
           <div class="resume-section">
             <h3 class="resume-heading">Languages</h3>
             <div class="resume-item">
-              <p>English (Native), Spanish (Fluent), Lorem Ipsum (Conversational)</p>
+              <p>English (Fluent), Filipino (Native)</p>
             </div>
           </div>
-          <a href="#" class="btn-primary" download>Download Full Resume</a>
+          <a href="/Marcelo-Medina-Resume.pdf" class="btn-primary" download>Download Full Resume</a>
         </div>
         <div class="resume-visual">
           <svg viewBox="0 0 300 300" class="radar-chart">
