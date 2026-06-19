@@ -2,10 +2,12 @@ import * as THREE from 'three';
 import { MarsPlanet } from './MarsPlanet.js';
 import { StarField } from './StarField.js';
 import { Atmosphere } from './Atmosphere.js';
+import { PassingCelestials } from './PassingCelestials.js';
 
 export class MarsScene {
   constructor(canvasId) {
     this.scrollProgress = 0;
+    this.clock = new THREE.Timer();
     this.init(canvasId);
   }
 
@@ -34,6 +36,9 @@ export class MarsScene {
 
     this.stars = new StarField(2000);
     this.stars.add(this.scene);
+
+    this.celestials = new PassingCelestials();
+    this.celestials.add(this.scene);
 
     this.setupLighting();
     window.addEventListener('resize', () => this.onResize());
@@ -65,9 +70,14 @@ export class MarsScene {
 
   animate() {
     requestAnimationFrame(() => this.animate());
+    const deltaTime = this.clock.getDelta();
+
     this.mars.update(this.scrollProgress);
     this.camera.position.y = -this.scrollProgress * 2;
     this.camera.lookAt(0, 0, 0);
+
+    this.celestials.update(deltaTime);
+
     this.renderer.render(this.scene, this.camera);
   }
 }
