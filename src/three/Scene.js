@@ -7,7 +7,7 @@ import { PassingCelestials } from './PassingCelestials.js';
 export class MarsScene {
   constructor(canvasId) {
     this.scrollProgress = 0;
-    this.clock = new THREE.Timer();
+    this.clock = new THREE.Clock();
     this.init(canvasId);
   }
 
