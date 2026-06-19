@@ -347,7 +347,7 @@ export class PassingCelestials {
   }
 
   generateAsteroidConfig() {
-    // Asteroids: random entry point on edge, trajectory aimed through center
+    // Asteroids: random entry point and trajectory
     const side = Math.floor(Math.random() * 4); // 0=top, 1=right, 2=bottom, 3=left
     let startX, startY;
     const entryDist = 12;
@@ -371,7 +371,10 @@ export class PassingCelestials {
         break;
     }
 
-    const dir = this.aimTowardCenter(startX, startY);
+    // Random angle toward center-ish area
+    const targetX = randomRange(-3, 3);
+    const targetY = randomRange(-3, 3);
+    const dir = new THREE.Vector2(targetX - startX, targetY - startY).normalize();
     const speed = randomRange(0.3, 0.8); // Asteroids are faster
 
     return {
