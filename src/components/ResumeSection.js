@@ -18,17 +18,6 @@ export function createResumeSection() {
             </div>
           </div>
           <div class="resume-section">
-            <h3 class="resume-heading">Certifications & Tools</h3>
-            <div class="resume-item">
-              <strong>AI & ML</strong>
-              <p>Claude, LM Studio, Llama, Opus, Qwen, Gemma, Microsoft ML</p>
-            </div>
-            <div class="resume-item">
-              <strong>Dev Tools</strong>
-              <p>Visual Studio, VS Code, Android Studio, Xcode, Postman, JIRA, GitHub</p>
-            </div>
-          </div>
-          <div class="resume-section">
             <h3 class="resume-heading">Languages</h3>
             <div class="resume-item">
               <p>English (Fluent), Filipino (Native)</p>

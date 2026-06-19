@@ -4,6 +4,8 @@ const techStack = [
   { category: 'Cloud & DevOps', skills: ['Azure', 'Azure Functions', 'Azure DevOps', 'IIS', 'Apache', 'Git', 'Hangfire'] },
   { category: 'Web & Mobile', skills: ['HTML5', 'CSS3', 'Bootstrap', 'SPA', 'RESTful APIs', 'Firebase', 'iOS', 'Android'] },
   { category: 'Architecture & QA', skills: ['SOLID', 'OOP', 'TDD', 'SaaS', 'xUnit', 'NUnit', 'Agile', 'Scrum'] },
+  { category: 'AI & ML', skills: ['Claude', 'LM Studio', 'Llama', 'Opus', 'Qwen', 'Gemma', 'Microsoft ML'] },
+  { category: 'Dev Tools', skills: ['Visual Studio', 'VS Code', 'Android Studio', 'Xcode', 'Postman', 'JIRA', 'GitHub'] },
 ];
 
 export function createAboutSection() {
