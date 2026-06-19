@@ -261,12 +261,14 @@ class PassingObject {
       this.mesh.rotation.x += this.rotationSpeed * 0.3;
     }
 
-    // Check if out of bounds (well past camera view)
+    // Check if well past viewport bounds (3x viewport size)
+    const boundX = (this._boundX || 15) * 3;
+    const boundY = (this._boundY || 10) * 3;
     if (
-      this.position.x < -15 ||
-      this.position.x > 15 ||
-      this.position.y < -15 ||
-      this.position.y > 15
+      this.position.x < -boundX ||
+      this.position.x > boundX ||
+      this.position.y < -boundY ||
+      this.position.y > boundY
     ) {
       this.alive = false;
     }
@@ -280,12 +282,28 @@ export class PassingCelestials {
     this.spawnInterval = randomRange(4, 8); // seconds between spawn checks
     this.maxObjects = 2;
     this.group = new THREE.Group();
+    this.camera = null;
+    this.viewportHalfH = 5;  // fallback defaults
+    this.viewportHalfW = 10;
   }
 
-  add(scene) {
+  add(scene, camera) {
     // Position behind Mars (which is at z=0)
     this.group.position.z = -5;
     scene.add(this.group);
+    if (camera) {
+      this.camera = camera;
+      this.updateViewportBounds();
+    }
+  }
+
+  // Compute visible half-width and half-height at the spawn plane (z=-5)
+  updateViewportBounds() {
+    if (!this.camera) return;
+    const distToSpawnPlane = 13; // camera at z=8, spawn plane at z=-5 => 13 units
+    const fovRad = this.camera.fov * (Math.PI / 180);
+    this.viewportHalfH = distToSpawnPlane * Math.tan(fovRad / 2);
+    this.viewportHalfW = this.viewportHalfH * this.camera.aspect;
   }
 
   spawn() {
@@ -327,14 +345,18 @@ export class PassingCelestials {
     if (type === 'planet') {
       obj._planetType = config.planetType;
     }
+    // Pass viewport bounds for out-of-bounds checking
+    obj._boundX = this.viewportHalfW;
+    obj._boundY = this.viewportHalfH;
     this.group.add(obj.mesh);
     this.objects.push(obj);
   }
 
   generateSunConfig() {
-    // Sun enters from upper-right corner, well off-screen, trajectory aimed through center
-    const startX = randomRange(14, 18);
-    const startY = randomRange(8, 12);
+    // Sun enters from upper-right corner, just off-screen, trajectory aimed through center
+    const margin = 1.5;
+    const startX = this.viewportHalfW * margin;
+    const startY = this.viewportHalfH * randomRange(0.8, 1.2);
     const speed = randomRange(0.15, 0.3);
     const dir = this.aimTowardCenter(startX, startY);
     return {
@@ -347,9 +369,10 @@ export class PassingCelestials {
   }
 
   generatePlanetConfig(planetType) {
-    // Planets enter from right side, well off-screen, trajectory aimed through center
-    const startX = randomRange(14, 18);
-    const startY = randomRange(-10, 10);
+    // Planets enter from right side, just off-screen, trajectory aimed through center
+    const margin = 1.5;
+    const startX = this.viewportHalfW * margin;
+    const startY = this.viewportHalfH * randomRange(-0.8, 0.8);
     const speed = randomRange(0.1, 0.25);
     const dir = this.aimTowardCenter(startX, startY);
     return {
@@ -363,27 +386,27 @@ export class PassingCelestials {
   }
 
   generateAsteroidConfig() {
-    // Asteroids: random entry point well off-screen and trajectory
+    // Asteroids: random entry point just off-screen and trajectory
     const side = Math.floor(Math.random() * 4); // 0=top, 1=right, 2=bottom, 3=left
     let startX, startY;
-    const entryDist = 14;
+    const margin = 1.5;
 
     switch (side) {
       case 0: // top
-        startX = randomRange(-entryDist, entryDist);
-        startY = entryDist;
+        startX = this.viewportHalfW * randomRange(-1, 1);
+        startY = this.viewportHalfH * margin;
         break;
       case 1: // right
-        startX = entryDist;
-        startY = randomRange(-entryDist, entryDist);
+        startX = this.viewportHalfW * margin;
+        startY = this.viewportHalfH * randomRange(-1, 1);
         break;
       case 2: // bottom
-        startX = randomRange(-entryDist, entryDist);
-        startY = -entryDist;
+        startX = this.viewportHalfW * randomRange(-1, 1);
+        startY = -(this.viewportHalfH * margin);
         break;
       case 3: // left
-        startX = -entryDist;
-        startY = randomRange(-entryDist, entryDist);
+        startX = -(this.viewportHalfW * margin);
+        startY = this.viewportHalfH * randomRange(-1, 1);
         break;
     }
 

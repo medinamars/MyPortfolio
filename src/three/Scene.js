@@ -38,7 +38,7 @@ export class MarsScene {
     this.stars.add(this.scene);
 
     this.celestials = new PassingCelestials();
-    this.celestials.add(this.scene);
+    this.celestials.add(this.scene, this.camera);
 
     this.setupLighting();
     window.addEventListener('resize', () => this.onResize());
@@ -62,6 +62,8 @@ export class MarsScene {
     this.camera.aspect = window.innerWidth / window.innerHeight;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(window.innerWidth, window.innerHeight);
+    // Recalculate spawn bounds for the new viewport
+    this.celestials.updateViewportBounds();
   }
 
   setScrollProgress(progress) {
