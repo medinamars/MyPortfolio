@@ -291,26 +291,42 @@ export class PassingCelestials {
   spawn() {
     if (this.objects.length >= this.maxObjects) return;
 
+    // Check what's currently on screen
+    const hasSun = this.objects.some(o => o.type === 'sun');
+    
+    // For planets, track which specific types are visible
+    const visiblePlanetTypes = new Set();
+    for (const obj of this.objects) {
+      if (obj.type === 'planet' && obj._planetType) {
+        visiblePlanetTypes.add(obj._planetType);
+      }
+    }
+
     // Decide what to spawn — weighted: more asteroids, fewer suns
     const roll = Math.random();
     let type, config;
 
-    if (roll < 0.15) {
-      // Sun — rare
+    if (roll < 0.15 && !hasSun) {
+      // Sun — rare, only one at a time
       type = 'sun';
       config = this.generateSunConfig();
     } else if (roll < 0.6) {
-      // Planet
+      // Planet — only spawn types not already visible
+      const availableTypes = Object.keys(PLANET_TYPES).filter(t => !visiblePlanetTypes.has(t));
+      if (availableTypes.length === 0) return; // all planet types on screen, skip
       type = 'planet';
-      const planetTypes = Object.keys(PLANET_TYPES);
-      config = this.generatePlanetConfig(planetTypes[Math.floor(Math.random() * planetTypes.length)]);
+      config = this.generatePlanetConfig(availableTypes[Math.floor(Math.random() * availableTypes.length)]);
     } else {
-      // Asteroid
+      // Asteroid — always allowed
       type = 'asteroid';
       config = this.generateAsteroidConfig();
     }
 
     const obj = new PassingObject(type, config);
+    // Remember which planet type was spawned
+    if (type === 'planet') {
+      obj._planetType = config.planetType;
+    }
     this.group.add(obj.mesh);
     this.objects.push(obj);
   }
