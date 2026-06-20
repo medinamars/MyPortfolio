@@ -479,11 +479,11 @@ export class PassingCelestials {
     this.objects = [];
     this.spawnTimer = 0;
     this.spawnInterval = randomRange(4, 8); // seconds between spawn checks
-    this.maxObjects = 3; // max total objects (planets + asteroids)
+    this.maxObjects = 8; // max total objects (planets + asteroids + spaceships)
     this.maxPlanets = 1; // only one planet visible at a time
     this.group = new THREE.Group();
     this.camera = null;
-    this.viewportHalfH = 5;  // fallback defaults
+    this.viewportHalfH = 5;
     this.viewportHalfW = 10;
   }
 
@@ -520,8 +520,8 @@ export class PassingCelestials {
       // Planet — only spawn when no planet is visible
       type = 'planet';
       config = this.generatePlanetConfig(Object.keys(PLANET_TYPES)[Math.floor(Math.random() * Object.keys(PLANET_TYPES).length)]);
-    } else if (roll < 0.35) {
-      // Spaceship — occasional appearance
+    } else if (roll < 1.0) {
+      // Spaceship — always allowed
       type = 'spaceship';
       config = this.generateSpaceshipConfig();
     } else {
