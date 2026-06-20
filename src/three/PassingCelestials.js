@@ -142,6 +142,7 @@ class PassingObject {
     this.accelInterval = randomRange(1, 3);
     this.targetSpeed = randomRange(0.3, 0.6);
     this.currentSpeed = this.targetSpeed;
+    this.heading = 0;
     this.create(config);
   }
 
