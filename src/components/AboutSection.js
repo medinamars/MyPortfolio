@@ -1,5 +1,5 @@
 const techStack = [
-  { category: 'Languages & Frameworks', skills: ['.NET 8', 'C#', 'ASP.NET Core', 'Blazor', 'Flutter/Dart', 'PHP', 'JavaScript', 'TypeScript'] },
+  { category: 'Languages & Frameworks', skills: ['.NET', 'C#', 'ASP.NET Core', 'Blazor', 'Flutter/Dart', 'PHP', 'JavaScript', 'TypeScript', 'VB', 'VB6'] },
   { category: 'Databases', skills: ['SQL Server', 'PostgreSQL', 'MySQL', 'Oracle', 'T-SQL', 'Entity Framework', 'Dapper'] },
   { category: 'Cloud & DevOps', skills: ['Azure', 'Azure Functions', 'Azure DevOps', 'Azure Key Vault', 'IIS', 'Apache', 'Git', 'Hangfire'] },
   { category: 'Web & Mobile', skills: ['HTML5', 'CSS3', 'Bootstrap', 'SPA', 'RESTful APIs', 'Firebase', 'iOS', 'Android'] },
