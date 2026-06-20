@@ -140,7 +140,7 @@ class PassingObject {
     this.steerInterval = randomRange(2, 5);
     this.accelTimer = 0;
     this.accelInterval = randomRange(1, 3);
-    this.targetSpeed = randomRange(0.15, 0.4);
+    this.targetSpeed = randomRange(0.3, 0.6);
     this.currentSpeed = this.targetSpeed;
     this.create(config);
   }
@@ -425,19 +425,18 @@ class PassingObject {
       if (this.accelTimer >= this.accelInterval) {
         this.accelTimer = 0;
         this.accelInterval = randomRange(1, 3);
-        this.targetSpeed = randomRange(0.15, 0.4);
+        this.targetSpeed = randomRange(0.3, 0.6);
       }
 
       // Smoothly approach target speed
       this.currentSpeed += (this.targetSpeed - this.currentSpeed) * deltaTime * 2;
 
-      // Scale velocity by current speed
-      this.velocity.x *= this.currentSpeed;
-      this.velocity.y *= this.currentSpeed;
+      // Update velocity from heading and current speed
+      this.velocity.x = Math.cos(this.heading) * this.currentSpeed;
+      this.velocity.y = -Math.sin(this.heading) * this.currentSpeed;
 
       // Update mesh to face movement direction (ship forward is +Y local axis)
-      const angle = Math.atan2(this.velocity.x, this.velocity.y);
-      this.mesh.rotation.z = -angle;
+      this.mesh.rotation.z = -this.heading;
     }
 
     // Move along trajectory
@@ -512,23 +511,9 @@ export class PassingCelestials {
     // Only one planet allowed on screen at a time
     const planetCount = this.objects.filter(obj => obj.type === 'planet').length;
 
-    // Decide what to spawn — weighted: asteroids > spaceships > planets
-    const roll = Math.random();
-    let type, config;
-
-    if (roll < 0.15 && planetCount === 0) {
-      // Planet — only spawn when no planet is visible
-      type = 'planet';
-      config = this.generatePlanetConfig(Object.keys(PLANET_TYPES)[Math.floor(Math.random() * Object.keys(PLANET_TYPES).length)]);
-    } else if (roll < 1.0) {
-      // Spaceship — always allowed
-      type = 'spaceship';
-      config = this.generateSpaceshipConfig();
-    } else {
-      // Asteroid — most common
-      type = 'asteroid';
-      config = this.generateAsteroidConfig();
-    }
+    // Always spawn spaceship for testing
+    type = 'spaceship';
+    config = this.generateSpaceshipConfig();
 
     const obj = new PassingObject(type, config);
     // Remember which planet type was spawned
