@@ -218,7 +218,6 @@ class PassingObject {
     // Self rotation
     if (this.mesh) {
       this.mesh.rotation.y += this.rotationSpeed;
-      this.mesh.rotation.x += this.rotationSpeed * 0.3;
     }
 
     // Check if well past viewport bounds (3x viewport size)
