@@ -268,24 +268,17 @@ export class PassingCelestials {
   spawn() {
     if (this.objects.length >= this.maxObjects) return;
 
-    // For planets, track which specific types are visible
-    const visiblePlanetTypes = new Set();
-    for (const obj of this.objects) {
-      if (obj.type === 'planet' && obj._planetType) {
-        visiblePlanetTypes.add(obj._planetType);
-      }
-    }
+    // Only one planet allowed on screen at a time
+    const planetCount = this.objects.filter(obj => obj.type === 'planet').length;
 
     // Decide what to spawn — weighted: more asteroids than planets
     const roll = Math.random();
     let type, config;
 
-    if (roll < 0.5) {
-      // Planet — only spawn types not already visible
-      const availableTypes = Object.keys(PLANET_TYPES).filter(t => !visiblePlanetTypes.has(t));
-      if (availableTypes.length === 0) return; // all planet types on screen, skip
+    if (roll < 0.5 && planetCount === 0) {
+      // Planet — only spawn when no planet is visible
       type = 'planet';
-      config = this.generatePlanetConfig(availableTypes[Math.floor(Math.random() * availableTypes.length)]);
+      config = this.generatePlanetConfig(Object.keys(PLANET_TYPES)[Math.floor(Math.random() * Object.keys(PLANET_TYPES).length)]);
     } else {
       // Asteroid — always allowed
       type = 'asteroid';
