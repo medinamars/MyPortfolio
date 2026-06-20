@@ -35,14 +35,14 @@ const SPACESHIP_TYPES = {
   starship: {
     bodyColor: '#E8E8E8',
     accentColor: '#C0C0C0',
-    length: 1.2,
-    radius: 0.2,
+    length: 0.7,
+    radius: 0.12,
   },
   rocket: {
     bodyColor: '#F5F5F5',
     accentColor: '#D0D0D0',
-    length: 0.9,
-    radius: 0.15,
+    length: 0.55,
+    radius: 0.09,
   },
 };
 
@@ -375,18 +375,24 @@ class PassingObject {
     const count = lifetimes.length;
 
     // Get ship direction (opposite of velocity for exhaust)
-    const dirX = -this.velocity.x;
-    const dirY = -this.velocity.y;
+    const dirX = -this.velocity.x / (Math.abs(this.velocity.x) + Math.abs(this.velocity.y) || 1);
+    const dirY = -this.velocity.y / (Math.abs(this.velocity.x) + Math.abs(this.velocity.y) || 1);
+
+    // Calculate tail position based on ship rotation
+    const shipAngle = this.mesh.rotation.z;
+    const tailOffset = 0.5; // distance from center to tail
+    const tailX = this.mesh.position.x - Math.sin(shipAngle) * tailOffset;
+    const tailY = this.mesh.position.y - Math.cos(shipAngle) * tailOffset;
 
     for (let i = 0; i < count; i++) {
       lifetimes[i] += deltaTime;
 
       if (lifetimes[i] > 1.0) {
-        // Reset particle to ship base
+        // Reset particle to ship tail
         lifetimes[i] = 0;
-        positions[i * 3] = this.mesh.position.x + (Math.random() - 0.5) * 0.1;
-        positions[i * 3 + 1] = this.mesh.position.y - 0.7 + (Math.random() - 0.5) * 0.1;
-        positions[i * 3 + 2] = this.mesh.position.z + (Math.random() - 0.5) * 0.1;
+        positions[i * 3] = tailX + (Math.random() - 0.5) * 0.08;
+        positions[i * 3 + 1] = tailY + (Math.random() - 0.5) * 0.08;
+        positions[i * 3 + 2] = this.mesh.position.z + (Math.random() - 0.5) * 0.08;
       }
 
       // Move particle in exhaust direction with spread
@@ -401,7 +407,7 @@ class PassingObject {
   }
 
   update(deltaTime) {
-    // Spaceship-specific: steering and acceleration changes
+    // Spaceship-specific: steering, speed changes, and facing direction
     if (this.type === 'spaceship') {
       this.steerTimer += deltaTime;
       this.accelTimer += deltaTime;
@@ -410,11 +416,9 @@ class PassingObject {
       if (this.steerTimer >= this.steerInterval) {
         this.steerTimer = 0;
         this.steerInterval = randomRange(2, 5);
-        const steerAmount = randomRange(-0.3, 0.3);
-        const currentDir = Math.atan2(this.velocity.y, this.velocity.x);
-        const newDir = currentDir + steerAmount;
-        this.velocity.x = Math.cos(newDir) * this.currentSpeed;
-        this.velocity.y = Math.sin(newDir) * this.currentSpeed;
+        this.heading += randomRange(-0.8, 0.8);
+        this.velocity.x = Math.cos(this.heading);
+        this.velocity.y = -Math.sin(this.heading);
       }
 
       // Change speed periodically
@@ -427,9 +431,13 @@ class PassingObject {
       // Smoothly approach target speed
       this.currentSpeed += (this.targetSpeed - this.currentSpeed) * deltaTime * 2;
 
-      // Update mesh to face movement direction
+      // Scale velocity by current speed
+      this.velocity.x *= this.currentSpeed;
+      this.velocity.y *= this.currentSpeed;
+
+      // Update mesh to face movement direction (ship forward is +Y local axis)
       const angle = Math.atan2(this.velocity.x, this.velocity.y);
-      this.mesh.rotation.z = angle;
+      this.mesh.rotation.z = -angle;
     }
 
     // Move along trajectory
@@ -442,7 +450,7 @@ class PassingObject {
     );
     this.mesh.position.copy(this.position);
 
-    // Self rotation (frame-rate independent)
+    // Self rotation (frame-rate independent) - planets and asteroids only
     if (this.mesh && this.type !== 'spaceship') {
       this.mesh.rotation.y += this.rotationSpeed * deltaTime;
     }
