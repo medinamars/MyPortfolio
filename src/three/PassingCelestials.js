@@ -353,10 +353,14 @@ export class PassingCelestials {
     const dir = new THREE.Vector2(targetX - startX, targetY - startY).normalize();
     const speed = randomRange(0.3, 0.8); // Asteroids are faster
 
+    // Some asteroids fly in front of Mars (positive z), some behind (negative z)
+    const inFront = Math.random() > 0.5;
+    const startZ = inFront ? randomRange(1, 4) : -randomRange(1, 4);
+
     return {
       startX,
       startY,
-      startZ: -randomRange(1, 4),
+      startZ,
       velX: dir.x * speed,
       velY: dir.y * speed,
     };
