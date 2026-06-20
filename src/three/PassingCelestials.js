@@ -239,7 +239,7 @@ export class PassingCelestials {
     this.objects = [];
     this.spawnTimer = 0;
     this.spawnInterval = randomRange(4, 8); // seconds between spawn checks
-    this.maxObjects = 2;
+    this.maxObjects = 4;
     this.group = new THREE.Group();
     this.camera = null;
     this.viewportHalfH = 5;  // fallback defaults
