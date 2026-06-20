@@ -215,9 +215,9 @@ class PassingObject {
     );
     this.mesh.position.copy(this.position);
 
-    // Self rotation
+    // Self rotation (frame-rate independent)
     if (this.mesh) {
-      this.mesh.rotation.y += this.rotationSpeed;
+      this.mesh.rotation.y += this.rotationSpeed * deltaTime;
     }
 
     // Check if well past viewport bounds (3x viewport size)
