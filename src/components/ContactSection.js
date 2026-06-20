@@ -1,4 +1,4 @@
-const VERSION = '2';
+const VERSION = '3';
 
 export function createContactSection() {
   const section = document.getElementById('contact');
