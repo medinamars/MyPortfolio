@@ -84,7 +84,6 @@ export class MarsPlanet {
   update(scrollProgress) {
     if (this.mesh) {
       this.mesh.rotation.y += this.rotationSpeed + scrollProgress * 0.005;
-      this.mesh.rotation.x = Math.sin(scrollProgress * 0.5) * 0.1;
     }
   }
 }
