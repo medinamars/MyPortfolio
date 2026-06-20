@@ -516,7 +516,7 @@ export class PassingCelestials {
     const roll = Math.random();
     let type, config;
 
-    if (roll < 0.2 && planetCount === 0) {
+    if (roll < 0.15 && planetCount === 0) {
       // Planet — only spawn when no planet is visible
       type = 'planet';
       config = this.generatePlanetConfig(Object.keys(PLANET_TYPES)[Math.floor(Math.random() * Object.keys(PLANET_TYPES).length)]);
