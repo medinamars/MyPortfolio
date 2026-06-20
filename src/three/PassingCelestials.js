@@ -132,7 +132,7 @@ class PassingObject {
     this.type = type; // 'planet', 'asteroid', or 'spaceship'
     this.mesh = null;
     this.alive = true;
-    this.rotationSpeed = randomRange(0.005, 0.02);
+    this.rotationSpeed = randomRange(0.3, 1.2);
     this.exhaustParticles = null;
     this.exhaustTimer = 0;
     // Spaceship-specific
