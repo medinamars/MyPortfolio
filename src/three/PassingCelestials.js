@@ -30,6 +30,22 @@ const PLANET_TYPES = {
 
 const ASTEROID_COLORS = ['#8B7355', '#6B5B45', '#9E8E7E', '#7A6A5A'];
 
+// Spaceship types
+const SPACESHIP_TYPES = {
+  starship: {
+    bodyColor: '#E8E8E8',
+    accentColor: '#C0C0C0',
+    length: 1.2,
+    radius: 0.2,
+  },
+  rocket: {
+    bodyColor: '#F5F5F5',
+    accentColor: '#D0D0D0',
+    length: 0.9,
+    radius: 0.15,
+  },
+};
+
 function randomRange(min, max) {
   return min + Math.random() * (max - min);
 }
@@ -113,16 +129,27 @@ function createAsteroidGeometry(radius) {
 
 class PassingObject {
   constructor(type, config) {
-    this.type = type; // 'planet', 'sun', or 'asteroid'
+    this.type = type; // 'planet', 'asteroid', or 'spaceship'
     this.mesh = null;
     this.alive = true;
     this.rotationSpeed = randomRange(0.005, 0.02);
+    this.exhaustParticles = null;
+    this.exhaustTimer = 0;
+    // Spaceship-specific
+    this.steerTimer = 0;
+    this.steerInterval = randomRange(2, 5);
+    this.accelTimer = 0;
+    this.accelInterval = randomRange(1, 3);
+    this.targetSpeed = randomRange(0.15, 0.4);
+    this.currentSpeed = this.targetSpeed;
     this.create(config);
   }
 
   create(config) {
     if (this.type === 'planet') {
       this.createPlanet(config.planetType);
+    } else if (this.type === 'spaceship') {
+      this.createSpaceship(config.shipType);
     } else {
       this.createAsteroid();
     }
@@ -204,7 +231,207 @@ class PassingObject {
     this.radius = radius;
   }
 
+  createSpaceship(shipType) {
+    const typeConfig = SPACESHIP_TYPES[shipType] || SPACESHIP_TYPES.starship;
+    this.mesh = new THREE.Group();
+
+    // Main cylindrical body
+    const bodyGeo = new THREE.CylinderGeometry(typeConfig.radius, typeConfig.radius * 1.05, typeConfig.length, 16);
+    const bodyMat = new THREE.MeshStandardMaterial({
+      color: typeConfig.bodyColor,
+      roughness: 0.3,
+      metalness: 0.7,
+    });
+    const body = new THREE.Mesh(bodyGeo, bodyMat);
+    this.mesh.add(body);
+
+    // Nose cone
+    const noseGeo = new THREE.ConeGeometry(typeConfig.radius, typeConfig.length * 0.25, 16);
+    const noseMat = new THREE.MeshStandardMaterial({
+      color: typeConfig.accentColor,
+      roughness: 0.3,
+      metalness: 0.7,
+    });
+    const nose = new THREE.Mesh(noseGeo, noseMat);
+    nose.position.y = typeConfig.length * 0.5 + typeConfig.length * 0.125;
+    this.mesh.add(nose);
+
+    // Grid fins at base (4 fins)
+    const finShape = new THREE.Shape();
+    finShape.moveTo(0, 0);
+    finShape.lineTo(typeConfig.radius * 0.8, -typeConfig.length * 0.15);
+    finShape.lineTo(typeConfig.radius * 1.2, -typeConfig.length * 0.15);
+    finShape.lineTo(typeConfig.radius * 1.2, 0);
+    finShape.closePath();
+
+    const finGeo = new THREE.ExtrudeGeometry(finShape, { depth: 0.02, bevelEnabled: false });
+    const finMat = new THREE.MeshStandardMaterial({
+      color: typeConfig.accentColor,
+      roughness: 0.4,
+      metalness: 0.8,
+    });
+
+    for (let i = 0; i < 4; i++) {
+      const fin = new THREE.Mesh(finGeo, finMat);
+      fin.position.y = -typeConfig.length * 0.5;
+      fin.rotation.y = (Math.PI / 2) * i;
+      fin.rotation.x = Math.PI;
+      this.mesh.add(fin);
+    }
+
+    // Side fins/wings
+    const sideFinShape = new THREE.Shape();
+    sideFinShape.moveTo(0, 0);
+    sideFinShape.lineTo(typeConfig.radius * 0.6, -typeConfig.length * 0.2);
+    sideFinShape.lineTo(typeConfig.radius * 1.5, -typeConfig.length * 0.15);
+    sideFinShape.lineTo(typeConfig.radius * 1.5, typeConfig.length * 0.05);
+    sideFinShape.closePath();
+
+    const sideFinGeo = new THREE.ExtrudeGeometry(sideFinShape, { depth: 0.015, bevelEnabled: false });
+    for (let i = 0; i < 3; i++) {
+      const sideFin = new THREE.Mesh(sideFinGeo, finMat);
+      sideFin.position.y = -typeConfig.length * 0.2;
+      sideFin.rotation.y = (Math.PI * 2 / 3) * i;
+      this.mesh.add(sideFin);
+    }
+
+    // Window/portal
+    const windowGeo = new THREE.CircleGeometry(typeConfig.radius * 0.25, 16);
+    const windowMat = new THREE.MeshStandardMaterial({
+      color: '#1a1a2e',
+      roughness: 0.1,
+      metalness: 0.9,
+      emissive: '#334466',
+      emissiveIntensity: 0.3,
+    });
+    const window_ = new THREE.Mesh(windowGeo, windowMat);
+    window_.position.y = typeConfig.length * 0.2;
+    window_.position.z = typeConfig.radius + 0.01;
+    this.mesh.add(window_);
+
+    // Create exhaust particle system
+    this.createExhaust(typeConfig);
+
+    this.radius = typeConfig.radius;
+  }
+
+  createExhaust(config) {
+    const particleCount = 80;
+    const geometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(particleCount * 3);
+    const sizes = new Float32Array(particleCount);
+    const lifetimes = new Float32Array(particleCount);
+
+    for (let i = 0; i < particleCount; i++) {
+      positions[i * 3] = 0;
+      positions[i * 3 + 1] = 0;
+      positions[i * 3 + 2] = 0;
+      sizes[i] = 0;
+      lifetimes[i] = -Math.random(); // Negative so they don't start visible
+    }
+
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+    geometry.setAttribute('lifetime', new THREE.BufferAttribute(lifetimes, 1));
+
+    // Create exhaust texture via canvas
+    const canvas = document.createElement('canvas');
+    canvas.width = 64;
+    canvas.height = 64;
+    const ctx = canvas.getContext('2d');
+    const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+    gradient.addColorStop(0, 'rgba(255,200,100,1)');
+    gradient.addColorStop(0.3, 'rgba(255,150,50,0.8)');
+    gradient.addColorStop(0.6, 'rgba(255,100,20,0.4)');
+    gradient.addColorStop(1, 'rgba(255,50,10,0)');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, 64, 64);
+
+    const texture = new THREE.CanvasTexture(canvas);
+
+    const material = new THREE.PointsMaterial({
+      map: texture,
+      size: 0.15,
+      transparent: true,
+      opacity: 0.8,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      color: 0xff6633,
+    });
+
+    this.exhaustParticles = new THREE.Points(geometry, material);
+    this.exhaustParticles._lifetimes = lifetimes;
+    this.exhaustParticles._speeds = new Float32Array(particleCount).map(() => randomRange(0.5, 1.5));
+    this.mesh.add(this.exhaustParticles);
+  }
+
+  updateExhaust(deltaTime) {
+    if (!this.exhaustParticles) return;
+
+    this.exhaustTimer += deltaTime;
+    const positions = this.exhaustParticles.geometry.attributes.position.array;
+    const lifetimes = this.exhaustParticles._lifetimes;
+    const speeds = this.exhaustParticles._speeds;
+    const count = lifetimes.length;
+
+    // Get ship direction (opposite of velocity for exhaust)
+    const dirX = -this.velocity.x;
+    const dirY = -this.velocity.y;
+
+    for (let i = 0; i < count; i++) {
+      lifetimes[i] += deltaTime;
+
+      if (lifetimes[i] > 1.0) {
+        // Reset particle to ship base
+        lifetimes[i] = 0;
+        positions[i * 3] = this.mesh.position.x + (Math.random() - 0.5) * 0.1;
+        positions[i * 3 + 1] = this.mesh.position.y - 0.7 + (Math.random() - 0.5) * 0.1;
+        positions[i * 3 + 2] = this.mesh.position.z + (Math.random() - 0.5) * 0.1;
+      }
+
+      // Move particle in exhaust direction with spread
+      const life = lifetimes[i];
+      const spread = life * 0.3;
+      positions[i * 3] += (dirX * 0.5 + (Math.random() - 0.5) * spread) * speeds[i] * deltaTime;
+      positions[i * 3 + 1] += (dirY * 0.5 + (Math.random() - 0.5) * spread) * speeds[i] * deltaTime;
+      positions[i * 3 + 2] += (Math.random() - 0.5) * spread * speeds[i] * deltaTime * 0.3;
+    }
+
+    this.exhaustParticles.geometry.attributes.position.needsUpdate = true;
+  }
+
   update(deltaTime) {
+    // Spaceship-specific: steering and acceleration changes
+    if (this.type === 'spaceship') {
+      this.steerTimer += deltaTime;
+      this.accelTimer += deltaTime;
+
+      // Change direction periodically
+      if (this.steerTimer >= this.steerInterval) {
+        this.steerTimer = 0;
+        this.steerInterval = randomRange(2, 5);
+        const steerAmount = randomRange(-0.3, 0.3);
+        const currentDir = Math.atan2(this.velocity.y, this.velocity.x);
+        const newDir = currentDir + steerAmount;
+        this.velocity.x = Math.cos(newDir) * this.currentSpeed;
+        this.velocity.y = Math.sin(newDir) * this.currentSpeed;
+      }
+
+      // Change speed periodically
+      if (this.accelTimer >= this.accelInterval) {
+        this.accelTimer = 0;
+        this.accelInterval = randomRange(1, 3);
+        this.targetSpeed = randomRange(0.15, 0.4);
+      }
+
+      // Smoothly approach target speed
+      this.currentSpeed += (this.targetSpeed - this.currentSpeed) * deltaTime * 2;
+
+      // Update mesh to face movement direction
+      const angle = Math.atan2(this.velocity.x, this.velocity.y);
+      this.mesh.rotation.z = angle;
+    }
+
     // Move along trajectory
     this.position.add(
       new THREE.Vector3(
@@ -216,8 +443,13 @@ class PassingObject {
     this.mesh.position.copy(this.position);
 
     // Self rotation (frame-rate independent)
-    if (this.mesh) {
+    if (this.mesh && this.type !== 'spaceship') {
       this.mesh.rotation.y += this.rotationSpeed * deltaTime;
+    }
+
+    // Update exhaust particles for spaceships
+    if (this.type === 'spaceship') {
+      this.updateExhaust(deltaTime);
     }
 
     // Check if well past viewport bounds (3x viewport size)
@@ -272,16 +504,20 @@ export class PassingCelestials {
     // Only one planet allowed on screen at a time
     const planetCount = this.objects.filter(obj => obj.type === 'planet').length;
 
-    // Decide what to spawn — weighted: more asteroids than planets
+    // Decide what to spawn — weighted: asteroids > spaceships > planets
     const roll = Math.random();
     let type, config;
 
-    if (roll < 0.5 && planetCount === 0) {
+    if (roll < 0.2 && planetCount === 0) {
       // Planet — only spawn when no planet is visible
       type = 'planet';
       config = this.generatePlanetConfig(Object.keys(PLANET_TYPES)[Math.floor(Math.random() * Object.keys(PLANET_TYPES).length)]);
+    } else if (roll < 0.35) {
+      // Spaceship — occasional appearance
+      type = 'spaceship';
+      config = this.generateSpaceshipConfig();
     } else {
-      // Asteroid — always allowed
+      // Asteroid — most common
       type = 'asteroid';
       config = this.generateAsteroidConfig();
     }
@@ -356,6 +592,51 @@ export class PassingCelestials {
       startZ,
       velX: dir.x * speed,
       velY: dir.y * speed,
+    };
+  }
+
+  generateSpaceshipConfig() {
+    // Spaceships enter from edges with more purposeful trajectories
+    const side = Math.floor(Math.random() * 4);
+    let startX, startY;
+    const margin = 1.8;
+
+    switch (side) {
+      case 0: // top
+        startX = this.viewportHalfW * randomRange(-0.5, 0.5);
+        startY = this.viewportHalfH * margin;
+        break;
+      case 1: // right
+        startX = this.viewportHalfW * margin;
+        startY = this.viewportHalfH * randomRange(-0.5, 0.5);
+        break;
+      case 2: // bottom
+        startX = this.viewportHalfW * randomRange(-0.5, 0.5);
+        startY = -(this.viewportHalfH * margin);
+        break;
+      case 3: // left
+        startX = -(this.viewportHalfW * margin);
+        startY = this.viewportHalfH * randomRange(-0.5, 0.5);
+        break;
+    }
+
+    // Aim toward center with some variation
+    const targetX = randomRange(-2, 2);
+    const targetY = randomRange(-2, 2);
+    const dir = new THREE.Vector2(targetX - startX, targetY - startY).normalize();
+    const speed = randomRange(0.15, 0.35);
+
+    // Spaceships can appear in front or behind Mars
+    const inFront = Math.random() > 0.4; // Slightly more likely in front for visibility
+    const startZ = inFront ? randomRange(1, 4) : -randomRange(1, 4);
+
+    return {
+      startX,
+      startY,
+      startZ,
+      velX: dir.x * speed,
+      velY: dir.y * speed,
+      shipType: Math.random() > 0.6 ? 'starship' : 'rocket',
     };
   }
 
