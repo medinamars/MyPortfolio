@@ -5,7 +5,7 @@ const techStack = [
   { category: 'Web & Mobile', skills: ['HTML5', 'CSS3', 'Bootstrap', 'SPA', 'RESTful APIs', 'RPC', 'Firebase', 'iOS and Android App Development', 'App Store Connect', 'Google Play Console'] },
   { category: 'Architecture & QA', skills: ['SOLID', 'OOP', 'TDD', 'SaaS', 'xUnit', 'NUnit', 'Agile', 'Scrum'] },
   { category: 'AI & ML', skills: ['Claude', 'LM Studio', 'Llama.cpp', 'Opus', 'Qwen', 'Gemma', 'Gemini', 'Copilot', 'OpenClaw', 'Hermes', 'Microsoft ML'] },
-  { category: 'Dev Tools', skills: ['Visual Studio', 'VS Code', 'Android Studio', 'Xcode', 'Postman', 'JIRA', 'GitHub'] },
+  { category: 'Dev & Design Tools', skills: ['Visual Studio', 'VS Code', 'Android Studio', 'Xcode', 'Postman', 'JIRA', 'GitHub', 'Photoshop'] },
 ];
 
 export function createAboutSection() {
