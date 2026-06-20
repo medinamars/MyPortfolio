@@ -1,4 +1,4 @@
-const VERSION = '9';
+const VERSION = '10';
 
 export function createContactSection() {
   const section = document.getElementById('contact');
@@ -12,10 +12,25 @@ export function createContactSection() {
           <span class="contact-label">GitHub</span>
           <span class="contact-value">@medinamars</span>
         </a>
-        <a href="https://linkedin.com/in/marcelomedina" class="contact-card" target="_blank" rel="noopener">
+        <a href="https://www.linkedin.com/in/marcelo-medina-52239668" class="contact-card" target="_blank" rel="noopener">
           <span class="contact-icon">💼</span>
           <span class="contact-label">LinkedIn</span>
           <span class="contact-value">Connect</span>
+        </a>
+        <a href="https://www.facebook.com/medinamars" class="contact-card" target="_blank" rel="noopener">
+          <span class="contact-icon">👤</span>
+          <span class="contact-label">Facebook</span>
+          <span class="contact-value">@medinamars</span>
+        </a>
+        <a href="https://x.com/medinamars918" class="contact-card" target="_blank" rel="noopener">
+          <span class="contact-icon">✖️</span>
+          <span class="contact-label">X</span>
+          <span class="contact-value">@medinamars918</span>
+        </a>
+        <a href="https://www.instagram.com/medina_mars" class="contact-card" target="_blank" rel="noopener">
+          <span class="contact-icon">📸</span>
+          <span class="contact-label">Instagram</span>
+          <span class="contact-value">@medina_mars</span>
         </a>
         <a href="mailto:medinamars@gmail.com" class="contact-card">
           <span class="contact-icon">📧</span>
