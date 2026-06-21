@@ -341,7 +341,7 @@ class PassingObject {
       this.velocity.y = -Math.sin(this.heading) * this.currentSpeed;
 
       // Update mesh to face movement direction (offset by PI/2 since geometry points +Y)
-      this.mesh.rotation.z = -this.heading + Math.PI / 2;
+      this.mesh.rotation.z = Math.atan2(this.velocity.x, this.velocity.y) + Math.PI / 2;
     }
 
     // Move along trajectory
