@@ -334,14 +334,14 @@ class PassingObject {
       }
 
       // Smoothly approach target speed
-      this.currentSpeed += (this.targetSpeed - this.currentSpeed) * deltaTime * 2;
+      this.currentSpeed += (this.targetSpeed - this.currentSpeed) * 0.1;
 
-      // Update velocity from heading and current speed
+      // Update velocity from heading and speed
       this.velocity.x = Math.cos(this.heading) * this.currentSpeed;
-      this.velocity.y = -Math.sin(this.heading) * this.currentSpeed;
+      this.velocity.y = Math.sin(this.heading) * this.currentSpeed;
 
-      // Update mesh to face movement direction (offset by PI/2 since geometry points +Y)
-      this.mesh.rotation.z = Math.atan2(this.velocity.x, this.velocity.y) + Math.PI / 2;
+      // Orient ship to face movement direction
+      this.mesh.rotation.z = -this.heading - Math.PI / 2;
     }
 
     // Move along trajectory
