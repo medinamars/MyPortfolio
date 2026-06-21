@@ -27,24 +27,8 @@ const PLANET_TYPES = {
     speed: [0.003, 0.006],
   },
 };
-
+// Asteroid colors
 const ASTEROID_COLORS = ['#8B7355', '#6B5B45', '#9E8E7E', '#7A6A5A'];
-
-// Spaceship types
-const SPACESHIP_TYPES = {
-  starship: {
-    bodyColor: '#E8E8E8',
-    accentColor: '#C0C0C0',
-    length: 0.7,
-    radius: 0.12,
-  },
-  rocket: {
-    bodyColor: '#F5F5F5',
-    accentColor: '#D0D0D0',
-    length: 0.55,
-    radius: 0.09,
-  },
-};
 
 function randomRange(min, max) {
   return min + Math.random() * (max - min);
@@ -129,26 +113,16 @@ function createAsteroidGeometry(radius) {
 
 class PassingObject {
   constructor(type, config) {
-    this.type = type; // 'planet', 'asteroid', or 'spaceship'
+    this.type = type; // 'planet' or 'asteroid'
     this.mesh = null;
     this.alive = true;
     this.rotationSpeed = randomRange(0.3, 1.2);
-    // Spaceship-specific
-    this.steerTimer = 0;
-    this.steerInterval = randomRange(2, 5);
-    this.accelTimer = 0;
-    this.accelInterval = randomRange(1, 3);
-    this.targetSpeed = randomRange(0.3, 0.6);
-    this.currentSpeed = this.targetSpeed;
-    this.heading = 0;
     this.create(config);
   }
 
   create(config) {
     if (this.type === 'planet') {
       this.createPlanet(config.planetType);
-    } else if (this.type === 'spaceship') {
-      this.createSpaceship(config.shipType);
     } else {
       this.createAsteroid();
     }
@@ -312,38 +286,6 @@ class PassingObject {
   }
 
   update(deltaTime) {
-    // Spaceship-specific: steering, speed changes, and facing direction
-    if (this.type === 'spaceship') {
-      this.steerTimer += deltaTime;
-      this.accelTimer += deltaTime;
-
-      // Change direction periodically
-      if (this.steerTimer >= this.steerInterval) {
-        this.steerTimer = 0;
-        this.steerInterval = randomRange(2, 5);
-        this.heading += randomRange(-0.8, 0.8);
-        this.velocity.x = Math.cos(this.heading);
-        this.velocity.y = -Math.sin(this.heading);
-      }
-
-      // Change speed periodically
-      if (this.accelTimer >= this.accelInterval) {
-        this.accelTimer = 0;
-        this.accelInterval = randomRange(1, 3);
-        this.targetSpeed = randomRange(0.3, 0.6);
-      }
-
-      // Smoothly approach target speed
-      this.currentSpeed += (this.targetSpeed - this.currentSpeed) * 0.1;
-
-      // Update velocity from heading and speed
-      this.velocity.x = Math.cos(this.heading) * this.currentSpeed;
-      this.velocity.y = Math.sin(this.heading) * this.currentSpeed;
-
-      // Orient ship to face movement direction
-      this.mesh.rotation.z = -this.heading - Math.PI / 2;
-    }
-
     // Move along trajectory
     this.position.add(
       new THREE.Vector3(
@@ -354,8 +296,8 @@ class PassingObject {
     );
     this.mesh.position.copy(this.position);
 
-    // Self rotation (frame-rate independent) - planets and asteroids only
-    if (this.mesh && this.type !== 'spaceship') {
+    // Self rotation (frame-rate independent)
+    if (this.mesh) {
       this.mesh.rotation.y += this.rotationSpeed * deltaTime;
     }
 
@@ -378,7 +320,7 @@ export class PassingCelestials {
     this.objects = [];
     this.spawnTimer = 0;
     this.spawnInterval = randomRange(4, 8); // seconds between spawn checks
-    this.maxObjects = 8; // max total objects (planets + asteroids + spaceships)
+    this.maxObjects = 3; // max total objects (planets + asteroids)
     this.maxPlanets = 1; // only one planet visible at a time
     this.group = new THREE.Group();
     this.camera = null;
@@ -411,15 +353,22 @@ export class PassingCelestials {
     // Only one planet allowed on screen at a time
     const planetCount = this.objects.filter(obj => obj.type === 'planet').length;
 
-    // Always spawn spaceship for testing
-    let type = 'spaceship';
-    let config = this.generateSpaceshipConfig();
+    // Decide what to spawn — weighted: more asteroids than planets
+    const roll = Math.random();
+    let type, config;
+
+    if (roll < 0.5 && planetCount < this.maxPlanets) {
+      // Planet — only spawn if under limit
+      const availableTypes = Object.keys(PLANET_TYPES);
+      type = 'planet';
+      config = this.generatePlanetConfig(availableTypes[Math.floor(Math.random() * availableTypes.length)]);
+    } else {
+      // Asteroid
+      type = 'asteroid';
+      config = this.generateAsteroidConfig();
+    }
 
     const obj = new PassingObject(type, config);
-    // Remember which planet type was spawned
-    if (type === 'planet') {
-      obj._planetType = config.planetType;
-    }
     // Pass viewport bounds for out-of-bounds checking
     obj._boundX = this.viewportHalfW;
     obj._boundY = this.viewportHalfH;
