@@ -513,8 +513,8 @@ export class PassingCelestials {
     const planetCount = this.objects.filter(obj => obj.type === 'planet').length;
 
     // Always spawn spaceship for testing
-    type = 'spaceship';
-    config = this.generateSpaceshipConfig();
+    let type = 'spaceship';
+    let config = this.generateSpaceshipConfig();
 
     const obj = new PassingObject(type, config);
     // Remember which planet type was spawned
