@@ -133,8 +133,6 @@ class PassingObject {
     this.mesh = null;
     this.alive = true;
     this.rotationSpeed = randomRange(0.3, 1.2);
-    this.exhaustParticles = null;
-    this.exhaustTimer = 0;
     // Spaceship-specific
     this.steerTimer = 0;
     this.steerInterval = randomRange(2, 5);
@@ -310,101 +308,7 @@ class PassingObject {
     window_.position.z = typeConfig.radius + 0.01;
     this.mesh.add(window_);
 
-    // Create exhaust particle system
-    this.createExhaust(typeConfig);
-
     this.radius = typeConfig.radius;
-  }
-
-  createExhaust(config) {
-    const particleCount = 80;
-    const geometry = new THREE.BufferGeometry();
-    const positions = new Float32Array(particleCount * 3);
-    const sizes = new Float32Array(particleCount);
-    const lifetimes = new Float32Array(particleCount);
-
-    for (let i = 0; i < particleCount; i++) {
-      positions[i * 3] = 0;
-      positions[i * 3 + 1] = 0;
-      positions[i * 3 + 2] = 0;
-      sizes[i] = 0;
-      lifetimes[i] = -Math.random(); // Negative so they don't start visible
-    }
-
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
-    geometry.setAttribute('lifetime', new THREE.BufferAttribute(lifetimes, 1));
-
-    // Create exhaust texture via canvas
-    const canvas = document.createElement('canvas');
-    canvas.width = 64;
-    canvas.height = 64;
-    const ctx = canvas.getContext('2d');
-    const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
-    gradient.addColorStop(0, 'rgba(255,200,100,1)');
-    gradient.addColorStop(0.3, 'rgba(255,150,50,0.8)');
-    gradient.addColorStop(0.6, 'rgba(255,100,20,0.4)');
-    gradient.addColorStop(1, 'rgba(255,50,10,0)');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, 64, 64);
-
-    const texture = new THREE.CanvasTexture(canvas);
-
-    const material = new THREE.PointsMaterial({
-      map: texture,
-      size: 0.15,
-      transparent: true,
-      opacity: 0.8,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false,
-      color: 0xff6633,
-    });
-
-    this.exhaustParticles = new THREE.Points(geometry, material);
-    this.exhaustParticles._lifetimes = lifetimes;
-    this.exhaustParticles._speeds = new Float32Array(particleCount).map(() => randomRange(0.5, 1.5));
-    this.mesh.add(this.exhaustParticles);
-  }
-
-  updateExhaust(deltaTime) {
-    if (!this.exhaustParticles) return;
-
-    this.exhaustTimer += deltaTime;
-    const positions = this.exhaustParticles.geometry.attributes.position.array;
-    const lifetimes = this.exhaustParticles._lifetimes;
-    const speeds = this.exhaustParticles._speeds;
-    const count = lifetimes.length;
-
-    // Get ship direction (opposite of velocity for exhaust)
-    const dirX = -this.velocity.x / (Math.abs(this.velocity.x) + Math.abs(this.velocity.y) || 1);
-    const dirY = -this.velocity.y / (Math.abs(this.velocity.x) + Math.abs(this.velocity.y) || 1);
-
-    // Calculate tail position based on ship rotation
-    const shipAngle = this.mesh.rotation.z;
-    const tailOffset = 0.5; // distance from center to tail
-    const tailX = this.mesh.position.x - Math.sin(shipAngle) * tailOffset;
-    const tailY = this.mesh.position.y - Math.cos(shipAngle) * tailOffset;
-
-    for (let i = 0; i < count; i++) {
-      lifetimes[i] += deltaTime;
-
-      if (lifetimes[i] > 1.0) {
-        // Reset particle to ship tail
-        lifetimes[i] = 0;
-        positions[i * 3] = tailX + (Math.random() - 0.5) * 0.08;
-        positions[i * 3 + 1] = tailY + (Math.random() - 0.5) * 0.08;
-        positions[i * 3 + 2] = this.mesh.position.z + (Math.random() - 0.5) * 0.08;
-      }
-
-      // Move particle in exhaust direction with spread
-      const life = lifetimes[i];
-      const spread = life * 0.3;
-      positions[i * 3] += (dirX * 0.5 + (Math.random() - 0.5) * spread) * speeds[i] * deltaTime;
-      positions[i * 3 + 1] += (dirY * 0.5 + (Math.random() - 0.5) * spread) * speeds[i] * deltaTime;
-      positions[i * 3 + 2] += (Math.random() - 0.5) * spread * speeds[i] * deltaTime * 0.3;
-    }
-
-    this.exhaustParticles.geometry.attributes.position.needsUpdate = true;
   }
 
   update(deltaTime) {
@@ -453,11 +357,6 @@ class PassingObject {
     // Self rotation (frame-rate independent) - planets and asteroids only
     if (this.mesh && this.type !== 'spaceship') {
       this.mesh.rotation.y += this.rotationSpeed * deltaTime;
-    }
-
-    // Update exhaust particles for spaceships
-    if (this.type === 'spaceship') {
-      this.updateExhaust(deltaTime);
     }
 
     // Check if well past viewport bounds (3x viewport size)
