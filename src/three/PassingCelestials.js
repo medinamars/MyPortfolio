@@ -185,8 +185,9 @@ class PassingObject {
         roughness: 0.9,
       });
       const ring = new THREE.Mesh(ringGeo, ringMat);
-      ring.rotation.x = Math.PI * 0.4;
       this.mesh.add(ring);
+      // Store tilt quaternion for reuse each frame
+      this.ringTiltQuat = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), Math.PI * 0.35);
     }
 
     this.radius = radius;
@@ -217,9 +218,15 @@ class PassingObject {
     );
     this.mesh.position.copy(this.position);
 
-    // Self rotation - spin the sphere surface, not the group (keeps Saturn rings stable)
+    // Self rotation - spin sphere texture, keep rings stable
     if (this.type === 'planet' && this.mesh.children.length > 0) {
       this.mesh.children[0].rotation.y += this.rotationSpeed * deltaTime;
+      // Saturn rings: face camera with consistent tilt to prevent wobble from scroll
+      if (this.mesh.children.length > 1 && this._camera && this.ringTiltQuat) {
+        const ring = this.mesh.children[1];
+        ring.quaternion.copy(this._camera.quaternion);
+        ring.quaternion.multiply(this.ringTiltQuat);
+      }
     } else if (this.type === 'asteroid') {
       this.mesh.rotation.z += this.rotationSpeed * deltaTime;
     }
@@ -295,6 +302,7 @@ export class PassingCelestials {
     // Pass viewport bounds for out-of-bounds checking
     obj._boundX = this.viewportHalfW;
     obj._boundY = this.viewportHalfH;
+    obj._camera = this.camera;
     this.group.add(obj.mesh);
     this.objects.push(obj);
   }
