@@ -217,8 +217,10 @@ class PassingObject {
     );
     this.mesh.position.copy(this.position);
 
-    // Self rotation - use Z-axis rotation for smooth appearance from any camera angle
-    if (this.mesh) {
+    // Self rotation - spin the sphere surface, not the group (keeps Saturn rings stable)
+    if (this.type === 'planet' && this.mesh.children.length > 0) {
+      this.mesh.children[0].rotation.y += this.rotationSpeed * deltaTime;
+    } else if (this.type === 'asteroid') {
       this.mesh.rotation.z += this.rotationSpeed * deltaTime;
     }
 
