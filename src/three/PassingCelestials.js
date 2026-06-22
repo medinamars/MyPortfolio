@@ -27,6 +27,7 @@ const PLANET_TYPES = {
     speed: [0.003, 0.006],
   },
 };
+
 // Asteroid colors
 const ASTEROID_COLORS = ['#8B7355', '#6B5B45', '#9E8E7E', '#7A6A5A'];
 
@@ -116,7 +117,8 @@ class PassingObject {
     this.type = type; // 'planet' or 'asteroid'
     this.mesh = null;
     this.alive = true;
-    this.rotationSpeed = randomRange(0.3, 1.2);
+    // Planets rotate slowly, asteroids spin faster
+    this.rotationSpeed = type === 'planet' ? randomRange(0.15, 0.4) : randomRange(0.3, 1.2);
     this.create(config);
   }
 
@@ -204,87 +206,6 @@ class PassingObject {
     this.radius = radius;
   }
 
-  createSpaceship(shipType) {
-    const typeConfig = SPACESHIP_TYPES[shipType] || SPACESHIP_TYPES.starship;
-    this.mesh = new THREE.Group();
-
-    // Main cylindrical body
-    const bodyGeo = new THREE.CylinderGeometry(typeConfig.radius, typeConfig.radius * 1.05, typeConfig.length, 16);
-    const bodyMat = new THREE.MeshStandardMaterial({
-      color: typeConfig.bodyColor,
-      roughness: 0.3,
-      metalness: 0.7,
-    });
-    const body = new THREE.Mesh(bodyGeo, bodyMat);
-    this.mesh.add(body);
-
-    // Nose cone
-    const noseGeo = new THREE.ConeGeometry(typeConfig.radius, typeConfig.length * 0.25, 16);
-    const noseMat = new THREE.MeshStandardMaterial({
-      color: typeConfig.accentColor,
-      roughness: 0.3,
-      metalness: 0.7,
-    });
-    const nose = new THREE.Mesh(noseGeo, noseMat);
-    nose.position.y = typeConfig.length * 0.5 + typeConfig.length * 0.125;
-    this.mesh.add(nose);
-
-    // Grid fins at base (4 fins)
-    const finShape = new THREE.Shape();
-    finShape.moveTo(0, 0);
-    finShape.lineTo(typeConfig.radius * 0.8, -typeConfig.length * 0.15);
-    finShape.lineTo(typeConfig.radius * 1.2, -typeConfig.length * 0.15);
-    finShape.lineTo(typeConfig.radius * 1.2, 0);
-    finShape.closePath();
-
-    const finGeo = new THREE.ExtrudeGeometry(finShape, { depth: 0.02, bevelEnabled: false });
-    const finMat = new THREE.MeshStandardMaterial({
-      color: typeConfig.accentColor,
-      roughness: 0.4,
-      metalness: 0.8,
-    });
-
-    for (let i = 0; i < 4; i++) {
-      const fin = new THREE.Mesh(finGeo, finMat);
-      fin.position.y = -typeConfig.length * 0.5;
-      fin.rotation.y = (Math.PI / 2) * i;
-      fin.rotation.x = Math.PI;
-      this.mesh.add(fin);
-    }
-
-    // Side fins/wings
-    const sideFinShape = new THREE.Shape();
-    sideFinShape.moveTo(0, 0);
-    sideFinShape.lineTo(typeConfig.radius * 0.6, -typeConfig.length * 0.2);
-    sideFinShape.lineTo(typeConfig.radius * 1.5, -typeConfig.length * 0.15);
-    sideFinShape.lineTo(typeConfig.radius * 1.5, typeConfig.length * 0.05);
-    sideFinShape.closePath();
-
-    const sideFinGeo = new THREE.ExtrudeGeometry(sideFinShape, { depth: 0.015, bevelEnabled: false });
-    for (let i = 0; i < 3; i++) {
-      const sideFin = new THREE.Mesh(sideFinGeo, finMat);
-      sideFin.position.y = -typeConfig.length * 0.2;
-      sideFin.rotation.y = (Math.PI * 2 / 3) * i;
-      this.mesh.add(sideFin);
-    }
-
-    // Window/portal
-    const windowGeo = new THREE.CircleGeometry(typeConfig.radius * 0.25, 16);
-    const windowMat = new THREE.MeshStandardMaterial({
-      color: '#1a1a2e',
-      roughness: 0.1,
-      metalness: 0.9,
-      emissive: '#334466',
-      emissiveIntensity: 0.3,
-    });
-    const window_ = new THREE.Mesh(windowGeo, windowMat);
-    window_.position.y = typeConfig.length * 0.2;
-    window_.position.z = typeConfig.radius + 0.01;
-    this.mesh.add(window_);
-
-    this.radius = typeConfig.radius;
-  }
-
   update(deltaTime) {
     // Move along trajectory
     this.position.add(
@@ -296,9 +217,9 @@ class PassingObject {
     );
     this.mesh.position.copy(this.position);
 
-    // Self rotation (frame-rate independent)
+    // Self rotation - use Z-axis rotation for smooth appearance from any camera angle
     if (this.mesh) {
-      this.mesh.rotation.y += this.rotationSpeed * deltaTime;
+      this.mesh.rotation.z += this.rotationSpeed * deltaTime;
     }
 
     // Check if well past viewport bounds (3x viewport size)
@@ -437,51 +358,6 @@ export class PassingCelestials {
     };
   }
 
-  generateSpaceshipConfig() {
-    // Spaceships enter from edges with more purposeful trajectories
-    const side = Math.floor(Math.random() * 4);
-    let startX, startY;
-    const margin = 1.8;
-
-    switch (side) {
-      case 0: // top
-        startX = this.viewportHalfW * randomRange(-0.5, 0.5);
-        startY = this.viewportHalfH * margin;
-        break;
-      case 1: // right
-        startX = this.viewportHalfW * margin;
-        startY = this.viewportHalfH * randomRange(-0.5, 0.5);
-        break;
-      case 2: // bottom
-        startX = this.viewportHalfW * randomRange(-0.5, 0.5);
-        startY = -(this.viewportHalfH * margin);
-        break;
-      case 3: // left
-        startX = -(this.viewportHalfW * margin);
-        startY = this.viewportHalfH * randomRange(-0.5, 0.5);
-        break;
-    }
-
-    // Aim toward center with some variation
-    const targetX = randomRange(-2, 2);
-    const targetY = randomRange(-2, 2);
-    const dir = new THREE.Vector2(targetX - startX, targetY - startY).normalize();
-    const speed = randomRange(0.15, 0.35);
-
-    // Spaceships can appear in front or behind Mars
-    const inFront = Math.random() > 0.4; // Slightly more likely in front for visibility
-    const startZ = inFront ? randomRange(1, 4) : -randomRange(1, 4);
-
-    return {
-      startX,
-      startY,
-      startZ,
-      velX: dir.x * speed,
-      velY: dir.y * speed,
-      shipType: Math.random() > 0.6 ? 'starship' : 'rocket',
-    };
-  }
-
   // Calculate direction from spawn point toward a random target near center (0,0)
   aimTowardCenter(startX, startY) {
     const targetX = randomRange(-1, 1);
@@ -501,21 +377,11 @@ export class PassingCelestials {
     // Update all objects
     for (let i = this.objects.length - 1; i >= 0; i--) {
       const obj = this.objects[i];
-      obj.update(deltaTime);
       if (!obj.alive) {
         this.group.remove(obj.mesh);
-        // Clean up geometry/materials to prevent memory leaks
-        obj.mesh.traverse((child) => {
-          if (child.geometry) child.geometry.dispose();
-          if (child.material) {
-            if (Array.isArray(child.material)) {
-              child.material.forEach((m) => m.dispose());
-            } else {
-              child.material.dispose();
-            }
-          }
-        });
         this.objects.splice(i, 1);
+      } else {
+        obj.update(deltaTime);
       }
     }
   }
