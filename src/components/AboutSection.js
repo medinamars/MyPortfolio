@@ -1,6 +1,6 @@
 const techStack = [
   { category: 'Languages & Frameworks', skills: ['.NET', 'C#', 'ASP.NET Core', 'ASP.NET Boilerplate', 'Blazor', 'Flutter/Dart', 'PHP', 'JavaScript', 'TypeScript', 'VB', 'VB6'] },
-  { category: 'Databases', skills: ['SQL Server', 'PostgreSQL', 'MySQL', 'Oracle', 'T-SQL', 'Entity Framework', 'Dapper'] },
+  { category: 'Databases & ORM', skills: ['SQL Server', 'PostgreSQL', 'MySQL', 'Oracle', 'T-SQL', 'Entity Framework', 'Dapper'] },
   { category: 'Cloud & DevOps', skills: ['Azure Functions', 'Azure Blob Storage', 'Azure Application Insights', 'Azure DevOps', 'Azure Key Vault', 'IIS', 'Apache', 'Git', 'Hangfire'] },
   { category: 'Web & Mobile', skills: ['HTML5', 'CSS3', 'Bootstrap', 'SPA', 'RESTful APIs', 'RPC', 'Firebase', 'iOS and Android App Development', 'App Store Connect', 'Google Play Console', 'Payment Integrations (Braintree, Stripe, PayPal, RedDot ...)'] },
   { category: 'Architecture & QA', skills: ['SOLID', 'OOP', 'TDD', 'SaaS', 'xUnit', 'NUnit', 'Agile', 'Scrum'] },
