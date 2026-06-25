@@ -2,10 +2,10 @@ const projects = [
   {
     title: 'TradeSmart Connect',
     description: 'Full-stack cloud solution at Russell A. Farrow — enhanced security, stability, and testability with optimized system performance and improved code coverage.',
-    tech: ['.NET 8', 'Azure', 'C#', 'SQL Server'],
+    tech: ['.NET 8', 'ASP.NET Boilerplate', 'Entity Framework', 'Azure', 'C#', 'SQL Server', 'Oracle'],
     category: 'backend',
     image: '/tradesmart-connect.jpg',
-    link: '#',
+    link: 'https://tradesmartconnect.com',
   },
   {
     title: 'True Yoga Digital Operations',
