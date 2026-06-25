@@ -4,7 +4,7 @@ const projects = [
     description: 'Full-stack cloud solution at Russell A. Farrow — enhanced security, stability, and testability with optimized system performance and improved code coverage.',
     tech: ['.NET 8', 'ASP.NET Boilerplate', 'Entity Framework', 'Azure', 'C#', 'SQL Server', 'Oracle'],
     category: 'backend',
-    image: '/tradesmart-connect.jpg',
+    image: '/MyPortfolio/tradesmart-connect.jpg',
     link: 'https://tradesmartconnect.com',
   },
   {
