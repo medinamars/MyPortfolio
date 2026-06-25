@@ -7,46 +7,6 @@ const projects = [
     image: '/MyPortfolio/tradesmart-connect.jpg',
     link: 'https://tradesmartconnect.com',
   },
-  {
-    title: 'True Yoga Digital Operations',
-    description: 'Complex system projects that digitalized operations handling hundreds of millions in annual transactions across multiple markets.',
-    tech: ['ASP.NET', 'SQL Server', 'JavaScript', 'System Design'],
-    category: 'backend',
-    image: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200"><rect fill="%233D2B1F" width="400" height="200"/><text x="200" y="100" text-anchor="middle" fill="%23725130" font-size="20">Project 2</text></svg>',
-    link: '#',
-  },
-  {
-    title: 'Client System Solutions',
-    description: 'Led pre-sale through deployment of complex client projects at Forecepts, managing teams across Singapore and China.',
-    tech: ['.NET', 'PHP', 'MySQL', 'Team Leadership'],
-    category: 'backend',
-    image: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200"><rect fill="%233D2B1F" width="400" height="200"/><text x="200" y="100" text-anchor="middle" fill="%23725130" font-size="20">Project 3</text></svg>',
-    link: '#',
-  },
-  {
-    title: 'Mobile Applications',
-    description: 'Cross-platform mobile development for iOS and Android using Flutter, Firebase, and cloud integration.',
-    tech: ['Flutter', 'Firebase', 'Dart', 'REST APIs'],
-    category: 'frontend',
-    image: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200"><rect fill="%233D2B1F" width="400" height="200"/><text x="200" y="100" text-anchor="middle" fill="%23725130" font-size="20">Project 4</text></svg>',
-    link: '#',
-  },
-  {
-    title: 'Web Applications',
-    description: 'Responsive single-page applications with modern web technologies, SPA architecture, and cross-browser compatibility.',
-    tech: ['HTML5', 'CSS3', 'JavaScript', 'Bootstrap', 'SPA'],
-    category: 'frontend',
-    image: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200"><rect fill="%233D2B1F" width="400" height="200"/><text x="200" y="100" text-anchor="middle" fill="%23725130" font-size="20">Project 5</text></svg>',
-    link: '#',
-  },
-  {
-    title: 'Database & API Architecture',
-    description: 'RESTful APIs, database design and optimization, stored procedures, and ORM implementations for enterprise systems.',
-    tech: ['Entity Framework', 'Dapper', 'T-SQL', 'REST APIs'],
-    category: 'devops',
-    image: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200"><rect fill="%233D2B1F" width="400" height="200"/><text x="200" y="100" text-anchor="middle" fill="%23725130" font-size="20">Project 6</text></svg>',
-    link: '#',
-  },
 ];
 
 const filters = [
