@@ -1,10 +1,10 @@
 const projects = [
   {
-    title: 'Enterprise Cloud Platform',
+    title: 'TradeSmart Connect',
     description: 'Full-stack cloud solution at Russell A. Farrow — enhanced security, stability, and testability with optimized system performance and improved code coverage.',
     tech: ['.NET 8', 'Azure', 'C#', 'SQL Server'],
     category: 'backend',
-    image: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200"><rect fill="%233D2B1F" width="400" height="200"/><text x="200" y="100" text-anchor="middle" fill="%23725130" font-size="20">Project 1</text></svg>',
+    image: '/tradesmart-connect.jpg',
     link: '#',
   },
   {
