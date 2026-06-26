@@ -15,6 +15,17 @@ const projects = [
     image: '/MyPortfolio/cbss.jpg',
     link: 'https://trueclassbooking.com.sg',
   },
+  {
+    title: 'TRUE FITNESS Singapore',
+    description: 'With a 4.6-star rating on both the App Store and Google Play, this mobile app was developed as part of the fitness class booking system for True Group. It supports single sign-on (SSO), API request signature validation for enhanced security, and delivers a responsive, best-in-class user experience.',
+    tech: ['Flutter/Dart', 'RPC', 'Firebase', 'Flutter Flavors'],
+    category: 'frontend',
+    image: '/MyPortfolio/true-fitness-sg.jpg',
+    links: [
+      { label: 'App Store', url: 'https://apps.apple.com/sg/app/true-fitness-singapore/id1631513854' },
+      { label: 'Google Play', url: 'https://play.google.com/store/apps/details?id=com.truegroup.cbss_flutter&hl=en_CA&gl=SG' },
+    ],
+  },
 ];
 
 const filters = [
@@ -45,7 +56,7 @@ export function createProjectsSection() {
               <div class="project-tech">
                 ${p.tech.map(t => `<span class="tech-tag">${t}</span>`).join('')}
               </div>
-              <a href="${p.link}" class="project-link">View Project →</a>
+              ${p.links ? p.links.map(l => `<a href="${l.url}" class="project-link">${l.label} →</a>`).join('<br/>') : `<a href="${p.link}" class="project-link">View Project →</a>`}
             </div>
           </div>
         `).join('')}
