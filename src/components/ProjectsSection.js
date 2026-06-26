@@ -18,7 +18,7 @@ const projects = [
   {
     title: 'TRUE FITNESS Singapore',
     description: 'With a 4.6-star rating on both the App Store and Google Play, this mobile app was developed as part of the fitness class booking system for True Group. It supports single sign-on (SSO), API request signature validation for enhanced security, and delivers a responsive, best-in-class user experience.',
-    tech: ['Flutter/Dart', 'RPC', 'Firebase', 'Flutter Flavors'],
+    tech: ['Flutter/Dart', 'RPC', 'Firebase', 'Flutter Flavors', 'App Store Connect', 'Google Play Console'],
     category: 'frontend',
     image: '/MyPortfolio/true-fitness-sg.jpg',
     links: [
@@ -29,7 +29,7 @@ const projects = [
   {
     title: 'TFX Singapore',
     description: 'The TFX-branded counterpart to True Group\'s member app, this mobile application has a 4.7-star rating on the App Store and a 4.4-star rating on Google Play. Its key features include a dedicated catalog of fitness clubs, classes, and instructors, while maintaining the same top-notch user experience and security standards.',
-    tech: ['Flutter/Dart', 'RPC', 'Firebase', 'Flutter Flavors'],
+    tech: ['Flutter/Dart', 'RPC', 'Firebase', 'Flutter Flavors', 'App Store Connect', 'Google Play Console'],
     category: 'frontend',
     image: '/MyPortfolio/tfx-sg.jpg',
     links: [
