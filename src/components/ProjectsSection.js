@@ -50,7 +50,6 @@ const filters = [
   { id: 'all', label: 'All' },
   { id: 'frontend', label: 'Frontend' },
   { id: 'backend', label: 'Backend' },
-  { id: 'devops', label: 'DevOps' },
 ];
 
 export function createProjectsSection() {
