@@ -44,6 +44,13 @@ const projects = [
     category: 'backend',
     image: '/MyPortfolio/esp.jpg',
   },
+  {
+    title: 'GM Module',
+    description: 'A supplementary analytics and reporting system for ESP, built to deliver real-time operational insights to club General Managers. It provides centralized monitoring of sales performance, leads, appointments, call activity, and other key KPIs. The platform uses caching and AJAX-driven updates to ensure fast, responsive interactions, while adopting Material Design principles to deliver a clean, modern, and intuitive user experience.',
+    tech: ['ASP.NET', 'C#', 'MVC', 'SQL Server', 'Entity Framework', 'LINQ', 'IIS', 'Model Oriented Design'],
+    category: 'backend',
+    image: '/MyPortfolio/gm-module.jpg',
+  },
 ];
 
 const filters = [
