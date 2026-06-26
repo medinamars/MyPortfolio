@@ -37,6 +37,13 @@ const projects = [
       { label: 'Google Play', url: 'https://play.google.com/store/apps/details?id=sg.tfx.cbss_flutter&hl=en_CA&gl=SG' },
     ],
   },
+  {
+    title: 'ESP (Electronic Sales Process)',
+    description: 'Designed as an internal companion system for True Group\'s sales consultants, this application helps manage leads, calls, appointments, sales, targets, and more. It also provides a step-by-step membership sales workflow to guide consultants and members through the membership purchase process.',
+    tech: ['ASP.NET', 'C#', 'MVC', 'SQL Server', 'Entity Framework', 'LINQ', 'IIS', 'Model Oriented Design'],
+    category: 'backend',
+    image: '/MyPortfolio/esp.jpg',
+  },
 ];
 
 const filters = [
@@ -67,9 +74,7 @@ export function createProjectsSection() {
               <div class="project-tech">
                 ${p.tech.map(t => `<span class="tech-tag">${t}</span>`).join('')}
               </div>
-              <div class="project-links">
-              ${p.links ? p.links.map(l => `<a href="${l.url}" class="project-link">${l.label} →</a>`).join('') : `<a href="${p.link}" class="project-link">View Project →</a>`}
-              </div>
+              ${p.links ? `<div class="project-links">${p.links.map(l => `<a href="${l.url}" class="project-link">${l.label} →</a>`).join('')}</div>` : p.link ? `<div class="project-links"><a href="${p.link}" class="project-link">View Project →</a></div>` : ''}
             </div>
           </div>
         `).join('')}
