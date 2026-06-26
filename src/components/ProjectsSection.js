@@ -67,7 +67,9 @@ export function createProjectsSection() {
               <div class="project-tech">
                 ${p.tech.map(t => `<span class="tech-tag">${t}</span>`).join('')}
               </div>
-              ${p.links ? p.links.map(l => `<a href="${l.url}" class="project-link">${l.label} →</a>`).join('<br/>') : `<a href="${p.link}" class="project-link">View Project →</a>`}
+              <div class="project-links">
+              ${p.links ? p.links.map(l => `<a href="${l.url}" class="project-link">${l.label} →</a>`).join('') : `<a href="${p.link}" class="project-link">View Project →</a>`}
+              </div>
             </div>
           </div>
         `).join('')}
@@ -180,6 +182,11 @@ export function createProjectsSection() {
       font-size: 0.8rem;
       color: var(--color-sandy);
       font-family: var(--font-mono);
+    }
+    .project-links {
+      display: flex;
+      gap: 1rem;
+      margin-top: 0.5rem;
     }
     .project-link {
       color: var(--color-terracotta);
