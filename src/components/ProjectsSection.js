@@ -1,5 +1,12 @@
 const projects = [
   {
+    title: 'CBSS (Class Booking & Scheduling System)',
+    description: 'Handling tens of thousands of True Group customers while supporting the company\'s front desk operations. Successfully fulfilling fitness class bookings since 2013 with high availability, security, and responsiveness.',
+    tech: ['ASP.NET', 'C#', 'Web Forms', 'SQL Server', 'IIS', 'Model Oriented Design'],
+    category: 'backend',
+    image: '/MyPortfolio/cbss.jpg',
+  },
+  {
     title: 'TradeSmart Connect',
     description: 'Full-stack cloud solution at Russell A. Farrow — enhanced security, stability, and testability with optimized system performance and improved code coverage.',
     tech: ['.NET 8', 'ASP.NET Boilerplate', 'Entity Framework', 'Azure', 'C#', 'SQL Server', 'Oracle'],
