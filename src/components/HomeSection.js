@@ -84,6 +84,7 @@ export function createHomeSection() {
     }
     @media (max-width: 768px) {
       .content-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .home-content { padding-top: 2rem; }
     }
     .section-title {
       font-family: var(--font-heading);
