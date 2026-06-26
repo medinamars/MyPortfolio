@@ -1,4 +1,4 @@
-const VERSION = '11';
+const VERSION = '12';
 
 export function createContactSection() {
   const section = document.getElementById('contact');
@@ -101,7 +101,7 @@ export function createContactSection() {
   const footer = document.getElementById('footer');
   footer.innerHTML = `
     <div class="footer-inner">
-      <p>© ${new Date().getFullYear()} Mars Medina. Built by Sara <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 7v10l10 5 10-5V7L12 2z" stroke="#7eb8da" stroke-width="1.5"/><path d="M12 8v8M8 10l4 2 4-2" stroke="#d4a55a" stroke-width="1.5" stroke-linecap="round"/></svg> my Hermes agent. Version ${VERSION}</p>
+      <p>© ${new Date().getFullYear()} Mars Medina. Built by Sara <img src="/MyPortfolio/hermes-logo.png" alt="Hermes" style="height:1em;vertical-align:middle"/> my Hermes agent. Version ${VERSION}</p>
       <p class="footer-tech">Three.js • Vite • Vanilla JS</p>
     </div>
   `;
