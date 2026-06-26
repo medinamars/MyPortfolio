@@ -26,6 +26,17 @@ const projects = [
       { label: 'Google Play', url: 'https://play.google.com/store/apps/details?id=com.truegroup.cbss_flutter&hl=en_CA&gl=SG' },
     ],
   },
+  {
+    title: 'TFX Singapore',
+    description: 'The TFX-branded counterpart to True Group\'s member app, this mobile application has a 4.7-star rating on the App Store and a 4.4-star rating on Google Play. Its key features include a dedicated catalog of fitness clubs, classes, and instructors, while maintaining the same top-notch user experience and security standards.',
+    tech: ['Flutter/Dart', 'RPC', 'Firebase', 'Flutter Flavors'],
+    category: 'frontend',
+    image: '/MyPortfolio/tfx-sg.jpg',
+    links: [
+      { label: 'App Store', url: 'https://apps.apple.com/sg/app/tfx-singapore/id6467820958' },
+      { label: 'Google Play', url: 'https://play.google.com/store/apps/details?id=sg.tfx.cbss_flutter&hl=en_CA&gl=SG' },
+    ],
+  },
 ];
 
 const filters = [
