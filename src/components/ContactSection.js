@@ -101,7 +101,7 @@ export function createContactSection() {
   const footer = document.getElementById('footer');
   footer.innerHTML = `
     <div class="footer-inner">
-      <p>© ${new Date().getFullYear()} Mars Medina. Built by Sara <img src="/MyPortfolio/hermes-logo.png" alt="Hermes" style="height:1em;vertical-align:middle"/> my Hermes agent. Version ${VERSION}</p>
+      <p>© ${new Date().getFullYear()} Mars Medina. Built by Sara, my Hermes agent. Version ${VERSION}</p>
       <p class="footer-tech">Three.js • Vite • Vanilla JS</p>
     </div>
   `;
