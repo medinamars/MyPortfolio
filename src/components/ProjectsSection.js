@@ -67,6 +67,13 @@ const projects = [
     image: '/MyPortfolio/true-group-events.jpg',
     link: 'https://event.truegroup.com.sg',
   },
+  {
+    title: 'True Group Sentinel',
+    description: 'A system rapidly deployed during the COVID-19 pandemic to track all individuals entering facilities. It enables seamless check-in via QR code scanning and provides a real-time dashboard to monitor occupancy within buildings. The system also supports data export for regulatory compliance with Singapore government requirements.',
+    tech: ['ASP.NET', 'C#', 'MVC', 'SQL Server', 'Entity Framework', 'LINQ', 'IIS', 'Model Oriented Design'],
+    category: 'backend',
+    image: '/MyPortfolio/true-group-sentinel.jpg',
+  },
 ];
 
 const filters = [
