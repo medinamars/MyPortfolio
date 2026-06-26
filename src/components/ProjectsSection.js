@@ -13,6 +13,7 @@ const projects = [
     tech: ['ASP.NET', 'C#', 'Web Forms', 'SQL Server', 'IIS', 'Model Oriented Design'],
     category: 'backend',
     image: '/MyPortfolio/cbss.jpg',
+    link: 'https://trueclassbooking.com.sg',
   },
 ];
 
