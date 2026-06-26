@@ -59,6 +59,14 @@ const projects = [
     image: '/MyPortfolio/true-group-iam.jpg',
     link: 'https://iam.truegroup.com.sg',
   },
+  {
+    title: 'True Group Events',
+    description: 'A free and paid events booking platform for True Group, supporting operations in Singapore and overseas. Integrated with TruePay, it supports multiple ticket types, promotional campaigns, and barcode-based check-ins, delivering a seamless booking and attendance experience for members and guests.',
+    tech: ['.NET Core', 'C#', 'Blazor', 'Bootstrap', 'SQL Server', 'Entity Framework', 'LINQ', 'IIS', 'Model Oriented Design'],
+    category: 'backend',
+    image: '/MyPortfolio/true-group-events.jpg',
+    link: 'https://event.truegroup.com.sg',
+  },
 ];
 
 const filters = [
