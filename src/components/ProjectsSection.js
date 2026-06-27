@@ -84,21 +84,12 @@ const projects = [
   },
 ];
 
-const filters = [
-  { id: 'all', label: 'All' },
-  { id: 'frontend', label: 'Frontend' },
-  { id: 'backend', label: 'Backend' },
-];
-
 export function createProjectsSection() {
   const section = document.getElementById('projects');
   section.innerHTML = `
     <div class="container">
       <h2 class="section-title" style="text-align:center">Projects</h2>
       <p class="section-subtitle" style="text-align:center">Key projects spanning 17 years of enterprise development</p>
-      <div class="project-filters">
-        ${filters.map(f => `<button class="filter-btn ${f.id === 'all' ? 'active' : ''}" data-filter="${f.id}">${f.label}</button>`).join('')}
-      </div>
       <div class="projects-grid" id="projects-grid">
         ${projects.map(p => `
           <div class="project-card" data-category="${p.category}">
@@ -119,24 +110,6 @@ export function createProjectsSection() {
     </div>
   `;
 
-  const filterBtns = section.querySelectorAll('.filter-btn');
-  const cards = section.querySelectorAll('.project-card');
-
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const filter = btn.dataset.filter;
-      cards.forEach(card => {
-        if (filter === 'all' || card.dataset.category === filter) {
-          card.style.display = '';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    });
-  });
-
   const style = document.createElement('style');
   style.textContent = `
     .section-title {
@@ -153,28 +126,6 @@ export function createProjectsSection() {
       color: var(--color-sandy);
       margin-bottom: 2rem;
       font-weight: 300;
-    }
-    .project-filters {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
-    .filter-btn {
-      background: var(--color-dark);
-      border: 1px solid var(--color-crater);
-      color: var(--color-sandy);
-      padding: 0.5rem 1.5rem;
-      border-radius: 4px;
-      cursor: pointer;
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      transition: all 0.3s;
-    }
-    .filter-btn.active, .filter-btn:hover {
-      background: var(--color-rust);
-      color: var(--color-space);
-      border-color: var(--color-rust);
     }
     .projects-grid {
       display: grid;
