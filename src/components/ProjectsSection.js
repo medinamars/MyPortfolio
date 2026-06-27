@@ -74,6 +74,14 @@ const projects = [
     category: 'backend',
     image: '/MyPortfolio/true-group-sentinel.jpg',
   },
+  {
+    title: 'TruePay',
+    description: 'The core online payment platform for True Group, integrated with RedDot, Braintree, and Stripe to support secure and seamless transactions. Featuring signature validation, request time expiration, and industry-standard encryption, it ensures robust protection against fraud while maintaining the confidentiality and integrity of payment data.',
+    tech: ['ASP.NET', 'C#', 'RPC', 'SQL Server', 'Entity Framework', 'LINQ', 'IIS', 'Model Oriented Design', 'Payment Integration'],
+    category: 'backend',
+    image: '/MyPortfolio/truepay.jpg',
+    link: 'https://truepay.com.sg',
+  },
 ];
 
 const filters = [
