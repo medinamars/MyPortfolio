@@ -27,7 +27,6 @@ export function createExperienceSection() {
   section.innerHTML = `
     <div class="container">
       <h2 class="section-title" style="text-align:center">Experience</h2>
-      <p class="section-subtitle" style="text-align:center">17+ years of building software — from landing on Mars to the present</p>
       <div class="timeline">
         ${experience.map((exp, i) => `
           <div class="timeline-item ${i % 2 === 0 ? 'left' : 'right'}">
