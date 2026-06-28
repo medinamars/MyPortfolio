@@ -82,6 +82,14 @@ const projects = [
     image: '/MyPortfolio/truepay.jpg',
     link: 'https://truepay.com.sg',
   },
+  {
+    title: 'Password Generator',
+    description: 'Free, simple, fast, secure, and with strong data privacy in mind password generator.',
+    tech: ['HTML5', 'CSS', 'JavaScript', 'Hermes'],
+    category: 'frontend',
+    image: '/MyPortfolio/password-generator.jpg',
+    link: 'https://medinamars.github.io/MyPortfolio/PasswordGenerator/',
+  },
 ];
 
 export function createProjectsSection() {
