@@ -102,7 +102,7 @@ export function createProjectsSection() {
               <div class="project-tech">
                 ${p.tech.map(t => `<span class="tech-tag">${t}</span>`).join('')}
               </div>
-              ${p.links ? `<div class="project-links">${p.links.map(l => `<a href="${l.url}" class="project-link">${l.label} →</a>`).join('')}</div>` : p.link ? `<div class="project-links"><a href="${p.link}" class="project-link">View Project →</a></div>` : ''}
+              ${p.links ? `<div class="project-links">${p.links.map(l => `<a href="${l.url}" class="project-link" target="_blank" rel="noopener noreferrer">${l.label} →</a>`).join('')}</div>` : p.link ? `<div class="project-links"><a href="${p.link}" class="project-link" target="_blank" rel="noopener noreferrer">View Project →</a></div>` : ''}
             </div>
           </div>
         `).join('')}
