@@ -42,6 +42,14 @@ export function createAboutSection() {
             <p class="experience-company">Kean's Tech. Pte Ltd, Singapore</p>
             <p class="experience-desc">I was involved in hands-on back-end and front-end development, and assisted in the preparation and implementation of projects to ensure smooth and successful delivery.</p>
           </div>
+          <div class="experience-item">
+            <div class="experience-header">
+              <h3 class="experience-role">System Developer II</h3>
+              <span class="experience-date">Mar 2008 - Aug 2009</span>
+            </div>
+            <p class="experience-company">Compunova Technology Inc., Philippines</p>
+            <p class="experience-desc">I was involved in hands-on back-end and front-end development, supported project preparation and implementation, and evaluated potential solutions to resolve application issues and user queries effectively.</p>
+          </div>
           <div class="tech-stack">
             ${techStack.map(cat => `
               <div class="tech-group">
