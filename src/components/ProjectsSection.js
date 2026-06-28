@@ -2,7 +2,7 @@ const projects = [
   {
     title: 'TradeSmart Connect',
     description: 'Full-stack cloud solution at Russell A. Farrow — enhanced security, stability, and testability with optimized system performance and improved code coverage.',
-    tech: ['.NET 8', 'ASP.NET Boilerplate', 'Entity Framework', 'LINQ', 'Azure', 'Bootstrap', 'C#', 'SQL Server', 'Oracle'],
+    tech: ['.NET 8', 'ASP.NET Boilerplate', 'Entity Framework', 'LINQ', 'Azure', 'Bootstrap', 'C#', 'SQL Server', 'Oracle', 'xUnit'],
     category: 'backend',
     image: '/MyPortfolio/tradesmart-connect.jpg',
     link: 'https://tradesmartconnect.com',
@@ -54,7 +54,7 @@ const projects = [
   {
     title: 'True Group IAM',
     description: 'This system serves as the centralized identity and access management (IAM) platform for True Group employees, providing unified authentication and authorization across enterprise applications. It supports single sign-on (SSO), digital signature validation, and one-time password (OTP) verification to secure system access, while enabling centralized user provisioning, role-based access control, and audit logging.',
-    tech: ['.NET Core', 'C#', 'Blazor', 'Bootstrap', 'SQL Server', 'Entity Framework', 'LINQ', 'IIS', 'Model Oriented Design'],
+    tech: ['.NET Core', 'C#', 'Blazor', 'Bootstrap', 'SQL Server', 'Entity Framework', 'LINQ', 'IIS', 'Model Oriented Design', 'xUnit'],
     category: 'backend',
     image: '/MyPortfolio/true-group-iam.jpg',
     link: 'https://iam.truegroup.com.sg',
@@ -62,7 +62,7 @@ const projects = [
   {
     title: 'True Group Events',
     description: 'A free and paid events booking platform for True Group, supporting operations in Singapore and overseas. Integrated with TruePay, it supports multiple ticket types, promotional campaigns, and barcode-based check-ins, delivering a seamless booking and attendance experience for members and guests.',
-    tech: ['.NET Core', 'C#', 'Blazor', 'Bootstrap', 'SQL Server', 'Entity Framework', 'LINQ', 'IIS', 'Model Oriented Design'],
+    tech: ['.NET Core', 'C#', 'Blazor', 'Bootstrap', 'SQL Server', 'Entity Framework', 'LINQ', 'IIS', 'Model Oriented Design', 'xUnit'],
     category: 'backend',
     image: '/MyPortfolio/true-group-events.jpg',
     link: 'https://event.truegroup.com.sg',
