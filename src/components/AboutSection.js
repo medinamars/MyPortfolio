@@ -34,6 +34,14 @@ export function createAboutSection() {
             <p class="experience-company">Self Employed, Philippines</p>
             <p class="experience-desc">I independently handled the full lifecycle of complex technical client projects, including pre-sales, planning, execution, and delivery. I was also hands-on in both back-end and front-end development, as well as ongoing support and maintenance of deployed products and solutions, ensuring stability and long-term success.</p>
           </div>
+          <div class="experience-item">
+            <div class="experience-header">
+              <h3 class="experience-role">Application Programmer</h3>
+              <span class="experience-date">Oct 2010 - Nov 2010</span>
+            </div>
+            <p class="experience-company">Kean's Tech. Pte Ltd, Singapore</p>
+            <p class="experience-desc">I was involved in hands-on back-end and front-end development, and assisted in the preparation and implementation of projects to ensure smooth and successful delivery.</p>
+          </div>
           <div class="tech-stack">
             ${techStack.map(cat => `
               <div class="tech-group">
