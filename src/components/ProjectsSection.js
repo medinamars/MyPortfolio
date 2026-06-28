@@ -2,7 +2,7 @@ const projects = [
   {
     title: 'TradeSmart Connect',
     description: 'Full-stack cloud solution at Russell A. Farrow — enhanced security, stability, and testability with optimized system performance and improved code coverage.',
-    tech: ['.NET 8', 'ASP.NET Boilerplate', 'Entity Framework', 'LINQ', 'Azure', 'Bootstrap', 'C#', 'SQL Server', 'Oracle', 'xUnit'],
+    tech: ['.NET 8', 'ASP.NET Boilerplate', 'Entity Framework', 'LINQ', 'Azure', 'Bootstrap', 'C#', 'SQL Server', 'Oracle', 'xUnit', 'SignalR', 'Postman'],
     category: 'backend',
     image: '/MyPortfolio/tradesmart-connect.jpg',
     link: 'https://tradesmartconnect.com',
@@ -10,7 +10,7 @@ const projects = [
   {
     title: 'CBSS (Class Booking & Scheduling System)',
     description: 'Handling tens of thousands of True Group customers while supporting the company\'s front desk operations. Successfully fulfilling fitness class bookings since 2013 with high availability, security, and responsiveness.',
-    tech: ['ASP.NET', 'C#', 'Web Forms', 'SQL Server', 'LINQ', 'IIS', 'Model Oriented Design'],
+    tech: ['ASP.NET', 'C#', 'Web Forms', 'SQL Server', 'LINQ', 'IIS', 'Model Oriented Design', 'Postman'],
     category: 'backend',
     image: '/MyPortfolio/cbss.jpg',
     link: 'https://trueclassbooking.com.sg',
@@ -54,7 +54,7 @@ const projects = [
   {
     title: 'True Group IAM',
     description: 'This system serves as the centralized identity and access management (IAM) platform for True Group employees, providing unified authentication and authorization across enterprise applications. It supports single sign-on (SSO), digital signature validation, and one-time password (OTP) verification to secure system access, while enabling centralized user provisioning, role-based access control, and audit logging.',
-    tech: ['.NET Core', 'C#', 'Blazor', 'Bootstrap', 'SQL Server', 'Entity Framework', 'LINQ', 'IIS', 'Model Oriented Design', 'xUnit'],
+    tech: ['.NET Core', 'C#', 'Blazor', 'Bootstrap', 'SQL Server', 'Entity Framework', 'LINQ', 'IIS', 'Model Oriented Design', 'xUnit', 'SignalR', 'Postman'],
     category: 'backend',
     image: '/MyPortfolio/true-group-iam.jpg',
     link: 'https://iam.truegroup.com.sg',
