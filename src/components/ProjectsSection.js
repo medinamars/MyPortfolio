@@ -169,7 +169,7 @@ export function createProjectsSection() {
       margin-bottom: 1rem;
     }
     .project-tech {
-      display: flex;
+      display: none;
       flex-wrap: wrap;
       gap: 0.4rem;
       margin-bottom: 1rem;
