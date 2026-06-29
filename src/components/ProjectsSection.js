@@ -97,7 +97,6 @@ export function createProjectsSection() {
   section.innerHTML = `
     <div class="container">
       <h2 class="section-title" style="text-align:center">Projects</h2>
-      <p class="section-subtitle" style="text-align:center">Key projects spanning 17 years of enterprise development</p>
       <div class="projects-grid" id="projects-grid">
         ${projects.map(p => `
           <div class="project-card" data-category="${p.category}">
