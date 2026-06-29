@@ -25,14 +25,14 @@ const experience = [
     role: 'Freelance System Developer',
     company: 'Self Employed, Philippines',
     description: 'I independently handled the full lifecycle of complex technical client projects, including pre-sales, planning, execution, and delivery. I was also hands-on in both back-end and front-end development, as well as ongoing support and maintenance of deployed products and solutions, ensuring stability and long-term success.',
-    skills: [],
+    skills: ['PHP', 'MySQL'],
   },
   {
     year: 'Oct 2010 — Nov 2010',
     role: 'Application Programmer',
     company: "Kean's Tech. Pte Ltd, Singapore",
     description: 'I was involved in hands-on back-end and front-end development, and assisted in the preparation and implementation of projects to ensure smooth and successful delivery.',
-    skills: [],
+    skills: ['PHP', 'MySQL'],
   },
   {
     year: 'Mar 2008 — Aug 2009',
