@@ -20,6 +20,34 @@ const experience = [
     description: 'Led the company\'s biggest projects from pre-sale through deployment and maintenance. Managed a team of engineers across Singapore and China. Translated client business requirements into technical specs, UI mock-ups, and prototypes.',
     skills: ['.NET', 'PHP', 'MySQL', 'Team Leadership', 'Agile'],
   },
+  {
+    year: 'Sep 2009 — May 2011',
+    role: 'Freelance System Developer',
+    company: 'Self Employed, Philippines',
+    description: 'I independently handled the full lifecycle of complex technical client projects, including pre-sales, planning, execution, and delivery. I was also hands-on in both back-end and front-end development, as well as ongoing support and maintenance of deployed products and solutions, ensuring stability and long-term success.',
+    skills: [],
+  },
+  {
+    year: 'Oct 2010 — Nov 2010',
+    role: 'Application Programmer',
+    company: "Kean's Tech. Pte Ltd, Singapore",
+    description: 'I was involved in hands-on back-end and front-end development, and assisted in the preparation and implementation of projects to ensure smooth and successful delivery.',
+    skills: [],
+  },
+  {
+    year: 'Mar 2008 — Aug 2009',
+    role: 'System Developer II',
+    company: 'Compunova Technology Inc., Philippines',
+    description: 'I was involved in hands-on back-end and front-end development, supported project preparation and implementation, and evaluated potential solutions to resolve application issues and user queries effectively.',
+    skills: [],
+  },
+  {
+    year: 'May 2007 — Feb 2008',
+    role: 'Programmer / IT Staff',
+    company: 'INFARMCO, Philippines',
+    description: 'I was involved in hands-on back-end and front-end development, assisted in project preparation and implementation, and handled hardware and software deployment as well as ongoing maintenance.',
+    skills: [],
+  },
 ];
 
 export function createExperienceSection() {

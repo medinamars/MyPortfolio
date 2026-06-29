@@ -25,39 +25,6 @@ export function createAboutSection() {
             enterprise platforms processing hundreds of millions in annual transactions
             to cloud-native solutions designed for scalability and performance.
           </p>
-          <h2 class="section-title">Experience</h2>
-          <div class="experience-item">
-            <div class="experience-header">
-              <h3 class="experience-role">Freelance System Developer</h3>
-              <span class="experience-date">Sep 2009 - May 2011</span>
-            </div>
-            <p class="experience-company">Self Employed, Philippines</p>
-            <p class="experience-desc">I independently handled the full lifecycle of complex technical client projects, including pre-sales, planning, execution, and delivery. I was also hands-on in both back-end and front-end development, as well as ongoing support and maintenance of deployed products and solutions, ensuring stability and long-term success.</p>
-          </div>
-          <div class="experience-item">
-            <div class="experience-header">
-              <h3 class="experience-role">Application Programmer</h3>
-              <span class="experience-date">Oct 2010 - Nov 2010</span>
-            </div>
-            <p class="experience-company">Kean's Tech. Pte Ltd, Singapore</p>
-            <p class="experience-desc">I was involved in hands-on back-end and front-end development, and assisted in the preparation and implementation of projects to ensure smooth and successful delivery.</p>
-          </div>
-          <div class="experience-item">
-            <div class="experience-header">
-              <h3 class="experience-role">System Developer II</h3>
-              <span class="experience-date">Mar 2008 - Aug 2009</span>
-            </div>
-            <p class="experience-company">Compunova Technology Inc., Philippines</p>
-            <p class="experience-desc">I was involved in hands-on back-end and front-end development, supported project preparation and implementation, and evaluated potential solutions to resolve application issues and user queries effectively.</p>
-          </div>
-          <div class="experience-item">
-            <div class="experience-header">
-              <h3 class="experience-role">Programmer / IT Staff</h3>
-              <span class="experience-date">May 2007 - Feb 2008</span>
-            </div>
-            <p class="experience-company">INFARMCO, Philippines</p>
-            <p class="experience-desc">I was involved in hands-on back-end and front-end development, assisted in project preparation and implementation, and handled hardware and software deployment as well as ongoing maintenance.</p>
-          </div>
           <div class="tech-stack">
             ${techStack.map(cat => `
               <div class="tech-group">
@@ -113,41 +80,6 @@ export function createAboutSection() {
       margin-bottom: 1rem;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-    }
-    .experience-item {
-      margin-bottom: 2rem;
-    }
-    .experience-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 0.25rem;
-    }
-    .experience-role {
-      font-family: var(--font-heading);
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: var(--color-atmosphere);
-      margin: 0;
-    }
-    .experience-date {
-      font-size: 0.9rem;
-      color: var(--color-terracotta);
-      font-family: var(--font-mono);
-      white-space: nowrap;
-    }
-    .experience-company {
-      font-size: 1rem;
-      color: var(--color-sandy);
-      margin: 0 0 0.5rem;
-      font-style: italic;
-    }
-    .experience-desc {
-      color: var(--color-star-dim);
-      line-height: 1.8;
-      margin: 0;
     }
   `;
   section.appendChild(style);
