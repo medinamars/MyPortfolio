@@ -64,9 +64,6 @@ export function createExperienceSection() {
               <h3 class="timeline-role">${exp.role}</h3>
               <span class="timeline-company">${exp.company}</span>
               <p class="timeline-desc">${exp.description}</p>
-              <div class="timeline-skills">
-                ${exp.skills.map(s => `<span class="tech-tag">${s}</span>`).join('')}
-              </div>
             </div>
           </div>
         `).join('')}
@@ -90,15 +87,6 @@ export function createExperienceSection() {
       color: var(--color-sandy);
       margin-bottom: 2rem;
       font-weight: 300;
-    }
-    .tech-tag {
-      background: var(--color-dark);
-      border: 1px solid var(--color-crater);
-      padding: 0.3rem 0.8rem;
-      border-radius: 4px;
-      font-size: 0.8rem;
-      color: var(--color-sandy);
-      font-family: var(--font-mono);
     }
     .timeline {
       position: relative;
@@ -164,8 +152,6 @@ export function createExperienceSection() {
       line-height: 1.6;
       margin: 0.75rem 0;
     }
-    .timeline-skills { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-    .timeline-item.right .timeline-skills { justify-content: flex-start; }
     @media (max-width: 768px) {
       .timeline::before { left: 20px; }
       .timeline-item { width: 100%; left: 0 !important; padding-left: 50px; text-align: left !important; }
