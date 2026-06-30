@@ -33,12 +33,12 @@ export function createContactSection() {
           <span class="contact-value">@medina_mars</span>
         </a>
         <a href="mailto:medinamars@gmail.com" class="contact-card">
-          <span class="contact-icon">📧</span>
+          <span class="contact-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="32" height="32"><path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z"/><path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z"/></svg></span>
           <span class="contact-label">Email</span>
           <span class="contact-value">medinamars@gmail.com</span>
         </a>
         <a href="tel:+16474730918" class="contact-card">
-          <span class="contact-icon">📱</span>
+          <span class="contact-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="32" height="32"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></span>
           <span class="contact-label">Phone</span>
           <span class="contact-value">647 473 0918</span>
         </a>
