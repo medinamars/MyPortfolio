@@ -5,7 +5,7 @@ const techStack = [
   { category: 'Web & Mobile', skills: ['HTML5', 'CSS3', 'Bootstrap', 'SPA', 'RESTful APIs', 'RPC', 'SignalR', 'Firebase', 'iOS and Android App Development', 'App Store Connect', 'Google Play Console', 'Payment Integrations (Braintree, Stripe, PayPal, RedDot ...)'] },
   { category: 'Architecture & QA', skills: ['SOLID', 'OOP', 'TDD', 'SaaS', 'xUnit', 'NUnit', 'Agile', 'Scrum'] },
   { category: 'AI & ML', skills: ['Claude', 'LM Studio', 'Llama.cpp', 'LiteLLM', 'Opus', 'Qwen', 'Gemma', 'Gemini', 'Copilot', 'OpenClaw', 'Hermes', 'Microsoft ML'] },
-  { category: 'Dev & Design Tools', skills: ['Visual Studio', 'VS Code', 'Android Studio', 'Xcode', 'Postman', 'Swagger', 'JIRA', 'GitHub', 'Photoshop'] },
+  { category: 'Dev & Design Tools', skills: ['Visual Studio', 'VS Code', 'NetBeans', 'Android Studio', 'Xcode', 'Postman', 'Swagger', 'JIRA', 'GitHub', 'Photoshop'] },
 ];
 
 export function createAboutSection() {
