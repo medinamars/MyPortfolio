@@ -41,13 +41,3 @@ section {
   z-index: var(--z-canvas);
   pointer-events: none;
 }
-
-@media (max-width: 768px) {
-  section {
-    min-height: auto;
-    padding: 3rem 1rem;
-  }
-  #home {
-    min-height: 100vh;
-  }
-}
