@@ -4,7 +4,7 @@ const techStack = [
   { category: 'Cloud & DevOps', skills: ['Azure Functions', 'Azure Blob Storage', 'Azure Application Insights', 'Azure DevOps', 'Azure Key Vault', 'IIS', 'Apache', 'Nginx', 'HAProxy', 'Git', 'YAML', 'Hangfire', 'Docker'] },
   { category: 'Web & Mobile', skills: ['HTML5', 'CSS3', 'Bootstrap', 'SPA', 'RESTful APIs', 'RPC', 'SignalR', 'Firebase', 'iOS and Android App Development', 'App Store Connect', 'Google Play Console', 'Payment Integrations (Braintree, Stripe, PayPal, RedDot ...)'] },
   { category: 'Architecture & QA', skills: ['SOLID', 'OOP', 'TDD', 'SaaS', 'xUnit', 'NUnit', 'Agile', 'Scrum'] },
-  { category: 'AI & ML', skills: ['Claude', 'LM Studio', 'Llama.cpp', 'LiteLLM', 'vLLM', 'Opus', 'Qwen', 'Gemma', 'Gemini', 'Copilot', 'OpenClaw', 'Hermes', 'Microsoft ML'] },
+  { category: 'AI & ML', skills: ['Claude', 'LM Studio', 'Llama.cpp', 'LiteLLM', 'vLLM', 'Opus', 'Qwen', 'Gemma', 'Gemini', 'GitHub Copilot', 'OpenClaw', 'Hermes', 'Microsoft ML'] },
   { category: 'Dev & Design Tools', skills: ['Visual Studio', 'VS Code', 'NetBeans', 'Android Studio', 'Xcode', 'Postman', 'ACP Client', 'Swagger', 'JIRA', 'GitHub', 'Photoshop'] },
 ];
 
