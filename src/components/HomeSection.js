@@ -8,9 +8,8 @@ export function createHomeSection() {
           <h1 class="section-title">Mars Medina</h1>
           <p class="section-subtitle">Full-Stack Developer for more than 17 years</p>
           <p class="home-bio">
-            17 years building mission-critical online & mobile systems.
-            From full-stack development to system architecture design —
-            I turn complex business requirements into scalable, reliable solutions.
+            I love creating scalable applications that combine thoughtful design,
+            clean architecture, and exceptional user experiences.
           </p>
           <a href="#projects" class="btn-primary">Explore My Work</a>
         </div>
