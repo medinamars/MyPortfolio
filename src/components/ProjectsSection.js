@@ -84,7 +84,7 @@ const projects = [
   },
   {
     title: 'Password Generator',
-    description: 'Free, simple, fast, and secure password generator.',
+    description: 'Free, simple, fast, secure, and user-friendly password generator.',
     tech: ['HTML5', 'CSS', 'JavaScript', 'Hermes'],
     category: 'frontend',
     image: '/MyPortfolio/password-generator.jpg',
