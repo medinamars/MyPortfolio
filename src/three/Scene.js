@@ -3,6 +3,7 @@ import { MarsPlanet } from './MarsPlanet.js';
 import { StarField } from './StarField.js';
 import { Atmosphere } from './Atmosphere.js';
 import { PassingCelestials } from './PassingCelestials.js';
+import { Spaceship } from './Spaceship.js';
 
 export class MarsScene {
   constructor(canvasId) {
@@ -39,6 +40,9 @@ export class MarsScene {
 
     this.celestials = new PassingCelestials();
     this.celestials.add(this.scene, this.camera);
+
+    this.spaceship = new Spaceship(3.2);
+    this.spaceship.add(this.scene);
 
     this.setupLighting();
     window.addEventListener('resize', () => this.onResize());
@@ -79,6 +83,7 @@ export class MarsScene {
     this.camera.lookAt(0, 0, 0);
 
     this.celestials.update(deltaTime);
+    this.spaceship.update(deltaTime);
 
     this.renderer.render(this.scene, this.camera);
   }
