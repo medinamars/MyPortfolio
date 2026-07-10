@@ -193,6 +193,48 @@ export class Spaceship {
       glow.position.z = 0.006;
       this.group.add(glow);
       this._engineGlows.push(glow);
+
+      // Afterburner plume — elongated tapered flame
+      const plumeShape = new THREE.Shape();
+      plumeShape.moveTo(cx - 0.02, -2.4);
+      plumeShape.lineTo(cx + 0.02, -2.4);
+      plumeShape.lineTo(cx + 0.06, -3.0 + Math.random() * 0.3);
+      plumeShape.lineTo(cx + 0.01, -3.2 + Math.random() * 0.3);
+      plumeShape.lineTo(cx - 0.01, -3.2 + Math.random() * 0.3);
+      plumeShape.lineTo(cx - 0.06, -3.0 + Math.random() * 0.3);
+      plumeShape.closePath();
+      const plumeMat = new THREE.MeshStandardMaterial({
+        color: 0xFFAA00, roughness: 0.1,
+        emissive: 0xFF6600, emissiveIntensity: 1.2,
+        side: THREE.DoubleSide,
+        transparent: true, opacity: 0.85,
+        depthWrite: false,
+      });
+      const plumeGeo = new THREE.ShapeGeometry(plumeShape, 4);
+      const plume = new THREE.Mesh(plumeGeo, plumeMat);
+      plume.position.z = 0.004;
+      this.group.add(plume);
+      this._engineGlows.push(plume);
+
+      // Inner bright core
+      const coreShape = new THREE.Shape();
+      coreShape.moveTo(cx - 0.01, -2.38);
+      coreShape.lineTo(cx + 0.01, -2.38);
+      coreShape.lineTo(cx + 0.03, -2.7 + Math.random() * 0.2);
+      coreShape.lineTo(cx - 0.03, -2.7 + Math.random() * 0.2);
+      coreShape.closePath();
+      const coreMat = new THREE.MeshStandardMaterial({
+        color: 0xFFFFCC, roughness: 0.05,
+        emissive: 0xFFFF88, emissiveIntensity: 1.5,
+        side: THREE.DoubleSide,
+        transparent: true, opacity: 0.9,
+        depthWrite: false,
+      });
+      const coreGeo = new THREE.ShapeGeometry(coreShape, 4);
+      const core = new THREE.Mesh(coreGeo, coreMat);
+      core.position.z = 0.005;
+      this.group.add(core);
+      this._engineGlows.push(core);
     }
 
     // ── Center engine detail line ──
