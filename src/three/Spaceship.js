@@ -124,8 +124,10 @@ export class Spaceship {
   /* ── Velocity & orientation ── */
 
   _setRandomVelocity(speed) {
-    // Pick a random angle for the direction
-    const angle = Math.random() * Math.PI * 2;
+    // Pick a random angle, but only deviate ±30° from current heading
+    const currentAngle = Math.atan2(this.velocity.y, this.velocity.x);
+    const deviation = (Math.random() - 0.5) * (Math.PI / 3); // ±30°
+    const angle = currentAngle + deviation;
     const s = speed || (0.08 + Math.random() * 0.15);
     this.velocity = new THREE.Vector3(Math.cos(angle) * s, Math.sin(angle) * s, 0);
     this._orientToVelocity();
@@ -161,7 +163,7 @@ export class Spaceship {
 
     // Pick a direction that points roughly toward the center, then add randomness
     const towardCenter = new THREE.Vector2(-sx, -sy).normalize();
-    const angle = Math.atan2(towardCenter.y, towardCenter.x) + (Math.random() - 0.5) * 1.2; // ±~34° jitter
+    const angle = Math.atan2(towardCenter.y, towardCenter.x) + (Math.random() - 0.5) * (Math.PI / 3); // ±30° jitter
     const speed = 0.08 + Math.random() * 0.15;
     this.velocity = new THREE.Vector3(Math.cos(angle) * speed, Math.sin(angle) * speed, 0);
 
