@@ -7,7 +7,7 @@ import * as THREE from 'three';
  * Spawns from a random screen edge, changes direction ±30° mid-flight.
  */
 
-const SCALE = 0.05;
+const SCALE = 0.1;
 
 export class Spaceship {
   constructor() {
