@@ -88,7 +88,7 @@ export class Spaceship {
 
       // Wing body
       const wing = new THREE.Mesh(
-        new THREE.BoxGeometry(1.4, 0.9, 0.04),
+        new THREE.BoxGeometry(1.4, 0.9, 0.08),
         white
       );
       // Rotate the box so it sweeps back: the long edge points back and out
@@ -214,15 +214,21 @@ export class Spaceship {
   }
 
   _orientToVelocity() {
-    const dir = this.velocity.clone().normalize();
+    const dir = this.velocity.clone();
     if (dir.length() < 0.001) return;
-    const quat = new THREE.Quaternion();
-    if (Math.abs(dir.y) > 0.999) {
-      quat.setFromUnitVectors(new THREE.Vector3(0, 0, 1), dir);
-    } else {
-      quat.setFromUnitVectors(this._worldUp, dir);
-    }
-    this.group.quaternion.copy(quat);
+
+    // Flatten velocity to XY plane for heading
+    const forward = new THREE.Vector3(dir.x, dir.y, 0).normalize();
+    // Shuttle's top (+Z local) faces camera (+Z world) so wings stay visible
+    const up = new THREE.Vector3(0, 0, 1);
+    // Right = up × forward
+    const right = new THREE.Vector3().crossVectors(up, forward).normalize();
+    // Re-orthogonalize
+    const trueUp = new THREE.Vector3().crossVectors(forward, right);
+
+    const m = new THREE.Matrix4();
+    m.makeBasis(right, forward, trueUp);
+    this.group.quaternion.setFromRotationMatrix(m);
   }
 
   /* ── Spawning ── */
