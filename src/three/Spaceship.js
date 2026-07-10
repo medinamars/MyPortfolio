@@ -131,26 +131,26 @@ export class Spaceship {
       case 0: // top → going down
         sx = (Math.random() - 0.5) * 8;
         sy = margin;
-        vx = (Math.random() - 0.5) * 0.35;
-        vy = -(0.15 + Math.random() * 0.3);
+        vx = (Math.random() - 0.5) * 0.2;
+        vy = -(0.08 + Math.random() * 0.15);
         break;
       case 1: // bottom → going up
         sx = (Math.random() - 0.5) * 8;
         sy = -margin;
-        vx = (Math.random() - 0.5) * 0.35;
-        vy = 0.15 + Math.random() * 0.3;
+        vx = (Math.random() - 0.5) * 0.2;
+        vy = 0.08 + Math.random() * 0.15;
         break;
       case 2: // right → going left
         sx = margin;
         sy = (Math.random() - 0.5) * 6;
-        vx = -(0.15 + Math.random() * 0.3);
-        vy = (Math.random() - 0.5) * 0.35;
+        vx = -(0.08 + Math.random() * 0.15);
+        vy = (Math.random() - 0.5) * 0.2;
         break;
       case 3: // left → going right
         sx = -margin;
         sy = (Math.random() - 0.5) * 6;
-        vx = 0.15 + Math.random() * 0.3;
-        vy = (Math.random() - 0.5) * 0.35;
+        vx = 0.08 + Math.random() * 0.15;
+        vy = (Math.random() - 0.5) * 0.2;
         break;
     }
 

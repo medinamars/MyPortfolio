@@ -76,7 +76,7 @@ export class MarsScene {
 
   animate() {
     requestAnimationFrame(() => this.animate());
-    const deltaTime = this.clock.getDelta();
+    const deltaTime = Math.min(this.clock.getDelta(), 0.1); // cap to prevent teleporting on tab refocus
 
     this.mars.update(this.scrollProgress);
     this.camera.position.y = -this.scrollProgress * 2;
