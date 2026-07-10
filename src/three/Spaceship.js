@@ -124,33 +124,33 @@ export class Spaceship {
   _randomSpawn() {
     // Pick a random edge: 0=top, 1=bottom, 2=right, 3=left
     const edge = Math.floor(Math.random() * 4);
-    const margin = 8;
+    const margin = 7.5;
     let sx, sy, vx, vy;
 
     switch (edge) {
       case 0: // top → going down
-        sx = (Math.random() - 0.5) * 10;
+        sx = (Math.random() - 0.5) * 8;
         sy = margin;
-        vx = (Math.random() - 0.5) * 0.4;
-        vy = -(0.3 + Math.random() * 0.5);
+        vx = (Math.random() - 0.5) * 0.35;
+        vy = -(0.15 + Math.random() * 0.3);
         break;
       case 1: // bottom → going up
-        sx = (Math.random() - 0.5) * 10;
+        sx = (Math.random() - 0.5) * 8;
         sy = -margin;
-        vx = (Math.random() - 0.5) * 0.4;
-        vy = 0.3 + Math.random() * 0.5;
+        vx = (Math.random() - 0.5) * 0.35;
+        vy = 0.15 + Math.random() * 0.3;
         break;
       case 2: // right → going left
         sx = margin;
-        sy = (Math.random() - 0.5) * 8;
-        vx = -(0.3 + Math.random() * 0.5);
-        vy = (Math.random() - 0.5) * 0.4;
+        sy = (Math.random() - 0.5) * 6;
+        vx = -(0.15 + Math.random() * 0.3);
+        vy = (Math.random() - 0.5) * 0.35;
         break;
       case 3: // left → going right
         sx = -margin;
-        sy = (Math.random() - 0.5) * 8;
-        vx = 0.3 + Math.random() * 0.5;
-        vy = (Math.random() - 0.5) * 0.4;
+        sy = (Math.random() - 0.5) * 6;
+        vx = 0.15 + Math.random() * 0.3;
+        vy = (Math.random() - 0.5) * 0.35;
         break;
     }
 
@@ -188,7 +188,7 @@ export class Spaceship {
     }
 
     // Respawn when off-screen
-    const bound = 9;
+    const bound = 7;
     if (
       this.position.x > bound || this.position.x < -bound ||
       this.position.y > bound || this.position.y < -bound
