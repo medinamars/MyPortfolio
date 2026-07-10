@@ -1,177 +1,182 @@
 import * as THREE from 'three';
 
 /**
- * Falcon Heavy — three-core rocket silhouette drifting upward past Mars.
- * Smaller, more accurate proportions, moving vertically.
+ * Falcon Heavy — tiny three-core rocket drifting across the scene.        │
+ * Spawns from a random screen edge and flies in a random direction.       │
+ * When it exits the viewport it respawns from a new edge.                 │
  */
 
-const SCALE = 0.25; // overall size multiplier
+const SCALE = 0.08; // tiny
 
 export class Spaceship {
   constructor() {
     this.group = new THREE.Group();
     this.group.scale.setScalar(SCALE);
 
-    // Vertical trajectory — drifts upward, respawns at bottom
-    this.position = new THREE.Vector3(3, -6, -1.5);
-    this.velocity = new THREE.Vector3(0, 0.35, 0);
-    this.respawnY = -6;
-    this.despawnY = 8;
-
     this._engineGlows = [];
     this._engineLights = [];
+    this._worldUp = new THREE.Vector3(0, 1, 0);
 
     this._buildRocket();
+    this._randomSpawn();
   }
+
+  /* ── Falcon Heavy geometry ── */
 
   _buildRocket() {
     const white = new THREE.MeshStandardMaterial({ color: 0xF4F4F4, roughness: 0.35, metalness: 0.25 });
     const dark  = new THREE.MeshStandardMaterial({ color: 0x2A2A2E, roughness: 0.5, metalness: 0.45 });
     const orange= new THREE.MeshStandardMaterial({ color: 0xE05020, roughness: 0.35, metalness: 0.3 });
 
-    const coreRadius = 0.14;
-    const coreHeight = 2.0;
+    const cr = 0.14; // core radius
+    const ch = 2.0;  // core height
+    const bh = 1.4;  // booster height
+    const ox = 0.22; // booster offset
 
-    // ──────────────── Center Core (tall) ────────────────
-    const coreGeo = new THREE.CylinderGeometry(coreRadius, coreRadius, coreHeight, 20);
-    const core = new THREE.Mesh(coreGeo, white);
-    core.position.y = 0;
-    this.group.add(core);
+    // Center core
+    this.group.add(new THREE.Mesh(new THREE.CylinderGeometry(cr, cr, ch, 20), white));
 
-    // Center engine section (octaweb — flared base)
-    const octaGeo = new THREE.CylinderGeometry(0.17, 0.14, 0.25, 20);
-    const octa = new THREE.Mesh(octaGeo, dark);
-    octa.position.y = -(coreHeight / 2) - 0.05;
+    // Center octaweb
+    const octa = new THREE.Mesh(new THREE.CylinderGeometry(0.17, 0.14, 0.25, 20), dark);
+    octa.position.y = -(ch / 2) - 0.05;
     this.group.add(octa);
 
-    // Engine nozzles for center core (small cylinders)
-    for (let i = 0; i < 5; i++) {
-      const angle = (i / 5) * Math.PI * 2;
-      const r = 0.06;
-      const nozzleGeo = new THREE.CylinderGeometry(0.02, 0.025, 0.08, 8);
-      const nozzle = new THREE.Mesh(nozzleGeo, dark);
-      nozzle.position.set(
-        Math.cos(angle) * r,
-        -(coreHeight / 2) - 0.2,
-        Math.sin(angle) * r,
-      );
-      this.group.add(nozzle);
-    }
-    // Center nozzle
-    const centerNozzle = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.025, 0.03, 0.08, 8), dark);
-    centerNozzle.position.set(0, -(coreHeight / 2) - 0.2, 0);
-    this.group.add(centerNozzle);
+    // Center engine nozzles
+    this._addNozzles(0, -(ch / 2) - 0.22, 0.06, 5, 0.025);
+    const cn = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.03, 0.08, 8), dark);
+    cn.position.set(0, -(ch / 2) - 0.22, 0);
+    this.group.add(cn);
 
-    // ──────────────── Side Boosters (shorter) ────────────────
-    const boosterHeight = 1.4;
-    const boosterGeo = new THREE.CylinderGeometry(coreRadius, coreRadius, boosterHeight, 20);
-    const offsetX = 0.22;
+    // Side boosters
+    for (const bx of [-ox, ox]) {
+      const b = new THREE.Mesh(new THREE.CylinderGeometry(cr, cr, bh, 20), white);
+      b.position.set(bx, -0.3, 0);
+      this.group.add(b);
 
-    // Left booster
-    const leftBooster = new THREE.Mesh(boosterGeo, white);
-    leftBooster.position.set(-offsetX, -0.3, 0);
-    this.group.add(leftBooster);
+      const bo = new THREE.Mesh(new THREE.CylinderGeometry(0.17, 0.14, 0.2, 20), dark);
+      bo.position.set(bx, -(bh / 2) - 0.35, 0);
+      this.group.add(bo);
 
-    const leftOcta = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.17, 0.14, 0.2, 20), dark);
-    leftOcta.position.set(-offsetX, -(boosterHeight / 2) - 0.35, 0);
-    this.group.add(leftOcta);
-
-    // Right booster
-    const rightBooster = new THREE.Mesh(boosterGeo, white);
-    rightBooster.position.set(offsetX, -0.3, 0);
-    this.group.add(rightBooster);
-
-    const rightOcta = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.17, 0.14, 0.2, 20), dark);
-    rightOcta.position.set(offsetX, -(boosterHeight / 2) - 0.35, 0);
-    this.group.add(rightOcta);
-
-    // Booster engine nozzles
-    for (const bx of [-offsetX, offsetX]) {
-      for (let i = 0; i < 4; i++) {
-        const angle = (i / 4) * Math.PI * 2;
-        const nozzle = new THREE.Mesh(
-          new THREE.CylinderGeometry(0.018, 0.022, 0.06, 8), dark);
-        nozzle.position.set(
-          bx + Math.cos(angle) * 0.05,
-          -1.1,
-          Math.sin(angle) * 0.05,
-        );
-        this.group.add(nozzle);
-      }
+      this._addNozzles(bx, -1.12, 0.05, 4, 0.022);
     }
 
-    // ──────────────── Connecting struts between cores ────────────────
+    // Connecting struts
     for (const y of [0.35, -0.15, -0.65]) {
-      const strutGeo = new THREE.CylinderGeometry(0.015, 0.015, offsetX * 2 - 0.05, 4);
-      strutGeo.rotateZ(Math.PI / 2);
-      const strut = new THREE.Mesh(strutGeo, dark);
-      strut.position.set(0, y, 0);
-      this.group.add(strut);
+      const sg = new THREE.CylinderGeometry(0.015, 0.015, ox * 2 - 0.05, 4);
+      sg.rotateZ(Math.PI / 2);
+      const s = new THREE.Mesh(sg, dark);
+      s.position.set(0, y, 0);
+      this.group.add(s);
     }
 
-    // ──────────────── Interstage (black band) ────────────────
-    const interGeo = new THREE.CylinderGeometry(coreRadius + 0.01, coreRadius + 0.01, 0.2, 20);
-    const inter = new THREE.Mesh(interGeo, dark);
-    inter.position.y = coreHeight / 2 - 0.3;
+    // Interstage
+    const inter = new THREE.Mesh(new THREE.CylinderGeometry(cr + 0.01, cr + 0.01, 0.2, 20), dark);
+    inter.position.y = ch / 2 - 0.3;
     this.group.add(inter);
 
-    // ──────────────── Payload Fairing ────────────────
-    // Lower fairing (cylinder)
-    const fairingLowerGeo = new THREE.CylinderGeometry(0.15, 0.15, 0.35, 20);
-    const fairingLower = new THREE.Mesh(fairingLowerGeo, white);
-    fairingLower.position.y = coreHeight / 2 + 0.1;
-    this.group.add(fairingLower);
+    // Fairing
+    const fl = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.15, 0.35, 20), white);
+    fl.position.y = ch / 2 + 0.1;
+    this.group.add(fl);
 
-    // Upper fairing (cone tapering to tip)
-    const fairingUpperGeo = new THREE.CylinderGeometry(0.05, 0.15, 0.55, 20);
-    const fairingUpper = new THREE.Mesh(fairingUpperGeo, white);
-    fairingUpper.position.y = coreHeight / 2 + 0.55;
-    this.group.add(fairingUpper);
+    const fu = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.15, 0.55, 20), white);
+    fu.position.y = ch / 2 + 0.55;
+    this.group.add(fu);
 
-    // Fairing tip
-    const tipGeo = new THREE.ConeGeometry(0.05, 0.1, 12);
-    const tip = new THREE.Mesh(tipGeo, orange);
-    tip.position.y = coreHeight / 2 + 0.87;
+    const tip = new THREE.Mesh(new THREE.ConeGeometry(0.05, 0.1, 12), orange);
+    tip.position.y = ch / 2 + 0.87;
     this.group.add(tip);
 
-    // ──────────────── Engine glows ────────────────
-    this._addGlow(0, -(coreHeight / 2) - 0.28, 0.06);
-    this._addGlow(-offsetX, -1.2, 0.04);
-    this._addGlow(offsetX, -1.2, 0.04);
+    // Engine glows
+    this._addGlow(0, -(ch / 2) - 0.3, 0.06);
+    this._addGlow(-ox, -1.2, 0.04);
+    this._addGlow(ox, -1.2, 0.04);
+  }
 
-    // Rocket points upward (it flies vertically)
-    this.group.rotation.set(0, 0, 0);
+  _addNozzles(cx, cy, radius, count, nozzleRadius) {
+    const dark = new THREE.MeshStandardMaterial({ color: 0x2A2A2E, roughness: 0.5, metalness: 0.45 });
+    for (let i = 0; i < count; i++) {
+      const angle = (i / count) * Math.PI * 2;
+      const n = new THREE.Mesh(new THREE.CylinderGeometry(nozzleRadius, nozzleRadius * 1.25, 0.06, 8), dark);
+      n.position.set(cx + Math.cos(angle) * radius, cy, Math.sin(angle) * radius);
+      this.group.add(n);
+    }
   }
 
   _addGlow(x, y, radius) {
-    const geo = new THREE.CylinderGeometry(radius * 0.6, radius, 0.1, 8);
     const mat = new THREE.MeshStandardMaterial({
       color: 0xFF7700, roughness: 0.15,
       emissive: 0xFF4400, emissiveIntensity: 0.9,
     });
-    const glow = new THREE.Mesh(geo, mat);
-    glow.position.set(x, y, 0);
-    this.group.add(glow);
-    this._engineGlows.push(glow);
+    const g = new THREE.Mesh(new THREE.CylinderGeometry(radius * 0.6, radius, 0.1, 8), mat);
+    g.position.set(x, y, 0);
+    this.group.add(g);
+    this._engineGlows.push(g);
 
-    const light = new THREE.PointLight(0xFF5500, 1.0, 1.2);
-    light.position.set(x, y - 0.08, 0);
-    this.group.add(light);
-    this._engineLights.push(light);
+    const l = new THREE.PointLight(0xFF5500, 1.0, 1.2);
+    l.position.set(x, y - 0.08, 0);
+    this.group.add(l);
+    this._engineLights.push(l);
   }
+
+  /* ── Spawning ── */
+
+  _randomSpawn() {
+    // Pick a random edge: 0=top, 1=bottom, 2=right, 3=left
+    const edge = Math.floor(Math.random() * 4);
+    const margin = 8;
+    let sx, sy, vx, vy;
+
+    switch (edge) {
+      case 0: // top → going down
+        sx = (Math.random() - 0.5) * 10;
+        sy = margin;
+        vx = (Math.random() - 0.5) * 0.4;
+        vy = -(0.3 + Math.random() * 0.5);
+        break;
+      case 1: // bottom → going up
+        sx = (Math.random() - 0.5) * 10;
+        sy = -margin;
+        vx = (Math.random() - 0.5) * 0.4;
+        vy = 0.3 + Math.random() * 0.5;
+        break;
+      case 2: // right → going left
+        sx = margin;
+        sy = (Math.random() - 0.5) * 8;
+        vx = -(0.3 + Math.random() * 0.5);
+        vy = (Math.random() - 0.5) * 0.4;
+        break;
+      case 3: // left → going right
+        sx = -margin;
+        sy = (Math.random() - 0.5) * 8;
+        vx = 0.3 + Math.random() * 0.5;
+        vy = (Math.random() - 0.5) * 0.4;
+        break;
+    }
+
+    this.position = new THREE.Vector3(sx, sy, -1.5 + Math.random() * 0.5);
+    this.velocity = new THREE.Vector3(vx || 0, vy || 0, 0);
+
+    // Orient ship along velocity direction
+    const dir = this.velocity.clone().normalize();
+    const quat = new THREE.Quaternion();
+    // Guard against direction being parallel to worldUp
+    if (Math.abs(dir.y) > 0.999) {
+      quat.setFromUnitVectors(new THREE.Vector3(0, 0, 1), dir);
+    } else {
+      quat.setFromUnitVectors(this._worldUp, dir);
+    }
+    this.group.quaternion.copy(quat);
+  }
+
+  /* ── Lifecycle ── */
 
   add(scene) { scene.add(this.group); }
 
   update(deltaTime) {
-    // Drift upward
+    this.position.x += this.velocity.x * deltaTime;
     this.position.y += this.velocity.y * deltaTime;
     this.group.position.copy(this.position);
-
-    // Gentle rotation so it's not perfectly static
-    this.group.rotation.y += 0.003 * deltaTime;
 
     // Pulsing engine glow
     const pulse = 0.7 + 0.3 * Math.sin(Date.now() * 0.015);
@@ -182,10 +187,13 @@ export class Spaceship {
       l.intensity = 1.0 * pulse;
     }
 
-    // Respawn at bottom
-    if (this.position.y > this.despawnY) {
-      this.position.y = this.respawnY;
-      this.position.x = 2 + Math.random() * 3;
+    // Respawn when off-screen
+    const bound = 9;
+    if (
+      this.position.x > bound || this.position.x < -bound ||
+      this.position.y > bound || this.position.y < -bound
+    ) {
+      this._randomSpawn();
     }
   }
 }
