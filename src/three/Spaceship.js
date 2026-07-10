@@ -124,7 +124,7 @@ export class Spaceship {
   _randomSpawn() {
     // Pick a random edge: 0=top, 1=bottom, 2=right, 3=left
     const edge = Math.floor(Math.random() * 4);
-    const margin = 7.5;
+    const margin = 8;
     let sx, sy, vx, vy;
 
     switch (edge) {
@@ -156,6 +156,8 @@ export class Spaceship {
 
     this.position = new THREE.Vector3(sx, sy, -1.5 + Math.random() * 0.5);
     this.velocity = new THREE.Vector3(vx || 0, vy || 0, 0);
+    // Skip bound check for first few frames so the ship clears the spawn edge
+    this._spawnCooldown = 5;
 
     // Orient ship along velocity direction
     const dir = this.velocity.clone().normalize();
@@ -187,13 +189,17 @@ export class Spaceship {
       l.intensity = 1.0 * pulse;
     }
 
-    // Respawn when off-screen
-    const bound = 7;
-    if (
-      this.position.x > bound || this.position.x < -bound ||
-      this.position.y > bound || this.position.y < -bound
-    ) {
-      this._randomSpawn();
+    // Respawn when off-screen (skip for first few frames after spawn)
+    if (this._spawnCooldown > 0) {
+      this._spawnCooldown--;
+    } else {
+      const bound = 8;
+      if (
+        this.position.x > bound || this.position.x < -bound ||
+        this.position.y > bound || this.position.y < -bound
+      ) {
+        this._randomSpawn();
+      }
     }
   }
 }
