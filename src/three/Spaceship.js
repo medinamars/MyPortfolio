@@ -1,194 +1,191 @@
 import * as THREE from 'three';
 
 /**
- * Falcon Heavy — a simplified geometric approximation of SpaceX's rocket.
- * Drifts slowly across the scene in a flyby, then respawns on the opposite side.
- * Built from basic Three.js primitives — no external models needed.
+ * Falcon Heavy — three-core rocket silhouette drifting upward past Mars.
+ * Smaller, more accurate proportions, moving vertically.
  */
 
-const ROCKET_SCALE = 0.5; // overall size multiplier — smaller than the old ship
+const SCALE = 0.25; // overall size multiplier
 
 export class Spaceship {
   constructor() {
     this.group = new THREE.Group();
-    this.group.scale.setScalar(ROCKET_SCALE);
+    this.group.scale.setScalar(SCALE);
 
-    // Flyby trajectory — starts off-screen right, drifts left
-    this.position = new THREE.Vector3(10, 1.5, -2);
-    this.velocity = new THREE.Vector3(-0.25, 0.02, 0); // slow drift leftward
-    this.respawnX = 10;
-    this.despawnX = -10;
+    // Vertical trajectory — drifts upward, respawns at bottom
+    this.position = new THREE.Vector3(3, -6, -1.5);
+    this.velocity = new THREE.Vector3(0, 0.35, 0);
+    this.respawnY = -6;
+    this.despawnY = 8;
 
-    this._engineLights = [];
     this._engineGlows = [];
+    this._engineLights = [];
 
     this._buildRocket();
   }
 
-  /* ── Falcon Heavy silhouette ── */
-
   _buildRocket() {
-    const whiteMat = new THREE.MeshStandardMaterial({
-      color: 0xF0F0F0,
-      roughness: 0.4,
-      metalness: 0.3,
-    });
-    const darkMat = new THREE.MeshStandardMaterial({
-      color: 0x2A2A2E,
-      roughness: 0.5,
-      metalness: 0.5,
-    });
-    const accentMat = new THREE.MeshStandardMaterial({
-      color: 0xE05020,
-      roughness: 0.4,
-      metalness: 0.3,
-    });
+    const white = new THREE.MeshStandardMaterial({ color: 0xF4F4F4, roughness: 0.35, metalness: 0.25 });
+    const dark  = new THREE.MeshStandardMaterial({ color: 0x2A2A2E, roughness: 0.5, metalness: 0.45 });
+    const orange= new THREE.MeshStandardMaterial({ color: 0xE05020, roughness: 0.35, metalness: 0.3 });
 
-    // ── Center core (tall cylinder) ──
-    const coreGeo = new THREE.CylinderGeometry(0.14, 0.14, 2.2, 16);
-    const core = new THREE.Mesh(coreGeo, whiteMat);
+    const coreRadius = 0.14;
+    const coreHeight = 2.0;
+
+    // ──────────────── Center Core (tall) ────────────────
+    const coreGeo = new THREE.CylinderGeometry(coreRadius, coreRadius, coreHeight, 20);
+    const core = new THREE.Mesh(coreGeo, white);
     core.position.y = 0;
     this.group.add(core);
 
-    // Core engine section (slightly wider at base)
-    const coreEngineGeo = new THREE.CylinderGeometry(0.16, 0.14, 0.2, 16);
-    const coreEngine = new THREE.Mesh(coreEngineGeo, darkMat);
-    coreEngine.position.y = -1.2;
-    this.group.add(coreEngine);
+    // Center engine section (octaweb — flared base)
+    const octaGeo = new THREE.CylinderGeometry(0.17, 0.14, 0.25, 20);
+    const octa = new THREE.Mesh(octaGeo, dark);
+    octa.position.y = -(coreHeight / 2) - 0.05;
+    this.group.add(octa);
 
-    // ── Left booster ──
-    const boosterGeo = new THREE.CylinderGeometry(0.12, 0.12, 1.6, 16);
-    const leftBooster = new THREE.Mesh(boosterGeo, whiteMat);
-    leftBooster.position.set(-0.22, -0.3, 0);
+    // Engine nozzles for center core (small cylinders)
+    for (let i = 0; i < 5; i++) {
+      const angle = (i / 5) * Math.PI * 2;
+      const r = 0.06;
+      const nozzleGeo = new THREE.CylinderGeometry(0.02, 0.025, 0.08, 8);
+      const nozzle = new THREE.Mesh(nozzleGeo, dark);
+      nozzle.position.set(
+        Math.cos(angle) * r,
+        -(coreHeight / 2) - 0.2,
+        Math.sin(angle) * r,
+      );
+      this.group.add(nozzle);
+    }
+    // Center nozzle
+    const centerNozzle = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.025, 0.03, 0.08, 8), dark);
+    centerNozzle.position.set(0, -(coreHeight / 2) - 0.2, 0);
+    this.group.add(centerNozzle);
+
+    // ──────────────── Side Boosters (shorter) ────────────────
+    const boosterHeight = 1.4;
+    const boosterGeo = new THREE.CylinderGeometry(coreRadius, coreRadius, boosterHeight, 20);
+    const offsetX = 0.22;
+
+    // Left booster
+    const leftBooster = new THREE.Mesh(boosterGeo, white);
+    leftBooster.position.set(-offsetX, -0.3, 0);
     this.group.add(leftBooster);
 
-    // Left booster engine
-    const boosterEngineGeo = new THREE.CylinderGeometry(0.13, 0.12, 0.15, 16);
-    const leftBoosterEngine = new THREE.Mesh(boosterEngineGeo, darkMat);
-    leftBoosterEngine.position.set(-0.22, -1.15, 0);
-    this.group.add(leftBoosterEngine);
+    const leftOcta = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.17, 0.14, 0.2, 20), dark);
+    leftOcta.position.set(-offsetX, -(boosterHeight / 2) - 0.35, 0);
+    this.group.add(leftOcta);
 
-    // ── Right booster ──
-    const rightBooster = new THREE.Mesh(boosterGeo, whiteMat);
-    rightBooster.position.set(0.22, -0.3, 0);
+    // Right booster
+    const rightBooster = new THREE.Mesh(boosterGeo, white);
+    rightBooster.position.set(offsetX, -0.3, 0);
     this.group.add(rightBooster);
 
-    // Right booster engine
-    const rightBoosterEngine = new THREE.Mesh(boosterEngineGeo, darkMat);
-    rightBoosterEngine.position.set(0.22, -1.15, 0);
-    this.group.add(rightBoosterEngine);
+    const rightOcta = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.17, 0.14, 0.2, 20), dark);
+    rightOcta.position.set(offsetX, -(boosterHeight / 2) - 0.35, 0);
+    this.group.add(rightOcta);
 
-    // ── Side booster connecting struts ──
-    const strutGeo = new THREE.CylinderGeometry(0.02, 0.02, 0.3, 4);
-    strutGeo.rotateZ(Math.PI / 2);
-    const topStrutL = new THREE.Mesh(strutGeo, darkMat);
-    topStrutL.position.set(-0.11, 0.5, 0);
-    this.group.add(topStrutL);
-    const topStrutR = new THREE.Mesh(strutGeo, darkMat);
-    topStrutR.position.set(0.11, 0.5, 0);
-    this.group.add(topStrutR);
-
-    const botStrutGeo = new THREE.CylinderGeometry(0.02, 0.02, 0.3, 4);
-    botStrutGeo.rotateZ(Math.PI / 2);
-    const botStrutL = new THREE.Mesh(botStrutGeo, darkMat);
-    botStrutL.position.set(-0.11, -0.9, 0);
-    this.group.add(botStrutL);
-    const botStrutR = new THREE.Mesh(botStrutGeo, darkMat);
-    botStrutR.position.set(0.11, -0.9, 0);
-    this.group.add(botStrutR);
-
-    // ── Payload fairing (cone on top) ──
-    const fairingGeo = new THREE.ConeGeometry(0.15, 0.5, 16, 4);
-    const fairing = new THREE.Mesh(fairingGeo, whiteMat);
-    fairing.position.y = 1.35;
-    this.group.add(fairing);
-
-    // Fairing accent stripe
-    const stripeGeo = new THREE.CylinderGeometry(0.15, 0.15, 0.06, 16);
-    const stripe = new THREE.Mesh(stripeGeo, accentMat);
-    stripe.position.y = 1.2;
-    this.group.add(stripe);
-
-    // ── Nose cone tip ──
-    const tipGeo = new THREE.ConeGeometry(0.04, 0.15, 8);
-    const tip = new THREE.Mesh(tipGeo, accentMat);
-    tip.position.y = 1.65;
-    this.group.add(tip);
-
-    // ── Grid fins at top of core ──
-    const finGeo = new THREE.BoxGeometry(0.06, 0.01, 0.12);
-    for (let i = 0; i < 4; i++) {
-      const fin = new THREE.Mesh(finGeo, darkMat);
-      const angle = (i * Math.PI) / 2;
-      fin.position.set(
-        Math.cos(angle) * 0.17,
-        0.95,
-        Math.sin(angle) * 0.17,
-      );
-      fin.rotation.y = angle;
-      this.group.add(fin);
+    // Booster engine nozzles
+    for (const bx of [-offsetX, offsetX]) {
+      for (let i = 0; i < 4; i++) {
+        const angle = (i / 4) * Math.PI * 2;
+        const nozzle = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.018, 0.022, 0.06, 8), dark);
+        nozzle.position.set(
+          bx + Math.cos(angle) * 0.05,
+          -1.1,
+          Math.sin(angle) * 0.05,
+        );
+        this.group.add(nozzle);
+      }
     }
 
-    // ── Engine nozzles with glow ──
-    this._addEngineGlow(0, -1.32, 0.08);
-    this._addEngineGlow(-0.22, -1.24, 0.06);
-    this._addEngineGlow(0.22, -1.24, 0.06);
+    // ──────────────── Connecting struts between cores ────────────────
+    for (const y of [0.35, -0.15, -0.65]) {
+      const strutGeo = new THREE.CylinderGeometry(0.015, 0.015, offsetX * 2 - 0.05, 4);
+      strutGeo.rotateZ(Math.PI / 2);
+      const strut = new THREE.Mesh(strutGeo, dark);
+      strut.position.set(0, y, 0);
+      this.group.add(strut);
+    }
 
-    // Point the whole rocket upward by default, then orientation will be set per-frame
+    // ──────────────── Interstage (black band) ────────────────
+    const interGeo = new THREE.CylinderGeometry(coreRadius + 0.01, coreRadius + 0.01, 0.2, 20);
+    const inter = new THREE.Mesh(interGeo, dark);
+    inter.position.y = coreHeight / 2 - 0.3;
+    this.group.add(inter);
+
+    // ──────────────── Payload Fairing ────────────────
+    // Lower fairing (cylinder)
+    const fairingLowerGeo = new THREE.CylinderGeometry(0.15, 0.15, 0.35, 20);
+    const fairingLower = new THREE.Mesh(fairingLowerGeo, white);
+    fairingLower.position.y = coreHeight / 2 + 0.1;
+    this.group.add(fairingLower);
+
+    // Upper fairing (cone tapering to tip)
+    const fairingUpperGeo = new THREE.CylinderGeometry(0.05, 0.15, 0.55, 20);
+    const fairingUpper = new THREE.Mesh(fairingUpperGeo, white);
+    fairingUpper.position.y = coreHeight / 2 + 0.55;
+    this.group.add(fairingUpper);
+
+    // Fairing tip
+    const tipGeo = new THREE.ConeGeometry(0.05, 0.1, 12);
+    const tip = new THREE.Mesh(tipGeo, orange);
+    tip.position.y = coreHeight / 2 + 0.87;
+    this.group.add(tip);
+
+    // ──────────────── Engine glows ────────────────
+    this._addGlow(0, -(coreHeight / 2) - 0.28, 0.06);
+    this._addGlow(-offsetX, -1.2, 0.04);
+    this._addGlow(offsetX, -1.2, 0.04);
+
+    // Rocket points upward (it flies vertically)
     this.group.rotation.set(0, 0, 0);
   }
 
-  _addEngineGlow(x, y, radius) {
-    const glowGeo = new THREE.CylinderGeometry(radius * 0.7, radius, 0.12, 8);
-    const glowMat = new THREE.MeshStandardMaterial({
-      color: 0xFF6600,
-      roughness: 0.2,
-      emissive: 0xFF4400,
-      emissiveIntensity: 0.9,
+  _addGlow(x, y, radius) {
+    const geo = new THREE.CylinderGeometry(radius * 0.6, radius, 0.1, 8);
+    const mat = new THREE.MeshStandardMaterial({
+      color: 0xFF7700, roughness: 0.15,
+      emissive: 0xFF4400, emissiveIntensity: 0.9,
     });
-    const glow = new THREE.Mesh(glowGeo, glowMat);
+    const glow = new THREE.Mesh(geo, mat);
     glow.position.set(x, y, 0);
     this.group.add(glow);
     this._engineGlows.push(glow);
 
-    // Small point light
-    const light = new THREE.PointLight(0xFF5500, 1.2, 1.0);
-    light.position.set(x, y - 0.1, 0);
+    const light = new THREE.PointLight(0xFF5500, 1.0, 1.2);
+    light.position.set(x, y - 0.08, 0);
     this.group.add(light);
     this._engineLights.push(light);
   }
 
-  /* ── Attach to scene ── */
-
-  add(scene) {
-    scene.add(this.group);
-  }
-
-  /* ── Flyby animation ── */
+  add(scene) { scene.add(this.group); }
 
   update(deltaTime) {
-    // Drift across the screen
-    this.position.x += this.velocity.x * deltaTime;
+    // Drift upward
     this.position.y += this.velocity.y * deltaTime;
-
     this.group.position.copy(this.position);
 
-    // Slight tilt — rocket points slightly upward as if coasting
-    this.group.rotation.set(0.1, 0, 0.25);
+    // Gentle rotation so it's not perfectly static
+    this.group.rotation.y += 0.003 * deltaTime;
 
     // Pulsing engine glow
     const pulse = 0.7 + 0.3 * Math.sin(Date.now() * 0.015);
-    for (const glow of this._engineGlows) {
-      glow.material.emissiveIntensity = 0.6 + pulse * 0.4;
+    for (const g of this._engineGlows) {
+      g.material.emissiveIntensity = 0.6 + pulse * 0.4;
     }
-    for (const light of this._engineLights) {
-      light.intensity = 1.2 * pulse;
+    for (const l of this._engineLights) {
+      l.intensity = 1.0 * pulse;
     }
 
-    // Respawn on the right when it drifts off the left
-    if (this.position.x < this.despawnX) {
-      this.position.x = this.respawnX;
-      this.position.y = -1 + Math.random() * 3;
+    // Respawn at bottom
+    if (this.position.y > this.despawnY) {
+      this.position.y = this.respawnY;
+      this.position.x = 2 + Math.random() * 3;
     }
   }
 }
