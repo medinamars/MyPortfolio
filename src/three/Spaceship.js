@@ -1,9 +1,10 @@
 import * as THREE from 'three';
 
 /**
- * Falcon Heavy — tiny three-core rocket drifting across the scene.        │
- * Spawns from a random screen edge and flies in a random direction.       │
- * When it exits the viewport it respawns from a new edge.                 │
+ * Falcon Heavy — tiny three-core rocket drifting across the scene.
+ * Spawns from a random screen edge, flies in random directions,
+ * changes direction mid-flight every few seconds, and respawns
+ * when it exits the viewport.
  */
 
 const SCALE = 0.08; // tiny
@@ -19,6 +20,7 @@ export class Spaceship {
 
     this._buildRocket();
     this._randomSpawn();
+    this._nextTurn = 3 + Math.random() * 5; // change direction every 3-8s
   }
 
   /* ── Falcon Heavy geometry ── */
@@ -119,50 +121,20 @@ export class Spaceship {
     this._engineLights.push(l);
   }
 
-  /* ── Spawning ── */
+  /* ── Velocity & orientation ── */
 
-  _randomSpawn() {
-    // Pick a random edge: 0=top, 1=bottom, 2=right, 3=left
-    const edge = Math.floor(Math.random() * 4);
-    const margin = 8;
-    let sx, sy, vx, vy;
+  _setRandomVelocity(speed) {
+    // Pick a random angle for the direction
+    const angle = Math.random() * Math.PI * 2;
+    const s = speed || (0.08 + Math.random() * 0.15);
+    this.velocity = new THREE.Vector3(Math.cos(angle) * s, Math.sin(angle) * s, 0);
+    this._orientToVelocity();
+  }
 
-    switch (edge) {
-      case 0: // top → going down
-        sx = (Math.random() - 0.5) * 8;
-        sy = margin;
-        vx = (Math.random() - 0.5) * 0.2;
-        vy = -(0.08 + Math.random() * 0.15);
-        break;
-      case 1: // bottom → going up
-        sx = (Math.random() - 0.5) * 8;
-        sy = -margin;
-        vx = (Math.random() - 0.5) * 0.2;
-        vy = 0.08 + Math.random() * 0.15;
-        break;
-      case 2: // right → going left
-        sx = margin;
-        sy = (Math.random() - 0.5) * 6;
-        vx = -(0.08 + Math.random() * 0.15);
-        vy = (Math.random() - 0.5) * 0.2;
-        break;
-      case 3: // left → going right
-        sx = -margin;
-        sy = (Math.random() - 0.5) * 6;
-        vx = 0.08 + Math.random() * 0.15;
-        vy = (Math.random() - 0.5) * 0.2;
-        break;
-    }
-
-    this.position = new THREE.Vector3(sx, sy, -1.5 + Math.random() * 0.5);
-    this.velocity = new THREE.Vector3(vx || 0, vy || 0, 0);
-    // Skip bound check for first few frames so the ship clears the spawn edge
-    this._spawnCooldown = 5;
-
-    // Orient ship along velocity direction
+  _orientToVelocity() {
     const dir = this.velocity.clone().normalize();
+    if (dir.length() < 0.001) return;
     const quat = new THREE.Quaternion();
-    // Guard against direction being parallel to worldUp
     if (Math.abs(dir.y) > 0.999) {
       quat.setFromUnitVectors(new THREE.Vector3(0, 0, 1), dir);
     } else {
@@ -171,11 +143,39 @@ export class Spaceship {
     this.group.quaternion.copy(quat);
   }
 
+  /* ── Spawning ── */
+
+  _randomSpawn() {
+    const margin = 8;
+    const edge = Math.floor(Math.random() * 4);
+    let sx, sy;
+
+    switch (edge) {
+      case 0: sx = (Math.random() - 0.5) * 8; sy = margin; break;   // top
+      case 1: sx = (Math.random() - 0.5) * 8; sy = -margin; break;  // bottom
+      case 2: sx = margin; sy = (Math.random() - 0.5) * 6; break;   // right
+      case 3: sx = -margin; sy = (Math.random() - 0.5) * 6; break;  // left
+    }
+
+    this.position = new THREE.Vector3(sx, sy, -1.5 + Math.random() * 0.5);
+
+    // Pick a direction that points roughly toward the center, then add randomness
+    const towardCenter = new THREE.Vector2(-sx, -sy).normalize();
+    const angle = Math.atan2(towardCenter.y, towardCenter.x) + (Math.random() - 0.5) * 1.2; // ±~34° jitter
+    const speed = 0.08 + Math.random() * 0.15;
+    this.velocity = new THREE.Vector3(Math.cos(angle) * speed, Math.sin(angle) * speed, 0);
+
+    this._spawnCooldown = 5;
+    this._nextTurn = 2 + Math.random() * 4; // change direction soon (2-6s) for visibility
+    this._orientToVelocity();
+  }
+
   /* ── Lifecycle ── */
 
   add(scene) { scene.add(this.group); }
 
   update(deltaTime) {
+    // Update position
     this.position.x += this.velocity.x * deltaTime;
     this.position.y += this.velocity.y * deltaTime;
     this.group.position.copy(this.position);
@@ -189,17 +189,25 @@ export class Spaceship {
       l.intensity = 1.0 * pulse;
     }
 
-    // Respawn when off-screen (skip for first few frames after spawn)
-    if (this._spawnCooldown > 0) {
-      this._spawnCooldown--;
-    } else {
-      const bound = 8;
-      if (
-        this.position.x > bound || this.position.x < -bound ||
-        this.position.y > bound || this.position.y < -bound
-      ) {
-        this._randomSpawn();
+    // Random direction change timer
+    if (this._spawnCooldown <= 0) {
+      this._nextTurn -= deltaTime;
+      if (this._nextTurn <= 0) {
+        // Pick a completely new random direction, but clamp speed so it doesn't get too fast
+        this._setRandomVelocity(0.08 + Math.random() * 0.15);
+        this._nextTurn = 2 + Math.random() * 4;
       }
+    } else {
+      this._spawnCooldown--;
+    }
+
+    // Respawn when off-screen
+    const bound = 8;
+    if (this._spawnCooldown <= 0 && (
+      this.position.x > bound || this.position.x < -bound ||
+      this.position.y > bound || this.position.y < -bound
+    )) {
+      this._randomSpawn();
     }
   }
 }
