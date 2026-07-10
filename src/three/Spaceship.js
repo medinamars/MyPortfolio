@@ -1,12 +1,11 @@
 import * as THREE from 'three';
 
 /**
- * NASA Space Shuttle orbiter — recognizable silhouette at small scale.
- * Key features: blunt fuselage, short delta wings, tall vertical stabilizer,
- * black thermal tiles on nose and belly, OMS pods, three main engines.
+ * NASA Space Shuttle orbiter — built from boxes for a clean, recognizable
+ * silhouette: blunt body, swept delta wings, tall tail, black tiles.
  */
 
-const SCALE = 0.1;
+const SCALE = 0.15;
 
 export class Spaceship {
   constructor() {
@@ -25,161 +24,182 @@ export class Spaceship {
   /* ── Space Shuttle geometry ── */
 
   _buildShuttle() {
-    const bodyWhite = new THREE.MeshStandardMaterial({ color: 0xEEEEEE, roughness: 0.4, metalness: 0.15 });
-    const tiles    = new THREE.MeshStandardMaterial({ color: 0x1C1C20, roughness: 0.75, metalness: 0.05 });
-    const darkGray = new THREE.MeshStandardMaterial({ color: 0x44444A, roughness: 0.5, metalness: 0.35 });
-    const windowM  = new THREE.MeshStandardMaterial({ color: 0x88CCFF, roughness: 0.1, metalness: 0.5, emissive: 0x112233, emissiveIntensity: 0.2 });
+    const white   = new THREE.MeshStandardMaterial({ color: 0xF0F0F0, roughness: 0.35, metalness: 0.15 });
+    const dark    = new THREE.MeshStandardMaterial({ color: 0x1E1E22, roughness: 0.7, metalness: 0.05 });
+    const gray    = new THREE.MeshStandardMaterial({ color: 0x4A4A50, roughness: 0.5, metalness: 0.3 });
+    const windowM = new THREE.MeshStandardMaterial({ color: 0x88CCFF, roughness: 0.1, metalness: 0.5, emissive: 0x112233, emissiveIntensity: 0.2 });
+    const orange  = new THREE.MeshStandardMaterial({ color: 0xE05020, roughness: 0.3, metalness: 0.3 });
 
-    // ── Fuselage: flattened capsule (wider than tall, blunt nose) ──
-    // Use a scaled sphere for the blunt body, then taper it
-    const bodyGeom = new THREE.SphereGeometry(0.45, 20, 12);
-    bodyGeom.scale(1, 2.5, 0.65); // stretch: long, flattened top-to-bottom
-    const body = new THREE.Mesh(bodyGeom, bodyWhite);
+    // ── Fuselage: wide, flat, tapering toward nose ──
+    // Main mid/rear body
+    const body = new THREE.Mesh(
+      new THREE.BoxGeometry(0.55, 1.5, 0.4),
+      white
+    );
+    body.position.y = -0.1;
     this.group.add(body);
 
-    // Nose cap — blunt rounded front in black tiles
-    const noseGeom = new THREE.SphereGeometry(0.4, 16, 10);
-    noseGeom.scale(0.6, 0.5, 0.55);
-    const nose = new THREE.Mesh(noseGeom, tiles);
-    nose.position.y = 1.2;
-    nose.position.z = 0.0;
+    // Forward fuselage (narrows toward nose)
+    const fwd = new THREE.Mesh(
+      new THREE.BoxGeometry(0.4, 1.0, 0.35),
+      white
+    );
+    fwd.position.y = 0.9;
+    this.group.add(fwd);
+
+    // Nose (blunt front)
+    const nose = new THREE.Mesh(
+      new THREE.BoxGeometry(0.28, 0.4, 0.28),
+      dark
+    );
+    nose.position.y = 1.5;
     this.group.add(nose);
 
-    // Black belly tiles
-    const belly = new THREE.Mesh(
-      new THREE.BoxGeometry(0.7, 2.0, 0.08),
-      tiles
+    // Nose cap
+    const noseCap = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.14, 0.18, 0.15, 8),
+      dark
     );
-    belly.position.y = 0.1;
-    belly.position.z = -0.28;
+    noseCap.rotation.x = Math.PI / 2;
+    noseCap.position.y = 1.72;
+    this.group.add(noseCap);
+
+    // Black belly (underside tiles)
+    const belly = new THREE.Mesh(
+      new THREE.BoxGeometry(0.5, 1.8, 0.06),
+      dark
+    );
+    belly.position.set(0, 0.1, -0.22);
     this.group.add(belly);
 
     // ── Cockpit windows ──
     const cockpit = new THREE.Mesh(
-      new THREE.BoxGeometry(0.35, 0.4, 0.25),
+      new THREE.BoxGeometry(0.26, 0.35, 0.2),
       windowM
     );
-    cockpit.position.set(0, 0.85, 0.28);
-    cockpit.rotation.x = -0.15;
+    cockpit.position.set(0, 1.0, 0.18);
+    cockpit.rotation.x = -0.25;
     this.group.add(cockpit);
 
-    // ── Short delta wings ──
+    // ── Delta wings (the most important feature) ──
+    // Each wing is a thin box, rotated and positioned to sweep back
     for (const side of [-1, 1]) {
       const wingGroup = new THREE.Group();
 
-      // Main wing: flat triangle shape
-      const wingShape = new THREE.Shape();
-      wingShape.moveTo(0, 0);           // root leading edge
-      wingShape.lineTo(0.9, -0.3);      // sweep back
-      wingShape.lineTo(0.9, -1.5);      // trail down to tip
-      wingShape.lineTo(0.15, -1.1);     // trailing edge back to root
-      wingShape.closePath();
-
-      const wingGeo = new THREE.ExtrudeGeometry(wingShape, { steps: 1, depth: 0.04, bevelEnabled: true, bevelThickness: 0.02, bevelSize: 0.02, bevelSegments: 3 });
-      const wing = new THREE.Mesh(wingGeo, bodyWhite);
-
-      // Wing leading edge tiles
-      const leGeo = new THREE.BoxGeometry(0.85, 0.03, 0.06);
-      const le = new THREE.Mesh(leGeo, tiles);
-
-      wingGroup.add(le);
+      // Wing body
+      const wing = new THREE.Mesh(
+        new THREE.BoxGeometry(1.4, 0.9, 0.04),
+        white
+      );
+      // Rotate the box so it sweeps back: the long edge points back and out
+      wing.rotation.z = side * 0.6;  // sweep angle
+      wing.position.x = side * 0.5;
+      wing.position.y = -0.5;
       wingGroup.add(wing);
 
-      // Position: mid-fuselage, low, on either side
-      wingGroup.position.set(side * 0.2, -0.6, 0);
-      wingGroup.rotation.set(0, 0, side * 0.25); // slight dihedral
+      // Black leading edge
+      const le = new THREE.Mesh(
+        new THREE.BoxGeometry(1.3, 0.03, 0.05),
+        dark
+      );
+      le.rotation.z = side * 0.6;
+      le.position.x = side * 0.5;
+      le.position.y = -0.1;
+      wingGroup.add(le);
 
-      // Flip left/right
-      wingGroup.scale.set(side, 1, 1);
-
+      // Position the wing group at the rear-bottom of fuselage
+      wingGroup.position.set(0, -0.4, -0.05);
       this.group.add(wingGroup);
     }
 
-    // ── Vertical stabilizer (tail fin) ──
+    // ── Vertical tail fin ──
     const finGroup = new THREE.Group();
 
-    const finShape = new THREE.Shape();
-    finShape.moveTo(0, 0);
-    finShape.lineTo(0.5, 0.9);
-    finShape.lineTo(-0.15, 1.3);
-    finShape.lineTo(-0.05, 0.6);
-    finShape.closePath();
+    const finBase = new THREE.Mesh(
+      new THREE.BoxGeometry(0.03, 0.6, 0.6),
+      white
+    );
+    finGroup.add(finBase);
 
-    const finGeo = new THREE.ExtrudeGeometry(finShape, { steps: 1, depth: 0.03, bevelEnabled: true, bevelThickness: 0.01, bevelSize: 0.01, bevelSegments: 2 });
-    const finMesh = new THREE.Mesh(finGeo, bodyWhite);
-    finGroup.add(finMesh);
+    const finTop = new THREE.Mesh(
+      new THREE.BoxGeometry(0.03, 0.25, 0.35),
+      white
+    );
+    finTop.position.set(0, -0.4, 0.25);
+    finGroup.add(finTop);
 
     // Fin leading edge tile
-    const finLE = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.03, 0.05), tiles);
+    const finLE = new THREE.Mesh(
+      new THREE.BoxGeometry(0.04, 0.55, 0.04),
+      dark
+    );
+    finLE.position.set(0, -0.05, 0.3);
     finGroup.add(finLE);
 
-    finGroup.position.set(0, -1.0, 0.0);
+    finGroup.position.set(0, -1.0, 0.22);
     this.group.add(finGroup);
 
-    // ── OMS pods (rear bumps) ──
+    // ── OMS pods ──
     for (const side of [-1, 1]) {
       const oms = new THREE.Mesh(
-        new THREE.SphereGeometry(0.08, 8, 6),
-        darkGray
+        new THREE.CylinderGeometry(0.05, 0.06, 0.35, 8),
+        gray
       );
-      oms.scale.set(1, 1, 0.7);
-      oms.position.set(side * 0.3, -1.1, -0.1);
+      oms.rotation.x = Math.PI / 2;
+      oms.position.set(side * 0.22, -1.05, 0.0);
       this.group.add(oms);
 
-      // OMS nozzle
-      const omsNz = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.04, 0.05, 0.08, 8),
-        darkGray
+      const omsNozzle = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.025, 0.035, 0.08, 8),
+        gray
       );
-      omsNz.position.set(side * 0.3, -1.2, -0.1);
-      this.group.add(omsNz);
+      omsNozzle.position.set(side * 0.22, -1.25, 0.0);
+      this.group.add(omsNozzle);
     }
 
-    // ── Three main engines (SSMEs) at rear ──
-    const engineXs = [-0.15, 0, 0.15];
-    for (const cx of engineXs) {
-      // Engine bell
+    // ── Three SSMEs at rear ──
+    for (const cx of [-0.1, 0, 0.1]) {
       const bell = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.05, 0.08, 0.22, 8),
-        darkGray
+        new THREE.CylinderGeometry(0.03, 0.06, 0.15, 8),
+        gray
       );
-      bell.position.set(cx, -1.3, 0.0);
+      bell.position.set(cx, -1.2, 0.0);
       this.group.add(bell);
 
-      // Glowing exhaust
+      // Glow
       const glowMat = new THREE.MeshStandardMaterial({
         color: 0xFF7700, roughness: 0.15,
         emissive: 0xFF4400, emissiveIntensity: 0.7,
       });
       const glow = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.025, 0.05, 0.07, 8),
+        new THREE.CylinderGeometry(0.015, 0.03, 0.06, 8),
         glowMat
       );
-      glow.position.set(cx, -1.45, 0.0);
+      glow.position.set(cx, -1.3, 0.0);
       this.group.add(glow);
       this._engineGlows.push(glow);
 
-      const l = new THREE.PointLight(0xFF5500, 0.8, 1.5);
-      l.position.set(cx, -1.5, 0.0);
-      this.group.add(l);
-      this._engineLights.push(l);
+      const light = new THREE.PointLight(0xFF5500, 0.8, 1.5);
+      light.position.set(cx, -1.35, 0.0);
+      this.group.add(light);
+      this._engineLights.push(light);
     }
 
-    // ── Body flap / speed brake (bottom rear) ──
-    const flap = new THREE.Mesh(
-      new THREE.BoxGeometry(0.4, 0.3, 0.04),
-      darkGray
+    // Payload bay doors line
+    const bayLine = new THREE.Mesh(
+      new THREE.BoxGeometry(0.02, 1.2, 0.02),
+      dark
     );
-    flap.position.set(0, -1.0, -0.25);
+    bayLine.position.set(0, -0.2, 0.21);
+    this.group.add(bayLine);
+
+    // Body flap at rear bottom
+    const flap = new THREE.Mesh(
+      new THREE.BoxGeometry(0.3, 0.15, 0.04),
+      gray
+    );
+    flap.position.set(0, -0.9, -0.18);
     this.group.add(flap);
-
-    // ── Rotate entire group so nose points up (shuttle flies "up" = forward) ──
-    // The model is built with nose at +Y, tail at -Y.
-    // When oriented to velocity, _orientToVelocity uses worldUp(0,1,0), so
-    // the ship's +Y (nose) aligns with velocity. That's correct.
-
-    // Slight default rotation so it looks right at rest
-    this.group.rotation.z = 0;
   }
 
   /* ── Velocity & orientation ── */
