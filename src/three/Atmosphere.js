@@ -18,7 +18,7 @@ export class Atmosphere {
       varying vec3 vNormal;
       void main() {
         float intensity = pow(0.65 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.0);
-        gl_FragColor = vec4(0.957, 0.541, 0.212, 1.0) * intensity;
+        gl_FragColor = vec4(0.957, 0.541, 0.212, 1.0) * intensity * 0.35;
       }
     `;
     const geometry = new THREE.SphereGeometry(2.2, 64, 64);
