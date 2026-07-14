@@ -53,7 +53,7 @@ const projects = [
   },
   {
     title: 'True Group IAM',
-    description: 'This system serves as the centralized identity and access management (IAM) platform for True Group employees, providing unified authentication and authorization across enterprise applications. It supports single sign-on (SSO), digital signature validation, and one-time password (OTP) verification to secure system access, while enabling centralized user provisioning, role-based access control, and audit logging.',
+    description: 'This system will serve as the centralized identity and access management (IAM) platform for True Group employees, providing unified authentication and authorization across enterprise applications. It supports single sign-on (SSO), digital signature validation, and one-time password (OTP) verification to secure system access, while enabling centralized user provisioning, role-based access control, and audit logging.',
     tech: ['.NET Core', 'C#', 'Blazor', 'Bootstrap', 'SQL Server', 'Entity Framework', 'LINQ', 'IIS', 'Model Oriented Design', 'xUnit', 'SignalR', 'Postman'],
     category: 'backend',
     image: '/MyPortfolio/true-group-iam.jpg',
