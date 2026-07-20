@@ -1,7 +1,7 @@
 const projects = [
   {
     title: 'TradeSmart Connect',
-    description: 'A secure, highly available customer portal for Russell A. Farrow\'s customs brokerage operations, enabling customers to track and monitor shipments, generate and schedule automated reports, and proactively manage delays, exceptions, and operational issues. The platform was designed with a focus on security, reliability, scalability, and seamless access to critical shipment information.',
+    description: 'A multi-tenant, secure, highly available customer portal for Russell A. Farrow\'s customs brokerage operations, enabling customers to track and monitor shipments, generate and schedule automated reports, and proactively manage delays, exceptions, and operational issues. The platform was designed with a focus on security, reliability, scalability, and seamless access to critical shipment information.',
     tech: ['.NET 8', 'ASP.NET Boilerplate', 'Entity Framework', 'LINQ', 'Azure', 'Bootstrap', 'C#', 'SQL Server', 'Oracle', 'xUnit', 'SignalR', 'Postman'],
     category: 'backend',
     image: '/MyPortfolio/tradesmart-connect.jpg',
