@@ -17,7 +17,7 @@ export class Spaceship {
     this._engineLights = [];
 
     this._buildShuttle();
-    this._randomSpawn();
+    this._spawnInside(); // start visible on page load
     this._nextTurn = 3 + Math.random() * 5;
   }
 
@@ -267,6 +267,21 @@ export class Spaceship {
   }
 
   /* ── Spawning ── */
+
+  _spawnInside() {
+    // Random position within the visible area
+    this.position = new THREE.Vector3(
+      (Math.random() - 0.5) * 4,
+      (Math.random() - 0.5) * 3,
+      3
+    );
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 0.06 + Math.random() * 0.1;
+    this.velocity = new THREE.Vector3(Math.cos(angle) * speed, Math.sin(angle) * speed, 0);
+    this._spawnCooldown = 5;
+    this._nextTurn = 2 + Math.random() * 4;
+    this._orientToVelocity();
+  }
 
   _randomSpawn() {
     const margin = 8;

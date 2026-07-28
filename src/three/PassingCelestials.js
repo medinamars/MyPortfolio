@@ -266,12 +266,69 @@ export class PassingCelestials {
       this.camera = camera;
       this.updateViewportBounds();
     }
-    // Pre-spawn 2 objects so there's immediate activity
-    this.spawn();
-    this.spawn();
+    // Pre-spawn 2 objects visible within viewport
+    this.spawnInside();
+    this.spawnInside();
   }
 
-  // Compute visible half-width and half-height at the spawn plane (z=-5)
+  // Spawn an object already within the viewable area
+  spawnInside() {
+    if (this.objects.length >= this.maxObjects) return;
+
+    const planetCount = this.objects.filter(obj => obj.type === 'planet').length;
+    const roll = Math.random();
+    let type, config;
+
+    if (roll < 0.5 && planetCount < this.maxPlanets) {
+      const availableTypes = Object.keys(PLANET_TYPES);
+      type = 'planet';
+      config = this._insidePlanetConfig(availableTypes[Math.floor(Math.random() * availableTypes.length)]);
+    } else {
+      type = 'asteroid';
+      config = this._insideAsteroidConfig();
+    }
+
+    const obj = new PassingObject(type, config);
+    obj._boundX = this.viewportHalfW;
+    obj._boundY = this.viewportHalfH;
+    obj._camera = this.camera;
+    this.group.add(obj.mesh);
+    this.objects.push(obj);
+  }
+
+  _insidePlanetConfig(planetType) {
+    // Random position within the visible viewport
+    const startX = randomRange(-this.viewportHalfW * 0.6, this.viewportHalfW * 0.6);
+    const startY = randomRange(-this.viewportHalfH * 0.5, this.viewportHalfH * 0.5);
+    const speed = randomRange(0.05, 0.15);
+    const angle = Math.random() * Math.PI * 2;
+    return {
+      startX, startY,
+      startZ: -randomRange(2, 6),
+      velX: Math.cos(angle) * speed,
+      velY: Math.sin(angle) * speed,
+      planetType,
+    };
+  }
+
+  _insideAsteroidConfig() {
+    const startX = randomRange(-this.viewportHalfW * 0.6, this.viewportHalfW * 0.6);
+    const startY = randomRange(-this.viewportHalfH * 0.5, this.viewportHalfH * 0.5);
+    const speed = randomRange(0.05, 0.15);
+    const angle = Math.random() * Math.PI * 2;
+    return {
+      startX, startY,
+      startZ: -randomRange(2, 6),
+      velX: Math.cos(angle) * speed,
+      velY: Math.sin(angle) * speed,
+      rotX: randomRange(-1, 1),
+      rotY: randomRange(-1, 1),
+      rotZ: randomRange(-1, 1),
+      scale: randomRange(0.15, 0.4),
+    };
+  }
+
+  // Spawn at edge (existing logic)
   updateViewportBounds() {
     if (!this.camera) return;
     const distToSpawnPlane = 13; // camera at z=8, spawn plane at z=-5 => 13 units
