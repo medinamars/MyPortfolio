@@ -297,30 +297,53 @@ export class PassingCelestials {
   }
 
   _insidePlanetConfig(planetType) {
-    // Random position within the visible viewport
-    const startX = randomRange(-this.viewportHalfW * 0.6, this.viewportHalfW * 0.6);
-    const startY = randomRange(-this.viewportHalfH * 0.5, this.viewportHalfH * 0.5);
-    const speed = randomRange(0.05, 0.15);
-    const angle = Math.random() * Math.PI * 2;
+    // Same upper-right → center trajectory as regular planets,
+    // but place them partway along the path so they're visible immediately
+    const halfW = this.viewportHalfW;
+    const halfH = this.viewportHalfH;
+    // Where they'd spawn at the edge
+    const spawnX = halfW * 2.5;
+    const spawnY = halfH * randomRange(0.8, 1.2);
+    // Aim toward center (same as the original logic)
+    const targetX = randomRange(-1, 1);
+    const targetY = randomRange(-1, 1);
+    const dir = new THREE.Vector2(targetX - spawnX, targetY - spawnY).normalize();
+    const speed = randomRange(0.1, 0.25);
+    // Pick a point along the trajectory that's inside the viewport (t = 0.65-0.95)
+    const t = randomRange(0.65, 0.95);
     return {
-      startX, startY,
+      startX: spawnX + dir.x * (1 - t) * spawnX,
+      startY: spawnY + dir.y * (1 - t) * spawnY,
       startZ: -randomRange(2, 6),
-      velX: Math.cos(angle) * speed,
-      velY: Math.sin(angle) * speed,
+      velX: dir.x * speed,
+      velY: dir.y * speed,
       planetType,
     };
   }
 
   _insideAsteroidConfig() {
-    const startX = randomRange(-this.viewportHalfW * 0.6, this.viewportHalfW * 0.6);
-    const startY = randomRange(-this.viewportHalfH * 0.5, this.viewportHalfH * 0.5);
-    const speed = randomRange(0.05, 0.15);
-    const angle = Math.random() * Math.PI * 2;
+    // Same approach — place along the asteroid trajectory path
+    const halfW = this.viewportHalfW;
+    const halfH = this.viewportHalfH;
+    const margin = 1.8;
+    const side = Math.floor(Math.random() * 4);
+    let spawnX, spawnY;
+    switch (side) {
+      case 0: spawnX = randomRange(-halfW * 0.5, halfW * 0.5); spawnY = halfH * margin; break;
+      case 1: spawnX = randomRange(-halfW * 0.5, halfW * 0.5); spawnY = -halfH * margin; break;
+      case 2: spawnX = halfW * margin; spawnY = randomRange(-halfH * 0.5, halfH * 0.5); break;
+      case 3: spawnX = -halfW * margin; spawnY = randomRange(-halfH * 0.5, halfH * 0.5); break;
+    }
+    const dir = this.aimTowardCenter(spawnX, spawnY);
+    const speed = randomRange(0.02, 0.08);
+    // Place along trajectory inside viewport
+    const t = randomRange(0.6, 0.95);
     return {
-      startX, startY,
+      startX: spawnX + dir.x * (1 - t) * spawnX,
+      startY: spawnY + dir.y * (1 - t) * spawnY,
       startZ: -randomRange(2, 6),
-      velX: Math.cos(angle) * speed,
-      velY: Math.sin(angle) * speed,
+      velX: dir.x * speed,
+      velY: dir.y * speed,
       rotX: randomRange(-1, 1),
       rotY: randomRange(-1, 1),
       rotZ: randomRange(-1, 1),
