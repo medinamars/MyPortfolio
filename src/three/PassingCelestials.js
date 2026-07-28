@@ -325,17 +325,19 @@ export class PassingCelestials {
     // Same approach — place along the asteroid trajectory path
     const halfW = this.viewportHalfW;
     const halfH = this.viewportHalfH;
-    const margin = 1.8;
+    const margin = 2.5;
     const side = Math.floor(Math.random() * 4);
     let spawnX, spawnY;
     switch (side) {
-      case 0: spawnX = randomRange(-halfW * 0.5, halfW * 0.5); spawnY = halfH * margin; break;
-      case 1: spawnX = randomRange(-halfW * 0.5, halfW * 0.5); spawnY = -halfH * margin; break;
-      case 2: spawnX = halfW * margin; spawnY = randomRange(-halfH * 0.5, halfH * 0.5); break;
-      case 3: spawnX = -halfW * margin; spawnY = randomRange(-halfH * 0.5, halfH * 0.5); break;
+      case 0: spawnX = halfW * randomRange(-1, 1); spawnY = halfH * margin; break;
+      case 1: spawnX = halfW * margin; spawnY = halfH * randomRange(-1, 1); break;
+      case 2: spawnX = halfW * randomRange(-1, 1); spawnY = -halfH * margin; break;
+      case 3: spawnX = -halfW * margin; spawnY = halfH * randomRange(-1, 1); break;
     }
-    const dir = this.aimTowardCenter(spawnX, spawnY);
-    const speed = randomRange(0.02, 0.08);
+    const targetX = randomRange(-3, 3);
+    const targetY = randomRange(-3, 3);
+    const dir = new THREE.Vector2(targetX - spawnX, targetY - spawnY).normalize();
+    const speed = randomRange(0.3, 0.8);
     // Place along trajectory inside viewport
     const t = randomRange(0.6, 0.95);
     return {
