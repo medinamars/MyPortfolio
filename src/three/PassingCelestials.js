@@ -248,7 +248,7 @@ class PassingObject {
 export class PassingCelestials {
   constructor() {
     this.objects = [];
-    this.spawnTimer = 0;
+    this.spawnTimer = 99; // spawn immediately on first frame
     this.spawnInterval = randomRange(4, 8); // seconds between spawn checks
     this.maxObjects = 3; // max total objects (planets + asteroids)
     this.maxPlanets = 1; // only one planet visible at a time
@@ -266,6 +266,9 @@ export class PassingCelestials {
       this.camera = camera;
       this.updateViewportBounds();
     }
+    // Pre-spawn 2 objects so there's immediate activity
+    this.spawn();
+    this.spawn();
   }
 
   // Compute visible half-width and half-height at the spawn plane (z=-5)
