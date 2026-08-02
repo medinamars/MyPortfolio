@@ -194,7 +194,7 @@ class PassingObject {
   }
 
   createAsteroid() {
-    const radius = randomRange(0.1, 0.3);
+    const radius = randomRange(0.05, 0.15);
     const geometry = createAsteroidGeometry(radius);
     const texture = createAsteroidTexture();
     const material = new THREE.MeshStandardMaterial({
