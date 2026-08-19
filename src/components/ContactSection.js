@@ -127,6 +127,7 @@ export function createContactSection() {
   footer.innerHTML = `
     <div class="footer-inner">
       <p>© ${new Date().getFullYear()} Mars Medina. Built by Sara, my Hermes agent. Version ${VERSION}</p>
+      <p class="footer-links">Video Channel: <a href="/MyPortfolio/VideoChannels/AnimeTTL/TermsOfService/" target="_blank" rel="noopener">Terms of Service</a> • <a href="/MyPortfolio/VideoChannels/PrivacyPolicy/" target="_blank" rel="noopener">Privacy Policy</a></p>
       <p class="footer-tech">Three.js • Vite • Vanilla JS</p>
     </div>
   `;
@@ -142,6 +143,16 @@ export function createContactSection() {
     }
     footer p { color: var(--color-dust); font-size: 0.85rem; }
     .footer-tech { font-family: var(--font-mono); font-size: 0.75rem; }
+    .footer-links a {
+      color: var(--color-star-bright, var(--color-dust));
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    .footer-links a:hover {
+      color: var(--color-atmosphere);
+      border-bottom-color: var(--color-atmosphere);
+    }
   `;
   footer.appendChild(footerStyle);
 }
