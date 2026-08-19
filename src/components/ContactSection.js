@@ -142,6 +142,7 @@ export function createContactSection() {
       background: rgba(11, 13, 23, 0.9);
     }
     footer p { color: var(--color-dust); font-size: 0.85rem; }
+    .footer-links { font-size: 0.75rem; }
     .footer-tech { font-family: var(--font-mono); font-size: 0.75rem; }
     .footer-links a {
       color: var(--color-star-bright, var(--color-dust));
