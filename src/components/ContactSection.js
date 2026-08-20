@@ -127,7 +127,7 @@ export function createContactSection() {
   footer.innerHTML = `
     <div class="footer-inner">
       <p>© ${new Date().getFullYear()} Mars Medina. Built by Sara, my Hermes agent. Version ${VERSION}</p>
-      <p class="footer-links">Video Channel: <a href="/MyPortfolio/VideoChannels/AnimeTTL/TermsOfService/" target="_blank" rel="noopener">Terms of Service</a> • <a href="/MyPortfolio/VideoChannels/PrivacyPolicy/" target="_blank" rel="noopener">Privacy Policy</a></p>
+      <p class="footer-links">Video Channel: <a href="/MyPortfolio/VideoChannels/TermsOfService/" target="_blank" rel="noopener">Terms of Service</a> • <a href="/MyPortfolio/VideoChannels/PrivacyPolicy/" target="_blank" rel="noopener">Privacy Policy</a></p>
       <p class="footer-tech">Three.js • Vite • Vanilla JS</p>
     </div>
   `;
