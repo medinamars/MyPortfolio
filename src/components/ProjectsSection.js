@@ -5,7 +5,6 @@ const projects = [
     tech: ['.NET 8', 'ASP.NET Boilerplate', 'Entity Framework', 'LINQ', 'Azure', 'Bootstrap', 'C#', 'SQL Server', 'Oracle', 'xUnit', 'SignalR', 'Postman'],
     category: 'backend',
     image: '/MyPortfolio/tradesmart-connect.jpg',
-    link: 'https://tradesmartconnect.com',
   },
   {
     title: 'CBSS (Class Booking & Scheduling System)',
@@ -13,7 +12,6 @@ const projects = [
     tech: ['ASP.NET', 'C#', 'Web Forms', 'SQL Server', 'LINQ', 'IIS', 'Model Oriented Design', 'Postman'],
     category: 'backend',
     image: '/MyPortfolio/cbss.jpg',
-    link: 'https://trueclassbooking.com.sg',
   },
   {
     title: 'TRUE FITNESS Singapore',
@@ -21,10 +19,6 @@ const projects = [
     tech: ['Flutter/Dart', 'RPC', 'Firebase', 'Flutter Flavors', 'App Store Connect', 'Google Play Console'],
     category: 'frontend',
     image: '/MyPortfolio/true-fitness-sg.jpg',
-    links: [
-      { label: 'App Store', url: 'https://apps.apple.com/sg/app/true-fitness-singapore/id1631513854' },
-      { label: 'Google Play', url: 'https://play.google.com/store/apps/details?id=com.truegroup.cbss_flutter&hl=en_CA&gl=SG' },
-    ],
   },
   {
     title: 'TFX Singapore',
@@ -32,10 +26,6 @@ const projects = [
     tech: ['Flutter/Dart', 'RPC', 'Firebase', 'Flutter Flavors', 'App Store Connect', 'Google Play Console'],
     category: 'frontend',
     image: '/MyPortfolio/tfx-sg.jpg',
-    links: [
-      { label: 'App Store', url: 'https://apps.apple.com/sg/app/tfx-singapore/id6467820958' },
-      { label: 'Google Play', url: 'https://play.google.com/store/apps/details?id=sg.tfx.cbss_flutter&hl=en_CA&gl=SG' },
-    ],
   },
   {
     title: 'ESP (Electronic Sales Process)',
@@ -57,7 +47,6 @@ const projects = [
     tech: ['.NET Core', 'C#', 'Blazor', 'Bootstrap', 'SQL Server', 'Entity Framework', 'LINQ', 'IIS', 'Model Oriented Design', 'xUnit', 'SignalR', 'Postman'],
     category: 'backend',
     image: '/MyPortfolio/true-group-iam.jpg',
-    link: 'https://iam.truegroup.com.sg',
   },
   {
     title: 'True Group Events',
@@ -65,7 +54,6 @@ const projects = [
     tech: ['.NET Core', 'C#', 'Blazor', 'Bootstrap', 'SQL Server', 'Entity Framework', 'LINQ', 'IIS', 'Model Oriented Design', 'xUnit'],
     category: 'backend',
     image: '/MyPortfolio/true-group-events.jpg',
-    link: 'https://event.truegroup.com.sg',
   },
   {
     title: 'True Group Sentinel',
@@ -80,7 +68,6 @@ const projects = [
     tech: ['ASP.NET', 'C#', 'RPC', 'SQL Server', 'Entity Framework', 'LINQ', 'IIS', 'Model Oriented Design', 'Payment Integration'],
     category: 'backend',
     image: '/MyPortfolio/truepay.jpg',
-    link: 'https://truepay.com.sg',
   },
   {
     title: 'Password Generator',
