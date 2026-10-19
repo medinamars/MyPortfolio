@@ -23,7 +23,7 @@ export function createResumeSection() {
               <p>English (Fluent), Filipino (Native)</p>
             </div>
           </div>
-          <a href="/Marcelo-Medina-Resume.pdf" class="btn-primary" download>Download Full Resume</a>
+          <a href="/MyPortfolio/Marcelo-Medina-Resume.pdf" class="btn-primary" download>Download Full Resume</a>
         </div>
         <div class="resume-visual">
           <svg viewBox="0 0 300 300" class="radar-chart">
