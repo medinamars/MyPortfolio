@@ -5,7 +5,7 @@ const techStack = [
   { category: 'Web & Mobile', skills: ['HTML5', 'CSS3', 'Bootstrap', 'SPA', 'SEO', 'RESTful APIs', 'OAuth2', 'RPC', 'SignalR', 'Firebase', 'iOS and Android App Development', 'App Store Connect', 'Google Play Console', 'Payment Integrations (Braintree, Stripe, PayPal, RedDot ...)'] },
   { category: 'Architecture & QA', skills: ['SOLID', 'OOP', 'N-Tier', 'SOA', 'TDD', 'SaaS', 'xUnit', 'NUnit', 'MSTest', 'Moq', 'FakeItEasy', 'Agile', 'Scrum', 'OWASP'] },
   { category: 'AI & ML', skills: ['Claude', 'DeepSeek', 'LM Studio', 'Llama.cpp', 'LiteLLM', 'vLLM', 'Opus', 'Qwen', 'Gemma', 'Gemini', 'Copilot', 'OpenClaw', 'Hermes', 'Microsoft ML'] },
-  { category: 'Dev & Design Tools', skills: ['Visual Studio', 'OpenCode', 'Claude Code', 'VS Code', 'NetBeans', 'Android Studio', 'Xcode', 'Postman', 'ACP Client', 'Swagger', 'NuGet', 'Vite', 'JIRA', 'GitHub', 'Photoshop'] },
+  { category: 'Dev & Design Tools', skills: ['Visual Studio', 'Claude Code', 'OpenCode', 'VS Code', 'NetBeans', 'Android Studio', 'Xcode', 'Postman', 'ACP Client', 'Swagger', 'NuGet', 'Vite', 'JIRA', 'GitHub', 'Photoshop'] },
 ];
 
 export function createAboutSection() {
