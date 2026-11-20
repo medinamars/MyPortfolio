@@ -2,7 +2,7 @@ const techStack = [
   { category: 'Languages & Frameworks', skills: ['.NET', 'C#', 'ASP.NET Core', 'ASP.NET Boilerplate', 'Blazor', 'Flutter/Dart', 'PHP', 'JavaScript', 'TypeScript', 'React', 'VB', 'VB6'] },
   { category: 'Databases & ORM', skills: ['SQL Server', 'PostgreSQL', 'MySQL', 'Oracle', 'T-SQL', 'Entity Framework', 'Dapper', 'ETL'] },
   { category: 'Cloud & DevOps', skills: ['Azure Functions', 'Azure Blob Storage', 'Azure Application Insights', 'Azure DevOps', 'Azure Key Vault', 'IIS', 'Apache', 'Nginx', 'HAProxy', 'Git', 'YAML', 'Hangfire', 'Docker'] },
-  { category: 'Web & Mobile', skills: ['HTML5', 'CSS3', 'Bootstrap', 'SPA', 'SEO', 'RESTful APIs', 'OAuth2', 'RPC', 'SignalR', 'Firebase', 'iOS and Android App Development', 'App Store Connect', 'Google Play Console', 'Payment Integrations (Braintree, Stripe, PayPal, RedDot ...)'] },
+  { category: 'Web & Mobile', skills: ['HTML5', 'CSS3', 'Bootstrap', 'SPA', 'SEO', 'RESTful APIs', 'OAuth2', 'OpenID Connect', 'RPC', 'SignalR', 'Firebase', 'iOS and Android App Development', 'App Store Connect', 'Google Play Console', 'Payment Integrations (Braintree, Stripe, PayPal, RedDot ...)'] },
   { category: 'Architecture & QA', skills: ['SOLID', 'OOP', 'N-Tier', 'SOA', 'TDD', 'SaaS', 'xUnit', 'NUnit', 'MSTest', 'Moq', 'FakeItEasy', 'Agile', 'Scrum', 'OWASP'] },
   { category: 'AI & ML', skills: ['Claude', 'DeepSeek', 'LM Studio', 'Llama.cpp', 'LiteLLM', 'vLLM', 'Qwen', 'Gemma', 'Gemini', 'Copilot', 'OpenClaw', 'Hermes', 'Microsoft ML'] },
   { category: 'Dev & Design Tools', skills: ['Visual Studio', 'Claude Code', 'OpenCode', 'VS Code', 'NetBeans', 'Android Studio', 'Xcode', 'Postman', 'ACP Client', 'Swagger', 'NuGet', 'Vite', 'JIRA', 'GitHub', 'Photoshop'] },
