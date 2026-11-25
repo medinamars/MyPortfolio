@@ -79,13 +79,13 @@
 
 <div class="container">
     <h3>Password Generator</h3>
-  <input type="text" class="output" id="output" value="Click generate..." />
+  <input type="text" class="output" id="output" value="Click generate..." title="Looks-alike characters (0/O, 1/l/I, 5/S) are excluded, so it's easy to read and type" />
     <label>Password Length</label>
-    <input type="number" id="length" min="6" max="64" value="12" oninput="saveLength();generatePassword();"/>
-  <button onclick="generateAndCopyPassword(this)">Generate & Copy</button>
+    <input type="number" id="length" min="6" max="64" value="12" oninput="saveLength();generatePassword();" title="Between 6 and 64 characters — your last choice is remembered"/>
+  <button onclick="generateAndCopyPassword(this)" title="Create a fresh password and copy it to your clipboard in one click">Generate &amp; Copy</button>
   <div class="row">
-    <button onclick="generatePassword(this)">Generate</button>
-    <button onclick="copyPassword(this)">Copy</button>
+    <button onclick="generatePassword(this)" title="Create a new password — keeps it on screen without copying">Generate</button>
+    <button onclick="copyPassword(this)" title="Copy the generated password to your clipboard — generate one first if the box is empty">Copy</button>
   </div>
 </div>
 
